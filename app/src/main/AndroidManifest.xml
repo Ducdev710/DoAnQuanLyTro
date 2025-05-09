@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.app.motel">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".AppApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/logo_login"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Motel"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".feature.complaint.ComplaintActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.profile.ProfileDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.rules.RulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.handleContract.ContractListActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Motel" />
+        <activity
+            android:name=".feature.handleBill.HandleBillActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.tenant.TenantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.room.RoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.createBill.CreateBillActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.handleContract.HandleContractActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.service.ServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.createContract.CreateContractActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.boardingHouse.BoardingHouseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.auth.AuthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

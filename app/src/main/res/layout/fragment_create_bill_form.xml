@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+    tools:context=".feature.createContract.CreateContractFormFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"
+                android:background="@color/background4"
+                android:padding="@dimen/PADDING_SIZE_SMALL">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên phòng trọ: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"/>
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A101"
+                    android:textStyle="bold"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"/>
+
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"
+                android:background="@color/background4"
+                android:weightSum="9"
+                android:padding="@dimen/PADDING_SIZE_SMALL">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ngày tạo hóa đơn"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ngày tạo hóa đơn"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_create_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_create_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="dd/mm/yyyy"
+                            android:imeOptions="actionNext"
+android:inputType="text"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giá thuê"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giá phòng tính theo tháng"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_rent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_rent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/background3"
+                            android:hint="Giá"
+                            android:imeOptions="actionNext"
+android:inputType="text"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số điện cũ"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số điện tháng trước"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_electricity_old"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_electricity_old"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:backgroundTint="@color/background3"
+                            android:enabled="false"
+                            android:inputType="number"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số điện mới"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số điện tháng này"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_electricity_new"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_electricity_new"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số nước cũ"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số nuoc tháng trước"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_water_old"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_water_old"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:enabled="false"
+                            android:imeOptions="actionNext"
+                            android:backgroundTint="@color/background3"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số nước mới"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số nước tháng này"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_water_new"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_water_new"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:imeOptions="actionNext"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giá dịch vụ"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giá dịch vụ được thêm mặc đinh"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_price_service"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_price_service"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="VND"
+                            android:imeOptions="actionNext"
+                            android:backgroundTint="@color/background3"
+                            android:enabled="false"
+                            android:inputType="number"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiền miễn giảm"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiền miễn giảm tùy thuộc từng tháng"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_discount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_discount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="VND"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/PADDING_SIZE_EXTRA_SMALL"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+        <Space
+            android:layout_width="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Hủy"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/PADDING_SIZE_SMALL"
+        android:text="Gia hạn hợp đồng"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="@dimen/TEXT_SIZE_LARGE"
+        android:textColor="@color/white"
+        android:background="@color/primary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL">
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text=""/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:text="Trọ A1"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_time_old_contract"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Thời hạn hợp đồng cũ"
+        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+        style="@style/InputLayoutStyle2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_time_old_contract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background3"
+            android:inputType="number"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:enabled="false"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_time_new_contract"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        android:hint="Thời hạn hợp đồng mới"
+        style="@style/InputLayoutStyle2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_time_new_contract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:inputType="number"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_end_date_old_contract"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        android:hint="Ngày kết thúc hợp đồng cũ"
+        style="@style/InputLayoutStyle2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_end_date_old_contract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background3"
+            android:enabled="false"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_end_date_new_contract"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        android:hint="Ngày kết thúc hợp đồng mới"
+        style="@style/InputLayoutStyle2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_end_date_new_contract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background3"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:enabled="false"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Lưu"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+        <View
+            android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_height="0dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Hủy"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+    </LinearLayout>
+</LinearLayout>

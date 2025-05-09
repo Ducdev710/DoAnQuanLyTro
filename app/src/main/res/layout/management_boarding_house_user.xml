@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background2"
+    android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thao tác nhà trọ"
+        android:textStyle="bold"
+        android:textSize="@dimen/TEXT_SIZE_LARGE"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <include
+            android:id="@+id/ly_contract_detail"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <Space
+            android:layout_width="@dimen/PADDING_SIZE_SMALL"
+            android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/ly_room_renting"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_height="@dimen/PADDING_SIZE_SMALL"
+        android:layout_width="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <include
+            android:id="@+id/ly_send_complaint"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <Space
+            android:layout_width="@dimen/PADDING_SIZE_SMALL"
+            android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/ly_bill_payment"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh sách quản lý"
+        android:textStyle="bold"
+        android:textSize="@dimen/TEXT_SIZE_LARGE"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <include
+            android:id="@+id/ly_list_room_empty"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <Space
+            android:layout_width="@dimen/PADDING_SIZE_SMALL"
+            android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/ly_bill_paid"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_height="@dimen/PADDING_SIZE_SMALL"
+        android:layout_width="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <include
+            android:id="@+id/ly_rule"
+            layout="@layout/item_feature_management"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <Space
+            android:layout_width="@dimen/PADDING_SIZE_SMALL"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/primaryVariant2"
+    app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+    android:layout_marginBottom="@dimen/PADDING_SIZE_DEFAULT"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/PADDING_SIZE_DEFAULT">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:text="Chậm tiền nhà"
+            />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:text="Chậm tiền nhà tháng 12, hãy thanh toán tiền nhà trước ngày 20/12/2025"
+            />
+
+        <TextView
+            android:id="@+id/tv_create_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:text="23/12/2024"
+            />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

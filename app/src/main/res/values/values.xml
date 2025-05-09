@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="tab_home">
+        <item>Quản lý</item>
+        <item>Tổng quan</item>
+    </array>
+
+    <array name="tab_handle_contract">
+        <item>Còn hạn</item>
+        <item>Sắp hết hạn</item>
+        <item>Hết hạn</item>
+    </array>
+
+    <array name="tab_contract_lít">
+        <item>Còn hiệu lực</item>
+        <item>Hết hiệu lực</item>
+    </array>
+
+    <array name="tab_room">
+        <item>TẤT CẢ</item>
+        <item>ĐANG THUÊ</item>
+        <item>ĐANG TRỐNG</item>
+    </array>
+
+    <array name="tab_room_detail">
+        <item>THÔNG TIN</item>
+        <item>NGƯỜI THUÊ</item>
+    </array>
+
+    <array name="tab_tenant">
+        <item>ĐANG THUÊ</item>
+        <item>NGUỜI THUÊ MỚI</item>
+        <item>ĐÃ CHUYỂN ĐI</item>
+    </array>
+
+    <array name="tab_list_bill">
+        <item>ĐÃ THANH TOÁN</item>
+        <item>CHƯA THANH TOÁN</item>
+    </array>
+
+    <array name="tab_rules">
+        <item>NỘI QUY CHUNG</item>
+        <item>CHỈNH SỬA</item>
+    </array>
+
+    <array name="tab_notify">
+        <item>THÔNG BÁO ỨNG DỤNG</item>
+        <item>KHIẾU NẠI TỪ KHÁCH HÀNG</item>
+        <item>YÊU CẦU THUÊ PHÒNG</item>
+    </array>
+
+</resources>

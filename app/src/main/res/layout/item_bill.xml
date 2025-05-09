@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/PADDING_SIZE_SMALL"
+    app:cardCornerRadius="@dimen/RADIUS_DEFAULT">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phòng A5"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"
+                android:textColor="@color/red"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Chi tiết hóa đơn"
+                android:textAllCaps="false"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_SMALL"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                android:textColor="@color/black"
+                android:drawableEnd="@drawable/baseline_chevron_right_24"
+                android:backgroundTint="@color/background3"
+                android:background="@drawable/background_button"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/background_border_radius_1"
+                android:backgroundTint="@color/primaryVariant2"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_SMALL">
+
+                <TextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="T7"
+                    android:textStyle="bold"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/TEXT_SIZE_EXTRA_LARGE"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:id="@+id/tv_month_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thu tiền tháng 7"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_payed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:allowClickWhenDisabled="true"
+                    android:textColor="@color/red"
+                    android:textStyle="italic"
+                    android:buttonTint="@color/check_box_color_selector"
+                    android:text="Đã thanh toán"
+                    tools:ignore="UnusedAttribute" />
+
+                <!--<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="Gọi điện"
+                        android:textSize="@dimen/TEXT_SIZE_SMALL"
+                        android:textColor="@color/white"
+                        android:elevation="0dp"
+                        android:paddingHorizontal="@dimen/PADDING_SIZE_SMALL"
+                        android:drawableStart="@drawable/baseline_phone_24"
+                        android:drawableTint="@color/background1"
+                        android:layout_gravity="center_horizontal"
+                        android:stateListAnimator="@null"
+                        android:background="@drawable/background_button"/>
+
+                    <View
+                        android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+                        android:layout_height="0dp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="Thông báo"
+                        android:textSize="@dimen/TEXT_SIZE_SMALL"
+                        android:textColor="@color/white"
+                        android:elevation="0dp"
+                        android:paddingHorizontal="@dimen/PADDING_SIZE_SMALL"
+                        android:drawableStart="@drawable/baseline_notifications_active_24"
+                        android:drawableTint="@color/background1"
+                        android:layout_gravity="center_horizontal"
+                        android:stateListAnimator="@null"
+                        android:background="@drawable/background_button"/>
+
+                </LinearLayout>-->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            app:dividerColor="@color/black"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9 232 000"
+                    android:textColor="@color/teal_700"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đã thu"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_collected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9 232 000"
+                    android:textColor="@color/teal_700"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Còn lại"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_remaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9 232 000"
+                    android:textColor="@color/red"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

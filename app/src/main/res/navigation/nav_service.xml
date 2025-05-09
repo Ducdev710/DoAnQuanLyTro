@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_service"
+    app:startDestination="@id/serviceListFragment">
+    <fragment
+        android:id="@+id/serviceListFragment"
+        android:name="com.app.motel.feature.service.ServiceListFragment"
+        android:label="ServiceListFragment" >
+        <action
+            android:id="@+id/action_serviceListFragment_to_serviceFormFragment"
+            app:destination="@id/serviceFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/serviceFormFragment"
+        android:name="com.app.motel.feature.service.ServiceFormFragment"
+        android:label="ServiceFormFragment" >
+        <action
+            android:id="@+id/action_serviceFormFragment_to_serviceListFragment"
+            app:destination="@id/serviceListFragment" />
+    </fragment>
+</navigation>

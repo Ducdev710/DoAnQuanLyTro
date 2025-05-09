@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/PADDING_SIZE_SMALL"
+    app:cardCornerRadius="@dimen/RADIUS_DEFAULT">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/PADDING_SIZE_SMALL">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phòng A5"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"
+                android:textColor="@color/red"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_change_service"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Thông tin đầy đủ"
+                android:textAllCaps="false"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                android:textColor="@color/black"
+                android:drawableEnd="@drawable/baseline_chevron_right_24"
+                android:backgroundTint="@color/background3"
+                android:background="@drawable/background_button"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/profile_user"
+                android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Họ tên: ĐSĐÁ"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_number_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SĐT: 0231231412"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_renting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/red"
+                android:textStyle="italic"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Đang ở"/>
+
+            <Space
+                android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_renting_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/red"
+                android:textStyle="italic"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Chủ hợp đồng"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_call"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Gọi điện"
+                android:textColor="@color/white"
+                android:elevation="0dp"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_SMALL"
+                android:drawableStart="@drawable/baseline_phone_24"
+                android:drawableTint="@color/background1"
+                android:layout_gravity="center_horizontal"
+                android:stateListAnimator="@null"
+                android:background="@drawable/background_button"/>
+
+            <!--<View
+                android:id="@+id/v_spacing"
+                android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_notification"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Thông báo"
+                android:textColor="@color/white"
+                android:elevation="0dp"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_SMALL"
+                android:drawableStart="@drawable/baseline_notifications_active_24"
+                android:drawableTint="@color/background1"
+                android:layout_gravity="center_horizontal"
+                android:stateListAnimator="@null"
+                android:background="@drawable/background_button"/>-->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

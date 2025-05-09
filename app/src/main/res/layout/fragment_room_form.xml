@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".feature.room.RoomFormFragment">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background2"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:hint="Tên phòng"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_max_tenant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_max_tenant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background2"
+            android:hint="Số người tối đa"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        android:textColor="@color/grey"
+        android:text="Nhập 0 nếu không giới hạn số người"/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"
+        android:background="@color/background4"
+        android:weightSum="9"
+        android:padding="@dimen/PADDING_SIZE_SMALL">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:weightSum="9">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diện tích"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diện tích phòng trọ"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_area"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                style="@style/InputLayoutStyle1"
+                android:layout_weight="4"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/background1"
+                    android:imeOptions="actionNext"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    tools:ignore="SpUsage" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:gravity="center_vertical"
+            android:weightSum="9">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá thuê"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá phòng tính theo tháng"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                style="@style/InputLayoutStyle1"
+                android:layout_weight="4"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="VND"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:backgroundTint="@color/background1"
+                    android:gravity="center"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    tools:ignore="SpUsage" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_add_service"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:text="THÊM DỊCH VỤ"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/PADDING_SIZE_EXTRA_SMALL"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Lưu"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+        <Space
+            android:layout_width="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Hủy"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/primary"
+            android:background="@drawable/background_button"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

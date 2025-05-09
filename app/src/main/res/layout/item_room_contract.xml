@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background1"
+    app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+    android:layout_marginVertical="@dimen/PADDING_SIZE_EXTRA_SMALL">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:paddingTop="@dimen/PADDING_SIZE_SMALL"
+            android:gravity="bottom">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/house"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/RADIUS_DEFAULT">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trọ A4"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_name_boarding_house"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Khu tân trào"
+                    android:visibility="gone"
+                    android:textSize="@dimen/TEXT_SIZE_SMALL"/>
+
+                <TextView
+                    android:id="@+id/tv_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Só người tối đa: 9  Số người đang ở: 5"
+                    android:textSize="@dimen/TEXT_SIZE_SMALL"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/home"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giá thuê: "
+                        android:textColor="@color/black"
+                        android:layout_marginStart="3dp"
+                        android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="600000"
+                        android:textColor="@color/red"
+                        android:textStyle="bold"
+                        android:layout_marginStart="3dp"
+                        android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Đang trống"/>
+
+            <Space
+                android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_living"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:buttonTint="@color/red"
+                android:textColor="@color/red"
+                android:text="Đang ở"/>
+
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_rent"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Thuê phòng"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
+            android:stateListAnimator="@null"
+            android:background="@drawable/background_button"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,98 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Motel" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- Text color -->
+        <item name="android:textColor">@color/textColor1</item>
+        <item name="android:textColorHint">@color/textColor3</item>
+        <item name="android:textColorSecondary">@color/textColor2</item>
+        <item name="android:textColorTertiary">@color/textColor3</item>
+        <item name="android:textColorPrimary">@color/textColor1</item>
+
+        <!--  Background-->
+        <item name="android:colorBackground">@color/background1</item>
+    </style>
+
+
+    <style name="BorderRadiusBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="UnBorderRadiusBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog" />
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/background_border_radius_top</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Travle" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/slide_in</item>
+        <item name="android:windowExitTransition">@transition/slide_out</item>
+    </style>
+
+
+    <style name="RoundedDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:background">@drawable/background_border_radius_1</item>
+    </style>
+
+    <!--    text input layout-->
+    <style name="InputLayoutStyle1" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <item name="boxCornerRadiusTopStart">@dimen/RADIUS_SMALL</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/RADIUS_SMALL</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/RADIUS_SMALL</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/RADIUS_SMALL</item>
+
+        <item name="boxBackgroundColor">@color/background2</item>
+
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <style name="InputLayoutStyle2" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <item name="boxCornerRadiusTopStart">@dimen/RADIUS_SMALL</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/RADIUS_SMALL</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/RADIUS_SMALL</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/RADIUS_SMALL</item>
+
+        <item name="boxBackgroundColor">@color/background2</item>
+
+        <item name="boxStrokeColor">@color/background3</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+
+        <item name="hintEnabled">true</item>
+        <item name="hintAnimationEnabled">true</item>
+    </style>
+
+
+    <style name="roundedCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">3%</item>
+    </style>
+
+<!--    toolbar title style-->
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/TEXT_SIZE_LARGE</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="titleCentered">true</item>
+    </style>
+
+</resources>

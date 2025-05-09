@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/PADDING_SIZE_DEFAULT"
+    android:background="@drawable/background_border_radius_1"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm quy định khác"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"
+        android:textSize="@dimen/TEXT_SIZE_LARGE"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/black"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/InputLayoutStyle2"
+        app:boxBackgroundColor="@color/background1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionNext"
+android:inputType="text"
+            android:hint="Tiêu đề"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle2"
+        app:boxBackgroundColor="@color/background1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:hint="Nội dung"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_LARGE">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="Lưu"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:background="@drawable/background_button"/>
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/baseline_delete_24"
+            android:layout_marginStart="@dimen/PADDING_SIZE_DEFAULT"/>
+
+    </LinearLayout>
+
+</LinearLayout>

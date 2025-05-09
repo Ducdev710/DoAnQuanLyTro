@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_create_bill"
+    app:startDestination="@id/createBillListFragment">
+
+    <fragment
+        android:id="@+id/createBillListFragment"
+        android:name="com.app.motel.feature.createBill.CreateBillListFragment"
+        android:label="CreateBillListFragment" >
+        <action
+            android:id="@+id/action_createBillListFragment_to_createBillFormFragment"
+            app:destination="@id/createBillFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createBillFormFragment"
+        android:name="com.app.motel.feature.createBill.CreateBillFormFragment"
+        android:label="CreateBillFormFragment" >
+        <action
+            android:id="@+id/action_createBillFormFragment_to_createBillListFragment"
+            app:destination="@id/createBillListFragment" />
+    </fragment>
+</navigation>

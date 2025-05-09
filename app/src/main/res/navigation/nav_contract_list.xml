@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_contract_list"
+    app:startDestination="@id/contractListFragment">
+
+    <fragment
+        android:id="@+id/contractListFragment"
+        android:name="com.app.motel.feature.handleContract.ContractListFragment"
+        android:label="fragment_contract_list"
+        tools:layout="@layout/fragment_contract_list" />
+</navigation>

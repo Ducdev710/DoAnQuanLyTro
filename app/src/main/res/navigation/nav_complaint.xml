@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_complaint"
+    app:startDestination="@id/complaintListFragment">
+
+    <fragment
+        android:id="@+id/complaintListFragment"
+        android:name="com.app.motel.feature.complaint.ComplaintListFragment"
+        android:label="fragment_complaint_list"
+        tools:layout="@layout/fragment_complaint_list" >
+        <action
+            android:id="@+id/action_complaintListFragment_to_complaintFormFragment"
+            app:destination="@id/complaintFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/complaintFormFragment"
+        android:name="com.app.motel.feature.complaint.ComplaintFormFragment"
+        android:label="fragment_complaint_form"
+        tools:layout="@layout/fragment_complaint_form" >
+        <action
+            android:id="@+id/action_complaintFormFragment_to_complaintListFragment"
+            app:destination="@id/complaintListFragment" />
+    </fragment>
+</navigation>

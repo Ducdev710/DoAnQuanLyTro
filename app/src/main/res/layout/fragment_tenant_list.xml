@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background2"
+    tools:context=".feature.tenant.TenantListFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <com.app.motel.ui.custom.CustomTabBar
+            android:id="@+id/tabBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/tab_tenant"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            style="@style/InputLayoutStyle1"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:backgroundTint="@color/background1"
+                android:hint="Tìm kiếm người thuê..."
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                tools:ignore="SpUsage" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv"
+            android:padding="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có người thuê nào"
+        android:textColor="@color/purple_500"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_add_24"
+        android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:borderWidth="0dp"
+        android:backgroundTint="@color/primaryVariant"/>
+
+</RelativeLayout>

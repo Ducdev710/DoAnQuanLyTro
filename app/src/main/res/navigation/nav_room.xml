@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_room"
+    app:startDestination="@id/roomListFragment">
+    <fragment
+        android:id="@+id/roomListFragment"
+        android:name="com.app.motel.feature.room.RoomListFragment"
+        android:label="RoomListFragment" >
+        <action
+            android:id="@+id/action_roomListFragment_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment" />
+        <action
+            android:id="@+id/action_roomListFragment_to_roomFormFragment"
+            app:destination="@id/roomFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomDetailFragment"
+        android:name="com.app.motel.feature.room.RoomDetailFragment"
+        android:label="RoomDetailFragment" >
+        <action
+            android:id="@+id/action_roomDetailFragment_to_roomListFragment"
+            app:destination="@id/roomListFragment" />
+        <action
+            android:id="@+id/action_roomDetailFragment_to_serviceFormFragment2"
+            app:destination="@id/roomServiceFormFragment" />
+        <action
+            android:id="@+id/action_roomDetailFragment_to_creatContractFormFragment"
+            app:destination="@id/roomCreateContractFormFragment" />
+        <action
+            android:id="@+id/action_roomDetailFragment_to_tenantFormFragment2"
+            app:destination="@id/roomTenantFormFragment" />
+        <action
+            android:id="@+id/action_roomDetailFragment_to_tenantListAddRoomFragment"
+            app:destination="@id/tenantListAddRoomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomServiceFormFragment"
+        android:name="com.app.motel.feature.service.ServiceFormFragment"
+        android:label="ServiceFormFragment" >
+        <action
+            android:id="@+id/action_serviceFormFragment2_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment" />
+        <action
+            android:id="@+id/action_roomServiceFormFragment_to_roomFormFragment"
+            app:destination="@id/roomFormFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/roomCreateContractFormFragment"
+        android:name="com.app.motel.feature.createContract.CreateContractFormFragment"
+        android:label="fragment_creat_contract_form"
+        tools:layout="@layout/fragment_create_contract_form">
+        <action
+            android:id="@+id/action_creatContractFormFragment_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomFormFragment"
+        android:name="com.app.motel.feature.room.RoomFormFragment"
+        android:label="fragment_room_form"
+        tools:layout="@layout/fragment_room_form" >
+        <action
+            android:id="@+id/action_roomFormFragment_to_roomListFragment"
+            app:destination="@id/roomListFragment" />
+        <action
+            android:id="@+id/action_roomFormFragment_to_roomServiceFormFragment"
+            app:destination="@id/roomServiceFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomTenantFormFragment"
+        android:name="com.app.motel.feature.tenant.TenantFormFragment"
+        android:label="fragment_tenant_form"
+        tools:layout="@layout/fragment_tenant_form" >
+        <action
+            android:id="@+id/action_tenantFormFragment2_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tenantListAddRoomFragment"
+        android:name="com.app.motel.feature.tenant.TenantListAddRoomFragment"
+        android:label="fragment_tenant_list_add_room"
+        tools:layout="@layout/fragment_tenant_list_add_room" >
+        <action
+            android:id="@+id/action_tenantListAddRoomFragment_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment" />
+    </fragment>
+
+</navigation>

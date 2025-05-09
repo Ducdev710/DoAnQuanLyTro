@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".feature.rules.RulesContentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+        >
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="@dimen/PADDING_SIZE_LARGE"
+            android:src="@drawable/icon_rule"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background2"
+            app:cardCornerRadius="@dimen/RADIUS_DEFAULT">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giới thiệu"
+                    android:textSize="@dimen/TEXT_SIZE_EXTRA_LARGE"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Các quy định dưới đây nhằm đảm bảo môi trường sống tốt nhất cho tất cả người thuê. Bui lòng đọc kỹ và tuần thủ."
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textColor="@color/grey"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Các quy định khác"
+            android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:textStyle="bold"
+            android:layout_gravity="start"
+            android:textColor="@color/black"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Không có quy định nào"
+            android:textColor="@color/purple_500"
+            android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nội quy chung"
+            android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:textStyle="bold"
+            android:layout_gravity="start"
+            android:textColor="@color/black"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:backgroundTint="@color/background2"
+            app:cardCornerRadius="@dimen/RADIUS_DEFAULT">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" • Không hút thuốc trong phòng\n
+• Giữ gìn vệ sinh khu vực chung\n
+• Không nuôi thú cưng khi chưa được cho phép \n
+• Không tự ý sửa chữa thiết bị điện nước \n
+• Đăng ký người ở qua đêm với chủ trọ"
+                    android:lineSpacingExtra="@dimen/PADDING_SIZE_SMALL"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"
+            android:backgroundTint="@color/primaryVariant2"
+            app:cardCornerRadius="@dimen/RADIUS_DEFAULT">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+                <!-- First section: Liên hệ chủ trọ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Liên hệ chủ trọ"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nếu có bất kỳ thắc mắc hoặc khiếu nại, vui lòng lin hệ"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textColor="@color/grey"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/tv_landlord_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số điện thoại: "
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/tv_landlord_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: "
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_DEFAULT"
+                    tools:ignore="HardcodedText" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey"
+                    android:alpha="0.3"/>
+
+                <!-- Second section: Thanh toán tiền trọ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thanh toán tiền trọ"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thông tin tài khoản ngân hàng để chuyển khoản"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textColor="@color/grey"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtBank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngân hàng: "
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtNumberBank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số tài khoản: "
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

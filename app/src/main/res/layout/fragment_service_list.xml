@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+    android:background="@color/background2"
+    tools:context=".feature.createContract.CreateContractListFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có dịch vụ nào"
+        android:textColor="@color/purple_500"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_add_24"
+        android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:borderWidth="0dp"
+        android:backgroundTint="@color/primaryVariant"/>
+
+</RelativeLayout>

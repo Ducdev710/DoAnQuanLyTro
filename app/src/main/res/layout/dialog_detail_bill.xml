@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/PADDING_SIZE_SMALL"
+        android:text="Chi tiết hóa đơn"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="@dimen/TEXT_SIZE_LARGE"
+        android:textColor="@color/white"
+        android:background="@color/primary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL">
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text=""/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/tv_craete_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="32/7/2023"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_name_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="A5"/>
+
+    <TextView
+        android:id="@+id/tv_tenant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Nguyễn Văn A"/>
+
+    <TextView
+        android:id="@+id/tv_bill_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hóa đơn tháng: 7/2023"/>
+
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/black"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/PADDING_SIZE_SMALL"
+        android:background="@drawable/background_border_radius_2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:text="Thông tin hóa đơn"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="Thông tin về các sịch vụ phòng đã sử dụng trong tháng qua"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tiền phòng"/>
+
+        <TextView
+            android:id="@+id/tv_price_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="6 222 222 VND"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Giá dịch vụ"/>
+
+        <TextView
+            android:id="@+id/tv_price_service"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="6 222 222 VND"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Số điện"/>
+
+        <TextView
+            android:id="@+id/tv_electricity_index"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="23 số"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Khối nước"/>
+
+        <TextView
+            android:id="@+id/tv_water_index"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="32 Khối"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tiền miễn giảm"/>
+
+        <TextView
+            android:id="@+id/tv_price_discount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="5 000 000 VND"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/black"
+        android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:textStyle="bold"
+            android:text="Tổng tiền: "/>
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:text="2 232 124 VND"/>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_payed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:buttonTint="@color/check_box_color_selector"
+        android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
+        android:text="Đã thanh toán"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_end"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Đóng"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:elevation="0dp"
+        android:layout_gravity="center_horizontal"
+        android:stateListAnimator="@null"
+        android:backgroundTint="@color/primary"
+        android:background="@drawable/background_button"/>
+
+</LinearLayout>

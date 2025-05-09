@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingHorizontal="@dimen/TEXT_SIZE_DEFAULT"
+    tools:context=".feature.auth.RegisterFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tạo tài khoản mới"
+        android:textSize="@dimen/TEXT_SIZE_EXTRA_LARGE"
+        android:textColor="@color/textColor1"
+        android:paddingTop="@dimen/PADDING_SIZE_SMALL"
+        android:textStyle="bold"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_LARGE"
+        style="@style/InputLayoutStyle1"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:hint="Họ và tên"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilBirthDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_calendar_month_24"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtBirthDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ngày sinh"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số điện thoại"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:imeOptions="actionNext"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:inputType="textEmailAddress"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tên đăng nhập"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            tools:ignore="SpUsage" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        style="@style/InputLayoutStyle1"
+        app:endIconMode="password_toggle"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mật khẩu"
+            android:imeOptions="actionDone"
+            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+            android:inputType="textPassword"
+            tools:ignore="SpUsage"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_LARGE"
+        android:text="Đăng ký"
+        android:textColor="@color/white"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/primary"
+        android:background="@drawable/background_button"/>
+
+    <LinearLayout
+        android:id="@+id/btn_to_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/PADDING_SIZE_LARGE">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/textColor3"
+            android:text="Đã có tài khoản?" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:textStyle="bold"
+            android:textColor="@color/primaryVariant"
+            android:text="Đăng nhập" />
+
+    </LinearLayout>
+</LinearLayout>

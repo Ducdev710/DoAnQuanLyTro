@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_boarding_house"
+    app:startDestination="@id/greetingBoardingHouseFragment">
+
+    <fragment
+        android:id="@+id/greetingBoardingHouseFragment"
+        android:name="com.app.motel.feature.boardingHouse.GreetingBoardingHouseFragment"
+        android:label="fragment_greeting_boarding_house"
+        tools:layout="@layout/fragment_greeting_boarding_house" >
+        <action
+            android:id="@+id/action_greetingBoardingHouseFragment_to_createBoardingHouseFragment"
+            app:destination="@id/createBoardingHouseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createBoardingHouseFragment"
+        android:name="com.app.motel.feature.boardingHouse.CreateBoardingHouseFragment"
+        android:label="fragment_create_boarding_house"
+        tools:layout="@layout/fragment_create_boarding_house" >
+        <action
+            android:id="@+id/action_createBoardingHouseFragment_to_greetingBoardingHouseFragment"
+            app:destination="@id/greetingBoardingHouseFragment" />
+    </fragment>
+</navigation>

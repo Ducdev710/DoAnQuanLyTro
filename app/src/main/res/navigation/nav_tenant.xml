@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_tenant"
+    app:startDestination="@id/tenantListFragment">
+
+    <fragment
+        android:id="@+id/tenantListFragment"
+        android:name="com.app.motel.feature.tenant.TenantListFragment"
+        android:label="fragment_tenant_list"
+        tools:layout="@layout/fragment_tenant_list" >
+        <action
+            android:id="@+id/action_tenantListFragment_to_tenantFormFragment"
+            app:destination="@id/tenantFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tenantFormFragment"
+        android:name="com.app.motel.feature.tenant.TenantFormFragment"
+        android:label="fragment_tenant_form"
+        tools:layout="@layout/fragment_tenant_form" >
+        <action
+            android:id="@+id/action_tenantFormFragment_to_tenantListFragment"
+            app:destination="@id/tenantListFragment" />
+    </fragment>
+</navigation>

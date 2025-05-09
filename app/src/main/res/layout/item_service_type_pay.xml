@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT">
+
+    <RadioButton
+        android:id="@+id/radio_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tính theo đòng hồ"
+        android:buttonTint="@color/check_box_color_selector"
+        />
+
+</LinearLayout>

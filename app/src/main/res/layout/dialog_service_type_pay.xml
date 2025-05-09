@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+    android:background="@color/background1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:paddingVertical="@dimen/PADDING_SIZE_SMALL"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:textStyle="bold"
+            android:background="@color/primaryVariant2"
+            android:text="Dịch vụ"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_LARGE"
+            android:text="Xác nhận"
+            android:textColor="@color/black"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/primaryVariant2"
+            android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

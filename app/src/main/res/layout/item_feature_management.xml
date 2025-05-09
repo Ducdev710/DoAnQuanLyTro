@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="@dimen/PADDING_SIZE_SMALL"
+    android:background="@drawable/background_border_radius_1"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/tenant"/>
+
+    <TextView
+        android:id="@+id/tv_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/TEXT_SIZE_EXTRA_LARGE"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        android:visibility="gone"
+        android:text="0"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+        android:text="Tạo hợp đồng"/>
+
+</LinearLayout>

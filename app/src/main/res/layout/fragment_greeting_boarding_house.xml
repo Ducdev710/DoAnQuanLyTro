@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.boardingHouse.GreetingBoardingHouseFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo_login"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tạo khu trọ của bạn"
+            android:textSize="@dimen/TEXT_SIZE_EXTRA_LARGE"
+            android:textColor="@color/textColor1"
+            android:paddingTop="@dimen/PADDING_SIZE_SMALL"
+            android:textStyle="bold"/>
+        
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
+        android:text="Tạo khu trọ"
+        android:textColor="@color/white"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/primary"
+        android:background="@drawable/background_button"
+        android:layout_gravity="end|bottom"
+        />
+        
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

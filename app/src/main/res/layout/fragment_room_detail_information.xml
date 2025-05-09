@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background2"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".feature.room.RoomDetailInformationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryVariant2"
+            android:background="@drawable/background_border_radius_3"
+            android:padding="@dimen/PADDING_SIZE_DEFAULT"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên khu"
+                    android:layout_marginEnd="@dimen/PADDING_SIZE_SMALL"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_name_boarding_house"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="tên khu"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_status_boarding_house"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey"
+                android:text="Đang trống"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_3"
+                android:backgroundTint="@color/primaryVariant2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:text="Tên phòng"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_name_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:padding="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_bottom"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/PADDING_SIZE_SMALL"
+                android:layout_height="wrap_content"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_3"
+                android:backgroundTint="@color/primaryVariant2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:text="Diện tích"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:padding="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_bottom"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_3"
+                android:backgroundTint="@color/primaryVariant2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:text="Số người tối đa"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_max_tenant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:padding="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_bottom"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/PADDING_SIZE_SMALL"
+                android:layout_height="wrap_content"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_3"
+                android:backgroundTint="@color/primaryVariant2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:text="Số người đang ở"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_current_tenant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:padding="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_bottom"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_3"
+                android:backgroundTint="@color/primaryVariant2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:text="Giá phòng"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_price_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:padding="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_bottom"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/PADDING_SIZE_SMALL"
+                android:layout_height="wrap_content"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_3"
+                android:backgroundTint="@color/primaryVariant2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:text="Số lượng dịch vụ"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_count_service"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:imeOptions="actionDone"
+                    android:gravity="center"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:padding="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_bottom"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryVariant2"
+            android:background="@drawable/background_border_radius_3"
+            android:padding="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cách dịch vụ của phòng đang dùng"
+                android:layout_marginEnd="@dimen/PADDING_SIZE_SMALL"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Các dịch vụ phòng đang dùng và được tính vào hóa đơn trong tháng"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryVariant2"
+            android:background="@drawable/background_border_radius_3"
+            android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+            android:paddingTop="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
+                android:text="Không dịch vụ nào"
+                android:textColor="@color/purple_500"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_change_service"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Thêm dịch vụ"
+            android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@null"
+            android:background="@drawable/background_button"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_update"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cập nhật"
+                android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                android:textColor="@color/white"
+                android:elevation="0dp"
+                android:layout_gravity="center_horizontal"
+                android:stateListAnimator="@null"
+                android:background="@drawable/background_button"/>
+
+            <View
+                android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Xóa phòng"
+                android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                android:textColor="@color/white"
+                android:elevation="0dp"
+                android:layout_gravity="center_horizontal"
+                android:stateListAnimator="@null"
+                android:background="@drawable/background_button"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

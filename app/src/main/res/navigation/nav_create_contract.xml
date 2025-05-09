@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_create_contract"
+    app:startDestination="@id/creatContractListFragment">
+
+    <fragment
+        android:id="@+id/creatContractListFragment"
+        android:name="com.app.motel.feature.createContract.CreateContractListFragment"
+        android:label="fragment_creat_contract_list"
+        tools:layout="@layout/fragment_create_contract_list" >
+        <action
+            android:id="@+id/action_creatContractListFragment_to_creatContractFormFragment"
+            app:destination="@id/creatContractFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/creatContractFormFragment"
+        android:name="com.app.motel.feature.createContract.CreateContractFormFragment"
+        android:label="fragment_creat_contract_form"
+        tools:layout="@layout/fragment_create_contract_form" >
+        <action
+            android:id="@+id/action_creatContractFormFragment_to_creatContractListFragment"
+            app:destination="@id/creatContractListFragment" />
+    </fragment>
+</navigation>

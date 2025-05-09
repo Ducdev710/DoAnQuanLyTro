@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background1"
+    app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+    android:layout_marginVertical="@dimen/PADDING_SIZE_EXTRA_SMALL">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/RADIUS_DEFAULT">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiền mạng"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="500000 đồng/người"
+                android:textSize="@dimen/TEXT_SIZE_SMALL"/>
+
+            <TextView
+                android:id="@+id/tv_apply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Áp dụng cho một số phòng"
+                android:textColor="@color/secondary"
+                android:textStyle="italic"
+                android:textSize="@dimen/TEXT_SIZE_SMALL"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_close_24"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

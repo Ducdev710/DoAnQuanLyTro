@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background2"
+    tools:context=".feature.profile.ProfileFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingVertical="@dimen/PADDING_SIZE_SMALL"
+        android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/profile_user"/>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/PADDING_SIZE_DEFAULT"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nguyễn văn A"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"/>
+
+            <TextView
+                android:id="@+id/tv_number_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nguyễn văn A"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thông tin cá nhân"
+        android:textStyle="bold"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT"
+        android:background="@color/background1"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--<TextView
+        android:id="@+id/tv_feed_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phản hồi"
+        android:textStyle="bold"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT"
+        android:background="@color/background1"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_introduc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giới thiệu"
+        android:textStyle="bold"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT"
+        android:background="@color/background1"/>-->
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đăng xuất"
+        android:textStyle="bold"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT"
+        android:background="@color/background1"/>
+
+</LinearLayout>

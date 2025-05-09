@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".feature.handleContract.HandleContractTerminalFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/background2"
+        android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông tin hợp đồng"
+            android:textColor="@color/blueDark"
+            android:textStyle="bold"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/PADDING_SIZE_DEFAULT"
+            android:background="@drawable/background_border_radius_1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="@dimen/PADDING_SIZE_SMALL">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Người thuê:"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phòng:"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày bắt đầu"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày kết thúc dự kiến:"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_user_rented"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nguyễn Văn A"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_room_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A231"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="02/02/2003"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="02/02/2003"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết kết thúc hợp đồng"
+            android:textColor="@color/blueDark"
+            android:textStyle="bold"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/PADDING_SIZE_DEFAULT"
+            android:orientation="vertical"
+            android:background="@drawable/background_border_radius_1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chọn ngày kết thúc thực tế"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_date_end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                style="@style/InputLayoutStyle2"
+                app:boxBackgroundColor="@color/background1"
+                android:layout_weight="4"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_date_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="dd/mm/yyyy"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:gravity="start|top"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    tools:ignore="SpUsage" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lý do kết thúc"
+                android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_reson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                style="@style/InputLayoutStyle2"
+                app:boxBackgroundColor="@color/background1"
+                android:layout_weight="4"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_reson"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Nhập lý do kết thúc"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:gravity="start|top"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    tools:ignore="SpUsage" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kiểm tra tài sản"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/background_border_radius_3">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_electronic_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Hệ thống điện hoạt động tốt"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_water_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Hệ thống nước hoạt động tốt"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_interior_damaged_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Nội thất không hư hỏng"/>
+
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_ceiling_wall_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Tường, trần nhà không hư hỏng"/>
+
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_has_damaged"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:buttonTint="@color/check_box_color_selector"
+                android:text="Có thiệt hại, cần đền bù"/>
+
+            <LinearLayout
+                android:id="@+id/ly_money_compensation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số tiền đền bù:"
+                    android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_money_compensation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/InputLayoutStyle2"
+                    app:boxBackgroundColor="@color/background2"
+                    android:layout_weight="1"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_money_compensation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="0 VND"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:gravity="start|top"
+                        android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                        tools:ignore="SpUsage" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán tền cọc"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tiền cọc ban đầu"/>
+
+            <TextView
+                android:id="@+id/tv_deposit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="2,000,000 VND"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Khấu trừ"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_deduction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/InputLayoutStyle2"
+                app:boxBackgroundColor="@color/background2"
+                android:layout_weight="1"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_deduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="0 VND"
+                    android:imeOptions="actionNext"
+                    android:gravity="start|top"
+                    android:inputType="number"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    tools:ignore="SpUsage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Lý do khấu trừ"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_reson_deduction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/InputLayoutStyle2"
+                app:boxBackgroundColor="@color/background2"
+                android:layout_weight="1"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_reson_deduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Nhập lý do (nếu có)"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:gravity="start|top"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    tools:ignore="SpUsage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Số tiền hoàn trả"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_money_result"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:text="2,000,000 VND"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_result_deposited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:buttonTint="@color/check_box_color_selector"
+            android:text="Đã hoàn trả tiền cọc"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            android:text="Ghi chú bổ sung"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_note"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+            style="@style/InputLayoutStyle1"
+            app:boxBackgroundColor="@color/background1"
+            android:layout_weight="4"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:hint="Nhập ghi chú nếu có"
+                android:gravity="start|top"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                tools:ignore="SpUsage" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_fully_paid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:buttonTint="@color/check_box_color_selector"
+            android:text="Đã thanh toán đầy đủ"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Hủy bỏ"
+                android:textColor="@color/white"
+                android:elevation="0dp"
+                android:layout_gravity="center_horizontal"
+                android:stateListAnimator="@null"
+                android:backgroundTint="@color/grey"
+                android:background="@drawable/background_button"/>
+
+            <View
+                android:layout_width="@dimen/PADDING_SIZE_DEFAULT"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_save"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Xác nhận"
+                android:textColor="@color/white"
+                android:elevation="0dp"
+                android:layout_gravity="center_horizontal"
+                android:stateListAnimator="@null"
+                android:backgroundTint="@color/primary"
+                android:background="@drawable/background_button"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
