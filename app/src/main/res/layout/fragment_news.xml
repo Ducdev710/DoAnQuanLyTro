@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
-                android:text="Hôm này bạn cảm thấy thế nào?"
+                android:text="Gửi thông báo tới người thuê trọ"
                 android:background="@drawable/background_border_radius_2"
                 android:padding="@dimen/PADDING_SIZE_DEFAULT"/>
 
@@ -75,7 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Các bài đăng trước đó"
+            android:text="Các thông báo trước đó"
             android:textColor="@color/black"
             android:layout_margin="@dimen/PADDING_SIZE_DEFAULT"
             android:textStyle="bold"

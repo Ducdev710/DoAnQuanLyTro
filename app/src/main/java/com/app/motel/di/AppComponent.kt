@@ -45,6 +45,8 @@ import com.app.motel.feature.notify.NotifyFragment
 import com.app.motel.feature.profile.ProfileDetailActivity
 import com.app.motel.feature.profile.ProfileDetailFragment
 import com.app.motel.feature.profile.ProfileFragment
+import com.app.motel.feature.revenue.RevenueStatisticsActivity
+import com.app.motel.feature.revenue.RevenueStatisticsFragment
 import com.app.motel.feature.room.RoomActivity
 import com.app.motel.feature.room.RoomDetailFragment
 import com.app.motel.feature.room.RoomDetailInformationFragment
@@ -126,6 +128,8 @@ interface AppComponent {
     fun inject(profileDetailFragment: ProfileDetailFragment)
     fun inject(complaintListFragment: ComplaintListFragment)
     fun inject(complaintFormFragment: ComplaintFormFragment)
+    fun inject(revenueFragment: RevenueStatisticsFragment)
+    fun inject(revenueStatisticsActivity: RevenueStatisticsActivity)
 
     fun fragmentFactory(): FragmentFactory
     fun viewModelFactory(): ViewModelProvider.Factory

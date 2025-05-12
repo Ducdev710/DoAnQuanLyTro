@@ -14,6 +14,7 @@ import com.app.motel.feature.createBill.viewmodel.CreateBillViewModel
 import com.app.motel.feature.handleBill.viewmodel.HandleBillViewModel
 import com.app.motel.feature.news.viewmodel.NewsViewModel
 import com.app.motel.feature.notify.viewmodel.NotifyViewModel
+import com.app.motel.feature.revenue.viewmodel.RevenueViewModel
 import com.app.motel.feature.room.viewmodel.RoomViewModel
 import com.app.motel.feature.rules.viewmodel.RulesViewModel
 import com.app.motel.feature.tenant.viewmodel.TenantViewModel
@@ -98,6 +99,11 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(ComplaintViewModel::class)
     fun bindComplaintViewModel(boardingHouseViewModel: ComplaintViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RevenueViewModel::class)
+    fun bindRevenueViewModel(viewModel: RevenueViewModel): ViewModel
 
 }
 

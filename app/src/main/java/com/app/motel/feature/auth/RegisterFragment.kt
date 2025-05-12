@@ -53,7 +53,7 @@ class RegisterFragment @Inject constructor() : AppBaseFragment<FragmentRegisterB
                 views.txtPassword.text.toString(),
                 views.txtEmail.text.toString(),
                 views.txtBirthDay.text.toString(),
-                views.txtPassword.text.toString(),
+                views.txtPhoneNumber.text.toString(),
             )
         }
 

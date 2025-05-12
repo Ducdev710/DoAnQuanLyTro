@@ -19,6 +19,7 @@ import com.app.motel.databinding.FragmentGeneralBoardingHouseBinding
 import com.app.motel.feature.handleBill.HandleBillActivity
 import com.app.motel.feature.handleContract.HandleContractActivity
 import com.app.motel.feature.home.viewmodel.HomeViewModel
+import com.app.motel.feature.revenue.RevenueStatisticsActivity
 import com.app.motel.feature.room.RoomActivity
 import javax.inject.Inject
 
@@ -80,6 +81,9 @@ class GeneralBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fragm
             requireActivity().startActivityWithSlide(Intent(requireActivity(), HandleBillActivity::class.java).apply {
                 putExtra(HandleBillActivity.BILL_STATE_KEY, HoaDonEntity.STATUS_UNPAID)
             })
+        }
+        views.btnRevenue.setOnClickListener {
+            requireActivity().startActivityWithSlide(Intent(requireActivity(), RevenueStatisticsActivity::class.java))
         }
     }
 

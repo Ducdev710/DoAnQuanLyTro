@@ -139,7 +139,7 @@ class ManagementBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fr
         }
 
         views.lyUser.lySendComplaint.img.setImageResource(R.drawable.handle_contract)
-        views.lyUser.lySendComplaint.title.text = "Giử khiếu nại"
+        views.lyUser.lySendComplaint.title.text = "Gửi khiếu nại"
         views.lyUser.lySendComplaint.root.setOnClickListener{
             requireActivity().startActivityWithSlide(Intent(requireActivity(), ComplaintActivity::class.java))
         }

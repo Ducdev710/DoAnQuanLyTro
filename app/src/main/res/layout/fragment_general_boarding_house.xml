@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
             android:textColor="@color/grey"
-            android:text="Thống kê các khooản tiền đang quản lý"/>
+            android:text="Thống kê các khoản tiền đang quản lý"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_revenue"

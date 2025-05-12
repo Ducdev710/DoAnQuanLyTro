@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ly_total_revenue"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ly_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/background1">
+
+            <LinearLayout
+                android:id="@+id/btn_previous_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/baseline_keyboard_arrow_left_24"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tháng trước"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_month"
+                android:text="Tháng 7"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/btn_forward_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tháng sau"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/baseline_chevron_right_24"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv"
+            android:padding="@dimen/PADDING_SIZE_DEFAULT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ly_total_revenue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/PADDING_SIZE_DEFAULT"
+        android:background="@color/background1"
+        android:elevation="4dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng doanh thu"
+            android:textColor="@color/black"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
+
+            <TextView
+                android:id="@+id/tv_total_revenue_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_total_revenue_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="VNĐ"
+                android:textColor="@color/black"
+                android:textSize="@dimen/TEXT_SIZE_LARGE"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có hóa đơn nào"
+        android:textColor="@color/purple_500"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
