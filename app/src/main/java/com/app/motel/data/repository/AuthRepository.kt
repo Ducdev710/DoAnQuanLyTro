@@ -7,6 +7,7 @@ import com.app.motel.data.model.CommonUser
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.User
 import com.app.motel.data.network.ApiMock
+import com.app.motel.security.SecurityHelper
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
@@ -16,7 +17,11 @@ class AuthRepository @Inject constructor(
 ) {
 
     suspend fun register(user: User): Resource<CommonUser> {
-        val userEntity = user.toEntityRegister()
+        // Mã hóa mật khẩu trước khi lưu vào DB
+        val hashedPassword = SecurityHelper.hashPassword(user.password)
+        val userWithHashedPassword = user.copy(password = hashedPassword)
+        val userEntity = userWithHashedPassword.toEntityRegister()
+
         return try {
             if (userDAO.getByUsername(userEntity.tenDangNhap) != null) {
                 Resource.Error(message = "Tên đăng nhập đã tồn tại")
@@ -24,7 +29,8 @@ class AuthRepository @Inject constructor(
                 Resource.Error(message = "Email đã tồn tại")
             } else {
                 userDAO.insertUser(userEntity)
-                Resource.Success(CommonUser.AdminUser(userEntity.toModel()))
+                // Trả về người dùng với mật khẩu gốc, KHÔNG trả về mật khẩu đã băm
+                Resource.Success(CommonUser.AdminUser(userEntity.toModel().copy(password = user.password)))
             }
         } catch (e: Exception) {
             Resource.Error(message = e.toString())
@@ -38,7 +44,10 @@ class AuthRepository @Inject constructor(
 
             if (admin == null && user == null) {
                 Resource.Error(message = "Tài khoản không tồn tại")
-            } else if (admin?.matKhau != password && user?.matKhau != password) {
+            } else if (
+                (admin != null && !SecurityHelper.checkPassword(password, admin.matKhau)) &&
+                (user != null && !SecurityHelper.checkPassword(password, user.matKhau))
+            ) {
                 Resource.Error(message = "Sai mật khẩu")
             } else if (admin?.trangThai == NguoiDungEntity.STATE_INACTIVE) {
                 Resource.Error(message = "Tài khoản đang bị khóa")
@@ -46,8 +55,8 @@ class AuthRepository @Inject constructor(
                 Resource.Error(message = "Tài khoản khách thuê đã bị khóa")
             } else {
                 Resource.Success(
-                    if (admin != null) CommonUser.AdminUser(admin.toModel())
-                    else if (user != null) CommonUser.NormalUser(user.toModel())
+                    if (admin != null) CommonUser.AdminUser(admin.toModel().copy(password = password))
+                    else if (user != null) CommonUser.NormalUser(user.toModel().copy(password = password))
                     else null
                 )
             }

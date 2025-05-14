@@ -53,31 +53,113 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
         val item = Gson().fromJson(arguments?.getString(ITEM_KEY), Room::class.java)
 
         views.txtName.setText(item?.roomName ?: "")
-        views.txtCreateDate.setText(DateConverter.getCurrentLocalDateTime())
-        views.txtStartDate.setText(DateConverter.getCurrentLocalDateTime())
-        views.txtEndDate.setText(DateConverter.dateToLocalString(Calendar.getInstance().apply {
+
+        val startDateStr = DateConverter.getCurrentLocalDateTime()
+        val endDateStr = DateConverter.dateToLocalString(Calendar.getInstance().apply {
             set(this.get(Calendar.YEAR) + 1, this.get(Calendar.MONTH), this.get(Calendar.DATE))
-        }.time))
+        }.time)
+
+        // Store actual dates for backend
+        views.txtStartDate.setText(startDateStr)
+        views.txtEndDate.setText(endDateStr)
+
+        // Calculate and display initial duration
+        updateDurationText(startDateStr, endDateStr)
+
         views.txtDeposit.setText(item?.rentalPrice.toStringMoney())
+
+        // Set up date picker functionality for end date
+        views.txtEndDate.setOnClickListener {
+            showDatePickerDialog { selectedDate ->
+                views.txtEndDate.setText(selectedDate)
+                // Update duration when end date changes
+                updateDurationText(views.txtStartDate.text.toString(), selectedDate)
+            }
+        }
 
         mViewModel.getTenantNotRented()
 
         views.btnSave.setOnClickListener{
             val currentTenantPosition = views.spinnerCustomer.selectedItemPosition
-            val currentTenant: Tenant? = if(currentTenantPosition >= 0) mViewModel.liveData.tenantNotRented.value?.data?.get(currentTenantPosition)
-                else null
+            val currentTenant: Tenant? = if(currentTenantPosition >= 0)
+                mViewModel.liveData.tenantNotRented.value?.data?.get(currentTenantPosition)
+            else null
 
             mViewModel.createContact(
                 item.id,
                 currentTenant?.id,
                 views.txtName.text.toString(),
-                views.txtCreateDate.text.toString(),
+                DateConverter.getCurrentLocalDateTime(), // Use current date for creation
                 views.txtStartDate.text.toString(),
                 views.txtEndDate.text.toString(),
                 views.txtDeposit.text.toString().toStringMoney(),
                 views.txtNote.text.toString(),
             )
         }
+    }
+
+    /**
+     * Update the contract duration text based on start and end dates
+     */
+    private fun updateDurationText(startDateStr: String, endDateStr: String) {
+        val durationMonths = calculateDurationInMonths(startDateStr, endDateStr)
+        views.txtCreateDate.setText("$durationMonths tháng")
+    }
+
+    /**
+     * Show date picker dialog and return selected date
+     */
+    private fun showDatePickerDialog(onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val currentEndDate = DateConverter.stringToDate(views.txtEndDate.text.toString())
+        if (currentEndDate != null) {
+            calendar.time = currentEndDate
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = android.app.DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                calendar.set(selectedYear, selectedMonth, selectedDay)
+                val selectedDate = DateConverter.dateToLocalString(calendar.time)
+                onDateSelected(selectedDate)
+            },
+            year, month, day
+        )
+
+        // Set minimum date to tomorrow
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DAY_OF_MONTH, 1)
+        datePickerDialog.datePicker.minDate = tomorrow.timeInMillis
+
+        datePickerDialog.show()
+    }
+
+    /**
+     * Calculate duration between two dates in months
+     */
+    private fun calculateDurationInMonths(startDateStr: String, endDateStr: String): Int {
+        try {
+            val startDate = DateConverter.stringToDate(startDateStr)
+            val endDate = DateConverter.stringToDate(endDateStr)
+
+            if (startDate != null && endDate != null) {
+                val startCalendar = Calendar.getInstance().apply { time = startDate }
+                val endCalendar = Calendar.getInstance().apply { time = endDate }
+
+                val yearDiff = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR)
+                val monthDiff = endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH)
+
+                return yearDiff * 12 + monthDiff
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return 12 // Default to 12 months if calculation fails
     }
 
     private fun listenerViewModelState() {

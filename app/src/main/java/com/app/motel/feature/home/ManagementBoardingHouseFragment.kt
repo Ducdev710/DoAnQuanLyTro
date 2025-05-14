@@ -145,7 +145,7 @@ class ManagementBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fr
         }
 
         views.lyUser.lyBillPayment.img.setImageResource(R.drawable.create_bill)
-        views.lyUser.lyBillPayment.title.text = "Thanh toán hóa đơn"
+        views.lyUser.lyBillPayment.title.text = "Hóa đơn chưa thanh toán"
         views.lyUser.lyBillPayment.root.setOnClickListener{
             requireActivity().startActivityWithSlide(Intent(requireActivity(), HandleBillActivity::class.java).apply {
                 putExtra(HandleBillActivity.BILL_STATE_KEY, HoaDonEntity.STATUS_UNPAID)

@@ -108,4 +108,11 @@ dependencies {
     ksp "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     implementation "com.github.skydoves:powerspinner:1.2.7"
+
+    // Security
+    implementation 'at.favre.lib:bcrypt:0.9.0'
+
+    // SQLCipher for Room
+    implementation "net.zetetic:android-database-sqlcipher:4.5.3"
+    implementation "androidx.sqlite:sqlite-ktx:2.3.1"
 }
