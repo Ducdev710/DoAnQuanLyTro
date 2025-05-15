@@ -2,17 +2,13 @@ package com.app.motel.feature.handleContract
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
 import com.app.motel.databinding.ActivityContractListBinding
 import com.app.motel.feature.handleContract.viewmodel.HandleContractViewModel

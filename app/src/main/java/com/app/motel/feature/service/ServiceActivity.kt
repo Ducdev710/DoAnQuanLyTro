@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
 import com.app.motel.databinding.ActivityServiceBinding
 import com.app.motel.feature.service.viewmodel.ServiceViewModel

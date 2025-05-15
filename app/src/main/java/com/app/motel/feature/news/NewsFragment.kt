@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.showToast
+import com.app.motel.common.utils.showToast
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseDialog
 import com.app.motel.core.AppBaseFragment

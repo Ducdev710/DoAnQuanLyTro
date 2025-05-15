@@ -1,4 +1,4 @@
-package com.app.motel.common.ultis
+package com.app.motel.common.utils
 
 import android.content.Context
 import android.graphics.Color
@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -15,7 +14,6 @@ import androidx.lifecycle.Observer
 import com.app.motel.core.AppBaseDialog
 import com.app.motel.data.model.Resource
 import com.app.motel.databinding.DialogConfirmBinding
-import com.app.motel.databinding.DialogDatePickerBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.Normalizer

@@ -1,23 +1,16 @@
 package com.app.motel.feature.complaint
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
-import com.app.motel.core.AppBaseFragment
 import com.app.motel.databinding.ActivityComplaintBinding
-import com.app.motel.databinding.FragmentComplaintListBinding
 import com.app.motel.feature.complaint.viewmodel.ComplaintViewModel
 import javax.inject.Inject
 

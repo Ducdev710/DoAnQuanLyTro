@@ -12,7 +12,6 @@ import com.app.motel.common.AppConstants
 import com.app.motel.common.service.DateRoomConverters
 import com.app.motel.common.service.StringListRoomConverter
 import com.app.motel.data.entity.*
-
 @Database(entities = [
     NguoiDungEntity::class,
     KhuTroEntity::class,
@@ -24,6 +23,7 @@ import com.app.motel.data.entity.*
     QuyDinhEntity::class,
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
+    // VerificationTokenEntity::class - removed
 ], version = 5, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -37,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun rulesDAO(): RulesDAO
     abstract fun complaintDao(): ComplaintDAO
     abstract fun notificationDao(): NotificationDAO
+    // abstract fun verificationTokenDAO(): VerificationTokenDAO - removed
 
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null
@@ -113,8 +114,9 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 AppConstants.DATABASE_NAME
             )
-                .createFromAsset(AppConstants.DATABASE_FILE_IMPORT)
+                //.createFromAsset(AppConstants.DATABASE_FILE_IMPORT)
                 .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                .fallbackToDestructiveMigration() // Add this line to force recreate the database if schema doesn't match
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)

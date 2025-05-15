@@ -8,10 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
 import com.app.motel.databinding.ActivityCreateBillBinding
-import com.app.motel.databinding.ActivityCreateContractBinding
 import com.app.motel.feature.createBill.viewmodel.CreateBillViewModel
 import javax.inject.Inject
 

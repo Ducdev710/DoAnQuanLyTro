@@ -1,9 +1,8 @@
 package com.app.motel.feature.service.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseViewModel
-import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Service
 import com.app.motel.data.repository.ServiceRepository

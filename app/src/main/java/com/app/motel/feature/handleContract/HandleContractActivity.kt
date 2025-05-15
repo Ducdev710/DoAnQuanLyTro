@@ -8,14 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
-import com.app.motel.data.entity.PhongEntity
 import com.app.motel.data.model.Contract
-import com.app.motel.data.model.Resource
 import com.app.motel.databinding.ActivityHandleContractBinding
 import com.app.motel.feature.handleContract.viewmodel.HandleContractViewModel
-import com.app.motel.feature.room.RoomActivity.Companion.ROOM_STATE_KEY
 import javax.inject.Inject
 
 class HandleContractActivity() : AppBaseActivity<ActivityHandleContractBinding>() {

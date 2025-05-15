@@ -1,9 +1,8 @@
 package com.app.motel.feature.boardingHouse.viewmodel
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.app.motel.common.ultis.formatRoomName
+import com.app.motel.common.utils.formatRoomName
 import com.app.motel.core.AppBaseViewModel
 import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Resource

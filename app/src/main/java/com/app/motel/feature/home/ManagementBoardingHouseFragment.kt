@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.startActivityWithSlide
+import com.app.motel.common.utils.startActivityWithSlide
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.entity.PhongEntity

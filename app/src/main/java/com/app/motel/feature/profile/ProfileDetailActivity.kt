@@ -2,20 +2,14 @@ package com.app.motel.feature.profile
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
-import com.app.motel.data.entity.PhongEntity
-import com.app.motel.data.model.Resource
 import com.app.motel.databinding.ActivityProfileDetailBinding
-import com.app.motel.feature.room.RoomActivity.Companion.ROOM_STATE_KEY
 
 class ProfileDetailActivity : AppBaseActivity<ActivityProfileDetailBinding>(){
     override fun getBinding(): ActivityProfileDetailBinding {

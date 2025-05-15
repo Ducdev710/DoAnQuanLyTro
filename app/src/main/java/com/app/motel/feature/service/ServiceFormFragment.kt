@@ -8,14 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.motel.AppApplication
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.popFragmentWithSlide
-import com.app.motel.common.ultis.showToast
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.popFragmentWithSlide
+import com.app.motel.common.utils.showToast
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseDialog
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.entity.DichVuEntity
-import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Service
 import com.app.motel.data.model.Status
 import com.app.motel.databinding.DialogServiceTypePayBinding

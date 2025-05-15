@@ -1,7 +1,7 @@
 package com.app.motel.feature.tenant.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.app.motel.common.ultis.containsSearch
+import com.app.motel.common.utils.containsSearch
 import com.app.motel.core.AppViewLiveData
 import com.app.motel.data.entity.NguoiThueEntity
 import com.app.motel.data.model.CommonUser

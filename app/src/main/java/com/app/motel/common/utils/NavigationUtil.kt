@@ -1,4 +1,4 @@
-package com.app.motel.common.ultis
+package com.app.motel.common.utils
 
 import android.app.Activity
 import android.app.ActivityOptions

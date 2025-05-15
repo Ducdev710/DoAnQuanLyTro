@@ -14,11 +14,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.popFragmentWithSlide
-import com.app.motel.common.ultis.require
-import com.app.motel.common.ultis.showToast
-import com.app.motel.common.ultis.startActivityWithTransition
+import com.app.motel.common.utils.popFragmentWithSlide
+import com.app.motel.common.utils.require
+import com.app.motel.common.utils.showToast
+import com.app.motel.common.utils.startActivityWithTransition
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Status
 import com.app.motel.databinding.FragmentCreateBoardingHouseBinding

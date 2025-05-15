@@ -1,7 +1,6 @@
 package com.app.motel.feature.handleBill
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -9,14 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
 import com.app.motel.data.entity.HoaDonEntity
-import com.app.motel.data.model.Contract
 import com.app.motel.databinding.ActivityHandleBillBinding
-import com.app.motel.databinding.ActivityTenantBinding
 import com.app.motel.feature.handleBill.viewmodel.HandleBillViewModel
-import com.app.motel.feature.handleContract.HandleContractActivity.Companion.CONTRACT_STATE_KEY
 import javax.inject.Inject
 
 class HandleBillActivity : AppBaseActivity<ActivityHandleBillBinding>() {

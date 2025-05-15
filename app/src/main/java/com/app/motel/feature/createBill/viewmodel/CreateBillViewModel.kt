@@ -4,8 +4,8 @@ import android.icu.util.Calendar
 import androidx.lifecycle.viewModelScope
 import com.app.motel.common.service.DateConverter
 import com.app.motel.common.service.DateConverter.toCalendar
-import com.app.motel.common.ultis.toMoney
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.toMoney
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseViewModel
 import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.model.Bill

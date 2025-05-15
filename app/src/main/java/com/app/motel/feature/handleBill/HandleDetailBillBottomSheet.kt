@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
-import com.app.motel.common.ultis.showToast
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.showToast
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseBottomSheet
 import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.model.Bill

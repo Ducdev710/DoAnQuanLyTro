@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.common.service.DateConverter
-import com.app.motel.common.ultis.popFragmentWithSlide
-import com.app.motel.common.ultis.setOnEndDrawableClick
+import com.app.motel.common.utils.popFragmentWithSlide
+import com.app.motel.common.utils.setOnEndDrawableClick
 import com.app.motel.core.AppBaseDialog
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Status

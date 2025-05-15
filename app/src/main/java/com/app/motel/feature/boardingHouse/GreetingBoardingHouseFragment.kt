@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.navigateFragmentWithSlide
+import com.app.motel.common.utils.navigateFragmentWithSlide
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.databinding.FragmentGreetingBoardingHouseBinding
 import javax.inject.Inject

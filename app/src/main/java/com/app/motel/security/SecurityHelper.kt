@@ -26,5 +26,15 @@ class SecurityHelper {
             val result = BCrypt.verifyer().verify(plainPassword.toCharArray(), hashedPassword)
             return result.verified
         }
+
+        /**
+         * Alias for checkPassword - provides compatibility with both naming styles
+         * @param plainPassword Mật khẩu người dùng nhập vào
+         * @param hashedPassword Mật khẩu đã băm lưu trong DB
+         * @return true nếu mật khẩu khớp, ngược lại là false
+         */
+        fun verifyPassword(plainPassword: String, hashedPassword: String): Boolean {
+            return checkPassword(plainPassword, hashedPassword)
+        }
     }
 }

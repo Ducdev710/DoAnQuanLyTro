@@ -1,7 +1,6 @@
 package com.app.motel.feature.complaint
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.navigateFragmentWithSlide
+import com.app.motel.common.utils.navigateFragmentWithSlide
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Complaint

@@ -1,7 +1,7 @@
 package com.app.motel.data.model
 
 import com.app.motel.common.service.IDManager
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.data.entity.DichVuEntity
 
 data class Service(

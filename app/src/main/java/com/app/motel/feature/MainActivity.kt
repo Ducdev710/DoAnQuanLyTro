@@ -17,8 +17,8 @@ import com.app.motel.core.AppBaseActivity
 import com.app.motel.databinding.ActivityMainBinding
 import com.app.motel.feature.home.viewmodel.HomeViewEvent
 import com.app.motel.feature.home.viewmodel.HomeViewModel
-import com.app.motel.common.ultis.navigateFragment
-import com.app.motel.common.ultis.startActivityWithTransition
+import com.app.motel.common.utils.navigateFragment
+import com.app.motel.common.utils.startActivityWithTransition
 import com.app.motel.data.model.Resource
 import com.app.motel.feature.boardingHouse.BoardingHouseActivity
 import com.app.motel.feature.auth.AuthActivity

@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.navigateFragmentWithSlide
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.popFragmentWithSlide
-import com.app.motel.common.ultis.showToast
+import com.app.motel.common.utils.navigateFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
+import com.app.motel.common.utils.showToast
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Resource
 import com.app.motel.databinding.FragmentRoomFormBinding

@@ -8,14 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.popFragmentWithSlide
+import com.app.motel.common.utils.popFragmentWithSlide
 import com.app.motel.core.AppBaseActivity
-import com.app.motel.data.model.BoardingHouse
 import com.app.motel.databinding.ActivityCreateContractBinding
-import com.app.motel.feature.boardingHouse.BoardingHouseActivity.Companion.KEY_BOARDING_HOUSE
-import com.app.motel.feature.complaint.viewmodel.ComplaintViewModel
 import com.app.motel.feature.createContract.viewmodel.CreateContractViewModel
-import com.google.gson.Gson
 import javax.inject.Inject
 
 

@@ -3,7 +3,7 @@ package com.app.motel.data.network
 import android.content.Context
 import android.util.Log
 import com.app.motel.common.AppConstants
-import com.app.motel.common.ultis.NetworkUtil
+import com.app.motel.common.utils.NetworkUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request

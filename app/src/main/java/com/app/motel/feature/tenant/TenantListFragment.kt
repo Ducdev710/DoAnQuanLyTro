@@ -1,7 +1,6 @@
 package com.app.motel.feature.tenant
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +9,12 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.navigateFragmentWithSlide
+import com.app.motel.common.utils.navigateFragmentWithSlide
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.entity.NguoiThueEntity
-import com.app.motel.data.entity.PhongEntity
-import com.app.motel.data.model.Resource
-import com.app.motel.data.model.Room
 import com.app.motel.data.model.Tenant
-import com.app.motel.databinding.FragmentTenantFormBinding
 import com.app.motel.databinding.FragmentTenantListBinding
-import com.app.motel.feature.room.RoomAdapter
-import com.app.motel.feature.room.RoomDetailFragment
 import com.app.motel.feature.tenant.viewmodel.TenantViewModel
 import com.app.motel.ui.custom.CustomTabBar
 import com.google.gson.Gson

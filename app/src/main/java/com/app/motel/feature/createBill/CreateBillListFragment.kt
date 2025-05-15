@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
-import com.app.motel.common.ultis.navigateFragmentWithSlide
+import com.app.motel.common.utils.navigateFragmentWithSlide
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Room

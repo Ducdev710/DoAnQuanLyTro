@@ -8,8 +8,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.common.service.DateConverter
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.showToast
+import com.app.motel.common.utils.showToast
 import com.app.motel.core.AppBaseBottomSheet
 import com.app.motel.data.model.Contract
 import com.app.motel.data.model.Resource

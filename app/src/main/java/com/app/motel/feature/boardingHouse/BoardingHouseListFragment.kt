@@ -2,24 +2,19 @@ package com.app.motel.feature.boardingHouse
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
-import com.app.motel.R
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.showDialogConfirm
-import com.app.motel.common.ultis.showToast
-import com.app.motel.common.ultis.startActivityWithTransition
+import com.app.motel.common.utils.showDialogConfirm
+import com.app.motel.common.utils.showToast
+import com.app.motel.common.utils.startActivityWithTransition
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Status
 import com.app.motel.databinding.FragmentBoardingHouseListBinding
-import com.app.motel.databinding.FragmentProfileBinding
-import com.app.motel.feature.auth.AuthActivity
 import com.app.motel.feature.boardingHouse.viewmodel.BoardingHouseViewModel
 import com.app.motel.feature.profile.UserController
 import com.google.gson.Gson

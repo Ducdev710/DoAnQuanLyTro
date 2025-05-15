@@ -2,7 +2,7 @@ package com.app.motel.feature.room.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseViewModel
 import com.app.motel.data.entity.PhongEntity
 import com.app.motel.data.model.BoardingHouse

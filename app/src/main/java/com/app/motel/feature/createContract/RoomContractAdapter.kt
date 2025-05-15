@@ -2,7 +2,7 @@ package com.app.motel.feature.createContract
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.data.model.Room
 import com.app.motel.databinding.ItemRoomContractBinding

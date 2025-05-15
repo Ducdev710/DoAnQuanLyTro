@@ -11,11 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.R
 import com.app.motel.common.service.DateConverter
-import com.app.motel.common.ultis.finishActivityWithTransition
-import com.app.motel.common.ultis.observe
-import com.app.motel.common.ultis.popFragmentWithSlide
-import com.app.motel.common.ultis.showToast
-import com.app.motel.common.ultis.toStringMoney
+import com.app.motel.common.utils.showToast
+import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Room
 import com.app.motel.data.model.Status

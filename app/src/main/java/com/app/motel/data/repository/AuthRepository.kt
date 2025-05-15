@@ -42,23 +42,32 @@ class AuthRepository @Inject constructor(
             val admin = userDAO.getByUsername(username)
             val user = tenantDAO.getUserByUsername(username)
 
-            if (admin == null && user == null) {
-                Resource.Error(message = "Tài khoản không tồn tại")
-            } else if (
-                (admin != null && !SecurityHelper.checkPassword(password, admin.matKhau)) &&
-                (user != null && !SecurityHelper.checkPassword(password, user.matKhau))
-            ) {
-                Resource.Error(message = "Sai mật khẩu")
-            } else if (admin?.trangThai == NguoiDungEntity.STATE_INACTIVE) {
-                Resource.Error(message = "Tài khoản đang bị khóa")
-            } else if (user != null && user.biKhoa) {
-                Resource.Error(message = "Tài khoản khách thuê đã bị khóa")
-            } else {
-                Resource.Success(
-                    if (admin != null) CommonUser.AdminUser(admin.toModel().copy(password = password))
-                    else if (user != null) CommonUser.NormalUser(user.toModel().copy(password = password))
-                    else null
-                )
+            when {
+                // No account found
+                admin == null && user == null -> {
+                    Resource.Error(message = "Tài khoản không tồn tại")
+                }
+                // Admin account exists - use BCrypt verification
+                admin != null -> {
+                    if (admin.trangThai == NguoiDungEntity.STATE_INACTIVE) {
+                        Resource.Error(message = "Tài khoản đang bị khóa")
+                    } else if (!SecurityHelper.checkPassword(password, admin.matKhau)) {
+                        Resource.Error(message = "Sai mật khẩu")
+                    } else {
+                        Resource.Success(CommonUser.AdminUser(admin.toModel().copy(password = password)))
+                    }
+                }
+                // Tenant account exists - direct comparison for plaintext passwords
+                user != null -> {
+                    if (user.biKhoa) {
+                        Resource.Error(message = "Tài khoản khách thuê đã bị khóa")
+                    } else if (password != user.matKhau) {
+                        Resource.Error(message = "Sai mật khẩu")
+                    } else {
+                        Resource.Success(CommonUser.NormalUser(user.toModel().copy(password = password)))
+                    }
+                }
+                else -> Resource.Error(message = "Lỗi không xác định")
             }
         } catch (e: Exception) {
             Resource.Error(message = e.toString())
