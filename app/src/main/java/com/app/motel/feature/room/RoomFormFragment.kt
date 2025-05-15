@@ -55,7 +55,7 @@ class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormB
         viewModel.liveData.createRoom.observe(viewLifecycleOwner){
             if(it.isSuccess()){
                 popFragmentWithSlide()
-                activity?.showToast("Thêm thành công phòng thành công")
+                activity?.showToast("Thêm phòng thành công")
             }else if(it.isError()){
                 activity?.showToast(it.message ?: "Có lỗi xảy ra")
             }

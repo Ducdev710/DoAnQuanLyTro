@@ -10,10 +10,9 @@ data class Service(
     val price: String,
     val typePay: String?,
     val areaId: String?,
-    val roomId: String?
+    val roomId: String?,
+    val isAppliesAllRoom: Boolean = false
 ) {
-    val isAppliesAllRoom: Boolean get() = roomId == null
-
     val getPriceTypePay get() = "${price.toStringMoney()} đồng/${(typePay?.replace("Theo", " ")?.trim() ?: "")}"
 
     fun toEntity(): DichVuEntity {
@@ -23,7 +22,8 @@ data class Service(
             giaDichVu = price,
             loaiHinhThanhToan = typePay,
             maKhuTro = areaId,
-            maPhong = roomId
+            maPhong = roomId,
+            isAppliesAllRoom = isAppliesAllRoom
         )
     }
 
@@ -34,7 +34,8 @@ data class Service(
             giaDichVu = price,
             loaiHinhThanhToan = typePay,
             maKhuTro = areaId,
-            maPhong = roomId
+            maPhong = roomId,
+            isAppliesAllRoom = isAppliesAllRoom
         )
     }
 }

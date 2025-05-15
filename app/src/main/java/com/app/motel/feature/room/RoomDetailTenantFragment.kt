@@ -80,13 +80,22 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
                             TenantFormFragment.ITEM_KEY, json) })
                     }
                     AppBaseAdapter.ItemAction.LONG_CLICK -> {
-                        requireActivity().showDialogConfirm(
-                            title = "Xác nhận xóa người thuê",
-                            content = "bạn có chắc muốn xóa người thuê ${item.fullName} khỏi phòng ${item.room?.roomName}",
-                            confirm = {
-                                tenantViewModel.updateTenantRent(tenant = item, null)
-                            }
-                        )
+                        // Check if tenant is a contract holder
+                        if (item.isContractHolder) {
+                            requireActivity().showDialogConfirm(
+                                title = "Không thể xóa chủ hợp đồng",
+                                content = "Người thuê ${item.fullName} là chủ hợp đồng. Không thể xóa.",
+                                confirm = {}
+                            )
+                        } else {
+                            requireActivity().showDialogConfirm(
+                                title = "Xác nhận xóa người thuê",
+                                content = "Bạn có chắc muốn xóa người thuê ${item.fullName} khỏi phòng ${item.room?.roomName}",
+                                confirm = {
+                                    tenantViewModel.updateTenantRent(tenant = item, null)
+                                }
+                            )
+                        }
                     }
                     else -> {}
                 }

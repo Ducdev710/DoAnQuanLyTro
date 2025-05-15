@@ -60,9 +60,11 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
         views.btnDelete.isVisible = enableForm
 
 
-        views.btnChangeService.setOnClickListener{
-            if(!enableForm) return@setOnClickListener
-            navigateFragmentWithSlide(R.id.roomServiceFormFragment)
+        views.btnChangeService.setOnClickListener {
+            if (!enableForm) return@setOnClickListener
+            navigateFragmentWithSlide(R.id.roomServiceFormFragment, args = Bundle().apply {
+                putString(ServiceFormFragment.ROOM_ID_KEY, viewModel.liveData.currentRoom.value?.data?.id)
+            })
         }
 
         views.rcvService.adapter = adapterService
@@ -95,6 +97,7 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
                 if(!enableForm) return
                 navigateFragmentWithSlide(R.id.roomServiceFormFragment, args = Bundle().apply {
                     putString(ServiceFormFragment.ITEM_KEY, Gson().toJson(item))
+                    putString(ServiceFormFragment.ROOM_ID_KEY, viewModel.liveData.currentRoom.value?.data?.id)
                 })
             }
         }

@@ -45,6 +45,7 @@ class ServiceViewModel @Inject constructor(
         price: String?,
         typePay: String?,
         isAppliesAllRoom: Boolean,
+        roomId: String? = null
     ){
         liveData.createService.postValue(Resource.Loading())
         val currentUser = userController.state.currentUser.value?.data
@@ -69,21 +70,35 @@ class ServiceViewModel @Inject constructor(
 
         viewModelScope.launch {
             val isCreate = liveData.currentService.value == null
+
+            // If creating a service for a specific room, set roomId and make sure isAppliesAllRoom is false
+            val effectiveRoomId = when {
+                // If provided with a roomId, use it (room-specific service)
+                roomId != null -> roomId
+                // Otherwise if not applying to all rooms, use existing roomId
+                !isAppliesAllRoom -> liveData.currentService.value?.roomId
+                // Else apply to all rooms (no roomId)
+                else -> null
+            }
+
             val newService = if(isCreate) Service(
                 name = name!!,
                 price = price.toStringMoney(),
                 typePay = typePay,
                 areaId = userController.state.currentBoardingHouseId,
-                roomId = if (isAppliesAllRoom) null else liveData.currentService.value?.roomId,
+                roomId = effectiveRoomId,
+                isAppliesAllRoom = effectiveRoomId == null
             ) else liveData.currentService.value!!.copy(
                 name = name!!,
                 price = price.toStringMoney(),
                 typePay = typePay,
-                roomId = if (isAppliesAllRoom) null else liveData.currentService.value?.roomId,
+                roomId = effectiveRoomId,
+                isAppliesAllRoom = effectiveRoomId == null
             )
 
             val serviceCreated = if(isCreate) repository.createService(newService)
-                else repository.updateService(newService)
+            else repository.updateService(newService)
+
             if(serviceCreated.isSuccess()){
                 if(serviceCreated.data?.isAppliesAllRoom == true){
                     repository.updateRoomService(serviceCreated.data, userController.state.currentBoardingHouseId)

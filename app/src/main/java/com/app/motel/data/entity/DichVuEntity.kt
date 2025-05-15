@@ -38,7 +38,10 @@ data class DichVuEntity(
     val maKhuTro: String? = null,
 
     @ColumnInfo(name = "MaPhong")
-    val maPhong: String? = null
+    val maPhong: String? = null,
+
+    @ColumnInfo(name = "isAppliesAllRoom")
+    var isAppliesAllRoom: Boolean = false
 ) {
     enum class TypePay(val typeName: String){
         FREE("Miễn phí/không sử dụng"),
@@ -66,7 +69,8 @@ data class DichVuEntity(
             price = giaDichVu,
             typePay = loaiHinhThanhToan,
             areaId = maKhuTro,
-            roomId = maPhong
+            roomId = maPhong,
+            isAppliesAllRoom = isAppliesAllRoom
         )
     }
 }

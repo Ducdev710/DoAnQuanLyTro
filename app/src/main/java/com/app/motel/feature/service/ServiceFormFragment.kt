@@ -1,6 +1,8 @@
 package com.app.motel.feature.service
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +27,10 @@ import javax.inject.Inject
 class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServiceFormBinding>() {
     companion object{
         const val ITEM_KEY = "service_item"
+        const val ROOM_ID_KEY = "room_id"
     }
+
+    private var roomId: String? = null
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentServiceFormBinding {
         return FragmentServiceFormBinding.inflate(inflater, container, false)
@@ -40,7 +45,11 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (requireActivity().application as AppApplication).appComponent.inject(this)
 
+        // Get roomId from arguments if available
+        roomId = arguments?.getString(ROOM_ID_KEY)
+
         init()
+        setupValidation()
         listenerViewModelState()
         super.onViewCreated(view, savedInstanceState)
     }
@@ -50,21 +59,25 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
         viewModel.initForm(item)
         views.txtName.setText(item?.name ?: "")
 
+        // Hide the checkbox if creating for a specific room
+        if (roomId != null) {
+            views.cbApplyAllRoom.visibility = View.GONE
+        }
+
         views.lyTypePay.setOnClickListener {
             showDialogSelectTypePay()
         }
 
         views.btnSave.setOnClickListener{
             viewModel.createService(
-                views.txtName.text.toString(),
-                views.txtlPrice.text.toString(),
-                views.tvTypePay.text.toString(),
-                views.cbApplyAllRoom.isChecked
+                name = views.txtName.text.toString(),
+                price = views.txtlPrice.text.toString(),
+                typePay = views.tvTypePay.text.toString(),
+                isAppliesAllRoom = if (roomId != null) false else views.cbApplyAllRoom.isChecked,
+                roomId = roomId
             )
         }
-        views.btnDeletel.setOnClickListener{
-            viewModel.deleteService(viewModel.liveData.currentService.value)
-        }
+
         views.btnDeletel.setOnClickListener{
             if(viewModel.liveData.currentService.value != null){
                 viewModel.deleteService(viewModel.liveData.currentService.value)
@@ -74,14 +87,66 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
         }
     }
 
+    private fun setupValidation() {
+        // Initial state - check if creating new service
+        val isNewService = viewModel.liveData.currentService.value == null
+
+        // Only disable save button for new global services (not room-specific)
+        if (isNewService && roomId == null) {
+            views.btnSave.isEnabled = false
+        }
+
+        val validateForm = {
+            val nameNotEmpty = views.txtName.text.toString().trim().isNotEmpty()
+            val priceNotEmpty = views.txtlPrice.text.toString().trim().isNotEmpty()
+            val isApplyToAllRooms = views.cbApplyAllRoom.isChecked
+
+            // For new global service, require the checkbox to be checked
+            // For room-specific service, don't require the checkbox
+            val isValid = nameNotEmpty && priceNotEmpty &&
+                    (roomId != null || !isNewService || isApplyToAllRooms)
+
+            views.btnSave.isEnabled = isValid
+        }
+
+        // Add text watchers
+        views.txtName.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { validateForm() }
+        })
+
+        views.txtlPrice.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { validateForm() }
+        })
+
+        // Add checkbox listener (only if checkbox is visible)
+        if (roomId == null) {
+            views.cbApplyAllRoom.setOnCheckedChangeListener { _, _ -> validateForm() }
+        }
+
+        // Initial validation
+        validateForm()
+    }
+
     private fun listenerViewModelState() {
         viewModel.liveData.currentService.observe(viewLifecycleOwner){
             views.txtName.setText(it?.name ?: "")
             views.txtlPrice.setText(it?.price.toStringMoney())
             views.tvTypePay.text = it?.typePay ?: DichVuEntity.TypePay.FREE.typeName
-            views.cbApplyAllRoom.isChecked = it?.isAppliesAllRoom ?: false
+
+            // Only show and set checkbox if not room-specific
+            if (roomId == null) {
+                views.cbApplyAllRoom.isChecked = it?.isAppliesAllRoom ?: false
+            }
+
             views.btnSave.text = if(it == null) "Lưu" else "Cập nhật"
             views.btnDeletel.text = if(it == null) "Đóng" else "Xóa"
+
+            // Re-validate form when service data changes
+            setupValidation()
         }
 
         viewModel.liveData.createService.observe(viewLifecycleOwner){
@@ -110,6 +175,9 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
         dialog.binding.btnConfirm.setOnClickListener{
             views.tvTypePay.text = adapter.getCurrentItem.typeName
             dialog.dismiss()
+
+            // Revalidate form after selecting payment type
+            setupValidation()
         }
     }
 
