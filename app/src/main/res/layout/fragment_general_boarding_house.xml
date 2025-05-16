@@ -14,6 +14,7 @@
         android:layout_marginVertical="@dimen/PADDING_SIZE_DEFAULT"
         android:orientation="vertical">
 
+        <!-- Header Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,6 +80,7 @@
 
         </LinearLayout>
 
+        <!-- Room Overview Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,13 +90,60 @@
             android:textColor="@color/black"
             android:text="Tổng quan khu trọ"/>
 
+        <!-- Room Status Pie Chart -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:backgroundTint="@color/background1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Biểu đồ tình trạng phòng"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textStyle="bold" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart_room_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    tools:ignore="MissingClass" />
+
+                <TextView
+                    android:id="@+id/tv_recommendation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:background="@drawable/background_border_radius_1"
+                    android:padding="@dimen/PADDING_SIZE_DEFAULT"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="Gợi ý: Có 5/10 phòng trống (50%). Nên xem xét giảm giá phòng hoặc cải thiện tiện nghi để thu hút người thuê."
+                    tools:visibility="visible" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
             android:textColor="@color/grey"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
             android:text="Tổng quan phòng đang cho thuê"/>
 
+        <!-- Room Type Cards (First Row) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,6 +172,7 @@
 
         </LinearLayout>
 
+        <!-- Room Type Cards (Second Row) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,22 +201,89 @@
 
         </LinearLayout>
 
+        <!-- Financial Overview Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/TEXT_SIZE_LARGE"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
             android:textColor="@color/black"
             android:text="Thông kê tài chính"/>
+
+        <!-- Revenue Distribution Pie Chart -->
+        <!--<androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:backgroundTint="@color/background1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Biểu đồ phân bổ doanh thu"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textStyle="bold" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart_revenue_distribution"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    tools:ignore="MissingClass" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>-->
+
+        <!-- Monthly Income Trend Chart -->
+        <!--<androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/RADIUS_DEFAULT"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:backgroundTint="@color/background1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/PADDING_SIZE_DEFAULT">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Xu hướng doanh thu theo tháng"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textStyle="bold" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_monthly_trend"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    tools:ignore="MissingClass" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
             android:textColor="@color/grey"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
             android:text="Thống kê các khoản tiền đang quản lý"/>
 
+        <!-- Revenue Details Button -->
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_revenue"
             android:layout_width="match_parent"

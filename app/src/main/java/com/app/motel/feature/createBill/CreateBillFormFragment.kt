@@ -104,7 +104,7 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
         mViewModel.liveData.createBill.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
-                    requireActivity().showToast("Tao hợp đồng thành công")
+                    requireActivity().showToast("Tao hóa đơn thành công")
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
                 Status.ERROR -> {
