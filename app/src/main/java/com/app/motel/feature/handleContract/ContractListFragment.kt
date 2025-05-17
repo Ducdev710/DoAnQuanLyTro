@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.app.motel.AppApplication
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseFragment
@@ -14,6 +15,7 @@ import com.app.motel.data.model.Contract
 import com.app.motel.databinding.FragmentContractListBinding
 import com.app.motel.feature.handleContract.viewmodel.HandleContractViewModel
 import com.app.motel.ui.custom.CustomTabBar
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ContractListFragment : AppBaseFragment<FragmentContractListBinding>() {
@@ -53,7 +55,17 @@ class ContractListFragment : AppBaseFragment<FragmentContractListBinding>() {
             override fun onClickItem(item: Contract, action: AppBaseAdapter.ItemAction) {
                 when(action){
                     AppBaseAdapter.ItemAction.CLICK -> {
-                        DetailContractBottomSheet(item).show(
+                        DetailContractBottomSheet(
+                            contract = item,
+                            onUpdateContract = { updatedContract ->
+                                viewModel.viewModelScope.launch {
+                                    val result = viewModel.repository.updateContract(updatedContract)
+                                    if (result.isSuccess()) {
+                                        viewModel.getContracts() // Refresh list after update
+                                    }
+                                }
+                            }
+                        ).show(
                             parentFragmentManager, DetailContractBottomSheet::class.java.simpleName
                         )
                     }

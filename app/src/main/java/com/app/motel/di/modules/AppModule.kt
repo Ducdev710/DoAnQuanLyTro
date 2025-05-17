@@ -48,14 +48,20 @@ object AppModule {
         tenantDAO = db.tenantDao(),
     )
 
+/*    @Provides
+    @Singleton
+    fun provideOtpService(): OtpService = OtpService()*/
+
     @Provides
     fun providerAuthRepository(
         api: ApiMock,
         db: AppDatabase,
+        //otpService: OtpService,
     ): AuthRepository = AuthRepository(
         api = api,
         userDAO = db.userDao(),
         tenantDAO = db.tenantDao(),
+        //otpService = otpService
     )
 
     @Provides

@@ -14,6 +14,7 @@
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.app.motel.feature.auth.RegisterFragment"
@@ -22,5 +23,23 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <!--<action
+            android:id="@+id/action_registerFragment_to_otpVerificationFragment"
+            app:destination="@id/otpVerificationFragment" />-->
     </fragment>
+
+    <!--<fragment
+        android:id="@+id/otpVerificationFragment"
+        android:name="com.app.motel.feature.auth.OtpVerificationFragment"
+        android:label="Xác thực OTP"
+        tools:layout="@layout/fragment_otp_verification">
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_otpVerificationFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>-->
 </navigation>

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.app.motel.AppApplication
 import com.app.motel.common.service.DateConverter
 import com.app.motel.common.utils.popFragmentWithSlide
@@ -90,8 +91,42 @@ class RegisterFragment @Inject constructor() : AppBaseFragment<FragmentRegisterB
                     }
                 }
             }
+
+            // Add new observer for register initialization (OTP sending)
+            /*registerInit.observe(viewLifecycleOwner) { resource ->
+                when(resource.status) {
+                    Status.LOADING -> {
+                        dialogLoading = showLoadingDialog(requireContext(), layoutInflater)
+                        views.btnSignup.isEnabled = false
+                    }
+                    Status.SUCCESS -> {
+                        dialogLoading?.dismiss()
+                        dialogLoading = null
+                        views.btnSignup.isEnabled = true
+
+                        // Navigate to OTP verification
+                        val phoneNumber = views.txtPhoneNumber.text.toString()
+                        val action = RegisterFragmentDirections.actionRegisterFragmentToOtpVerificationFragment(phoneNumber)
+                        findNavController().navigate(action)
+
+                        Toast.makeText(requireContext(), resource.data, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.ERROR -> {
+                        dialogLoading?.dismiss()
+                        dialogLoading = null
+                        views.btnSignup.isEnabled = true
+                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.INITIALIZE -> {
+                        dialogLoading?.dismiss()
+                        dialogLoading = null
+                        views.btnSignup.isEnabled = true
+                    }
+                }
+            }*/
         }
     }
+
     private fun showDialogBirdDay(){
         val dialog = AppBaseDialog.Builder(requireContext(), DialogDatePickerBinding.inflate(layoutInflater))
             .build()
@@ -113,5 +148,4 @@ class RegisterFragment @Inject constructor() : AppBaseFragment<FragmentRegisterB
             views.txtBirthDay.setText(DateConverter.dateToLocalString(calendar.time))
         }
     }
-
 }

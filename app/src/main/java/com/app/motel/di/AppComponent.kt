@@ -130,6 +130,7 @@ interface AppComponent {
     fun inject(complaintFormFragment: ComplaintFormFragment)
     fun inject(revenueFragment: RevenueStatisticsFragment)
     fun inject(revenueStatisticsActivity: RevenueStatisticsActivity)
+    //fun inject(otpVerificationFragment: OtpVerificationFragment)
 
     fun fragmentFactory(): FragmentFactory
     fun viewModelFactory(): ViewModelProvider.Factory

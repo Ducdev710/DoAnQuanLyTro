@@ -8,5 +8,5 @@ import com.app.motel.data.model.Resource
 class AuthViewState : AppViewLiveData {
     val login = MutableLiveData<Resource<CommonUser>>()
     val register = MutableLiveData<Resource<CommonUser>>()
-
+    //val registerInit = MutableLiveData<Resource<String>>()
 }

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HandleContractViewModel @Inject constructor(
-    private val repository: ContractRepository,
+    val repository: ContractRepository,
     private val tenantRepository: TenantRepository,
     private val userController: UserController,
 ): AppBaseViewModel<HandleContractViewState, HandleContractViewAction, HandleContractViewEvent>(
@@ -58,6 +58,18 @@ class HandleContractViewModel @Inject constructor(
                 Log.e("HandleContractViewModel", e.toString())
                 liveData.contracts.postValue(Resource.Error(message = e.toString()))
             }
+        }
+    }
+
+    fun updateContract(contract: Contract) {
+        viewModelScope.launch {
+            liveData.updateContract.postValue(Resource.Loading())
+            val result = repository.updateContract(contract)
+            if (result.isSuccess()) {
+                // Refresh the contract list if update was successful
+                getContracts()
+            }
+            liveData.updateContract.postValue(result)
         }
     }
 
@@ -137,6 +149,5 @@ class HandleContractViewModel @Inject constructor(
                 message = "Kết thúc hợp đồng thành công"
             })
         }
-
     }
 }

@@ -45,20 +45,28 @@ class ProfileRepository @Inject constructor(
             if(user.isAdmin){
                 val adminUser = user.child as User
 
-                // Check if password has changed and hash it if necessary
+                // Validate phone number if it exists
+                if (adminUser.phoneNumber != null && (!adminUser.phoneNumber.startsWith("0") ||
+                            adminUser.phoneNumber.length != 10 || !adminUser.phoneNumber.all { it.isDigit() })) {
+                    return Resource.Error(message = "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0")
+                }
+
+                // Validate password if it's being changed - KEEP for admin users
                 val existingUser = userDAO.getById(adminUser.id)
+                if (existingUser != null && existingUser.matKhau != adminUser.password && adminUser.password.length < 6) {
+                    return Resource.Error(message = "Mật khẩu phải có ít nhất 6 ký tự")
+                }
+
                 val passwordToSave = if (existingUser != null && existingUser.matKhau != adminUser.password) {
                     SecurityHelper.hashPassword(adminUser.password)
                 } else {
                     adminUser.password // Keep original password (already hashed)
                 }
 
-                // Create updated user with possibly hashed password
                 val updatedUser = adminUser.copy(password = passwordToSave)
                 val userEntity = updatedUser.toEntity()
                 userDAO.update(userEntity)
 
-                // Return success with original non-hashed password for display
                 return Resource.Success(
                     CommonUser.AdminUser(userEntity.toModel().copy(password = adminUser.password)),
                     message = "Cập nhật thành công"
@@ -66,12 +74,18 @@ class ProfileRepository @Inject constructor(
             } else {
                 val tenantUser = user.child as Tenant
 
-                // For tenant users, store password as plaintext without hashing
+                // Validate phone number if it exists (same for all users)
+                if (tenantUser.phoneNumber != null && (!tenantUser.phoneNumber.startsWith("0") ||
+                            tenantUser.phoneNumber.length != 10 || !tenantUser.phoneNumber.all { it.isDigit() })) {
+                    return Resource.Error(message = "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0")
+                }
+
+                // REMOVED password validation for tenant users
+
                 val updatedTenant = tenantUser.copy()
                 val userEntity = updatedTenant.toEntity()
                 tenantDAO.update(userEntity)
 
-                // Return success with the same password
                 return Resource.Success(
                     CommonUser.NormalUser(userEntity.toModel()),
                     message = "Cập nhật thành công"
@@ -82,15 +96,24 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    // Add a new overloaded method to handle bank information separately
+    // Also update the overloaded method for bank information
     suspend fun updateCurrentUser(user: CommonUser, bankName: String?, accountNumber: String?): Resource<CommonUser> {
         try {
             if (user.isAdmin) {
-                // Extract the User from CommonUser and update its bank information
                 val adminUser = user.child as User
 
-                // Check if password has changed and hash it if necessary
+                // Validate phone number if it exists
+                if (adminUser.phoneNumber != null && (!adminUser.phoneNumber.startsWith("0") ||
+                            adminUser.phoneNumber.length != 10 || !adminUser.phoneNumber.all { it.isDigit() })) {
+                    return Resource.Error(message = "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0")
+                }
+
+                // Keep password validation for admin users
                 val existingUser = userDAO.getById(adminUser.id)
+                if (existingUser != null && existingUser.matKhau != adminUser.password && adminUser.password.length < 6) {
+                    return Resource.Error(message = "Mật khẩu phải có ít nhất 6 ký tự")
+                }
+
                 val passwordToSave = if (existingUser != null && existingUser.matKhau != adminUser.password) {
                     SecurityHelper.hashPassword(adminUser.password)
                 } else {
@@ -103,7 +126,6 @@ class ProfileRepository @Inject constructor(
                     password = passwordToSave
                 )
 
-                // Update in database
                 val userEntity = updatedUser.toEntity()
                 userDAO.update(userEntity)
 
@@ -112,7 +134,7 @@ class ProfileRepository @Inject constructor(
                     message = "Cập nhật thành công"
                 )
             } else {
-                // For non-admin users, just use the standard method
+                // For tenant users, no password validation
                 return updateCurrentUser(user)
             }
         } catch (e: Exception) {

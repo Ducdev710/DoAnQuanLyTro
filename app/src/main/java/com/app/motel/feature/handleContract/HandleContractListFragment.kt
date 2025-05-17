@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.app.motel.AppApplication
 import com.app.motel.R
 import com.app.motel.common.utils.navigateFragmentWithSlide
@@ -16,6 +17,7 @@ import com.app.motel.databinding.FragmentHandleContractListBinding
 import com.app.motel.feature.handleContract.viewmodel.HandleContractViewModel
 import com.app.motel.ui.custom.CustomTabBar
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HandleContractListFragment @Inject constructor() : AppBaseFragment<FragmentHandleContractListBinding>() {
@@ -58,7 +60,17 @@ class HandleContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
             override fun onClickItem(item: Contract, action: AppBaseAdapter.ItemAction) {
                 when(action){
                     AppBaseAdapter.ItemAction.CLICK -> {
-                        DetailContractBottomSheet(item).show(
+                        DetailContractBottomSheet(
+                            contract = item,
+                            onUpdateContract = { updatedContract ->
+                                viewModel.viewModelScope.launch {
+                                    val result = viewModel.repository.updateContract(updatedContract)
+                                    if (result.isSuccess()) {
+                                        viewModel.getContracts() // Refresh list after update
+                                    }
+                                }
+                            }
+                        ).show(
                             parentFragmentManager, DetailContractBottomSheet::class.java.simpleName
                         )
                     }
