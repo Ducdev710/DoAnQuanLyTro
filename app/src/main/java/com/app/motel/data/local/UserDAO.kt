@@ -32,4 +32,7 @@ interface UserDAO {
     @Query("SELECT * FROM NguoiDung WHERE Email = :email LIMIT 1")
     suspend fun getUserByEmail(email: String): NguoiDungEntity?
 
+    @Query("SELECT * FROM NguoiDung WHERE SoDienThoai = :phoneNumber LIMIT 1")
+    suspend fun getUserByPhone(phoneNumber: String): NguoiDungEntity?
+
 }

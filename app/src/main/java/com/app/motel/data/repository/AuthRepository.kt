@@ -25,8 +25,10 @@ class AuthRepository @Inject constructor(
         return try {
             if (userDAO.getByUsername(userEntity.tenDangNhap) != null) {
                 Resource.Error(message = "Tên đăng nhập đã tồn tại")
-            } else if(userEntity.email == null || userDAO.getUserByEmail(userEntity.email) != null){
+            } else if(userEntity.email == null || userDAO.getUserByEmail(userEntity.email) != null) {
                 Resource.Error(message = "Email đã tồn tại")
+            } else if(userEntity.soDienThoai != null && userDAO.getUserByPhone(userEntity.soDienThoai) != null) {
+                Resource.Error(message = "Số điện thoại đã tồn tại")
             } else {
                 userDAO.insertUser(userEntity)
                 // Trả về người dùng với mật khẩu gốc, KHÔNG trả về mật khẩu đã băm
