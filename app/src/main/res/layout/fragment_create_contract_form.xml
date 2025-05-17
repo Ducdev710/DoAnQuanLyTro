@@ -46,13 +46,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
-android:inputType="text"
+                        android:inputType="text"
                         android:hint="Tên phòng trọ"
                         android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                         tools:ignore="SpUsage" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
@@ -94,10 +92,7 @@ android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingEnd="25dp"/>
-
                     </LinearLayout>
-
-
                 </LinearLayout>
 
                 <RelativeLayout
@@ -120,6 +115,58 @@ android:inputType="text"
                         android:textColor="@color/black"
                         android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
                 </RelativeLayout>
+
+                <!-- New Section: Contract Creation Date -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ngày tạo hợp đồng"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ngày ký kết hợp đồng"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_contract_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_contract_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:hint="dd/mm/yyyy"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -148,7 +195,6 @@ android:inputType="text"
                             android:text="Thời hạn hợp đồng"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
-
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -171,7 +217,6 @@ android:inputType="text"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                             tools:ignore="SpUsage" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,7 +235,7 @@ android:inputType="text"
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ngày ở"
+                            android:text="Ngày bắt đầu vào ở"
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
@@ -201,11 +246,10 @@ android:inputType="text"
                             android:text="Ngày bắt đầu vào trọ"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
-
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_satrt_date"
+                        android:id="@+id/til_start_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
@@ -218,13 +262,12 @@ android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:imeOptions="actionNext"
-android:inputType="text"
+                            android:inputType="text"
                             android:hint="dd/mm/yyyy"
                             android:gravity="center"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                             tools:ignore="SpUsage" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -251,10 +294,9 @@ android:inputType="text"
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ng ày kết thúc hợp đồng giữa hai bên"
+                            android:text="Ngày kết thúc hợp đồng giữa hai bên"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
-
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -271,13 +313,12 @@ android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:imeOptions="actionNext"
-android:inputType="text"
+                            android:inputType="text"
                             android:hint="dd/mm/yyyy"
                             android:gravity="center"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                             tools:ignore="SpUsage" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -307,7 +348,6 @@ android:inputType="text"
                             android:text="Tiền cọc đảm bảo"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
-
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -330,7 +370,6 @@ android:inputType="text"
                             android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                             tools:ignore="SpUsage" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -354,7 +393,6 @@ android:inputType="text"
                         android:text="Ghi chú thêm"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
-
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -376,16 +414,12 @@ android:inputType="text"
                         android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                         tools:ignore="SpUsage" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
             </LinearLayout>
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"/>
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
@@ -423,8 +457,5 @@ android:inputType="text"
             android:stateListAnimator="@null"
             android:backgroundTint="@color/primary"
             android:background="@drawable/background_button"/>
-
-
     </LinearLayout>
-
 </RelativeLayout>

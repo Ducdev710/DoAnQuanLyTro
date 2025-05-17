@@ -1,5 +1,6 @@
 package com.app.motel.feature.handleContract
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.app.motel.core.AppBaseBottomSheet
 import com.app.motel.data.entity.HopDongEntity
 import com.app.motel.data.model.Contract
 import com.app.motel.databinding.DialogDetailContractBinding
+import java.util.Calendar
 
 class DetailContractBottomSheet(
     private val contract: Contract,
@@ -47,8 +49,8 @@ class DetailContractBottomSheet(
             tvContractOwner.text = contract.tenant?.fullName ?: ""
             tvDuration.text = "Thời gian: ${contract.duration ?: 0} tháng"
             tvDeposit.setText("Tiền cọc: ${contract.deposit.toStringMoney()}")
-            tvStartDate.text = contract.startDate
-            tvEndDate.text = contract.endDate
+            tvStartDate.setText(contract.startDate ?: "")
+            tvEndDate.setText(contract.endDate ?: "")
             txtNote.setText(contract.note)
 
             cbEndContract.isChecked = contract.state == Contract.State.ENDED
@@ -95,6 +97,90 @@ class DetailContractBottomSheet(
                     toggleEditMode(true)
                 }
             }
+
+            // Add date picker functionality for start date
+            tvStartDate.setOnClickListener {
+                if (isEditMode) {
+                    showDatePicker(true)
+                }
+            }
+
+            // Add date picker functionality for end date
+            tvEndDate.setOnClickListener {
+                if (isEditMode) {
+                    showDatePicker(false)
+                }
+            }
+        }
+    }
+
+    private fun showDatePicker(isStartDate: Boolean) {
+        val calendar = Calendar.getInstance()
+
+        // Parse current date if available
+        val currentDate = if (isStartDate) views.tvStartDate.text.toString() else views.tvEndDate.text.toString()
+        if (currentDate.isNotEmpty()) {
+            try {
+                val parts = currentDate.split("/")
+                if (parts.size == 3) {
+                    val day = parts[0].toInt()
+                    val month = parts[1].toInt() - 1 // Calendar months are 0-based
+                    val year = parts[2].toInt()
+                    calendar.set(year, month, day)
+                }
+            } catch (e: Exception) {
+                // Use current date if parsing fails
+            }
+        }
+
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                // Format the date as dd/MM/yyyy
+                val formattedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year)
+
+                // Set the selected date to the appropriate field
+                if (isStartDate) {
+                    views.tvStartDate.setText(formattedDate)
+                } else {
+                    views.tvEndDate.setText(formattedDate)
+                }
+
+                // Recalculate duration whenever dates change
+                recalculateDuration()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun recalculateDuration() {
+        try {
+            val startDateStr = views.tvStartDate.text.toString()
+            val endDateStr = views.tvEndDate.text.toString()
+
+            if (startDateStr.isEmpty() || endDateStr.isEmpty()) return
+
+            // Parse dates
+            val startParts = startDateStr.split("/")
+            val endParts = endDateStr.split("/")
+
+            if (startParts.size != 3 || endParts.size != 3) return
+
+            val startYear = startParts[2].toInt()
+            val startMonth = startParts[1].toInt()
+            val endYear = endParts[2].toInt()
+            val endMonth = endParts[1].toInt()
+
+            // Calculate duration in months
+            val months = (endYear - startYear) * 12 + (endMonth - startMonth)
+
+            // Update duration text
+            val durationText = "Thời gian: $months tháng"
+            views.tvDuration.text = durationText
+        } catch (e: Exception) {
+            // If calculation fails, don't update the duration
         }
     }
 
@@ -105,9 +191,8 @@ class DetailContractBottomSheet(
             txtNote.isEnabled = editMode
             tvDeposit.isEnabled = editMode
 
-            // Disable other fields
-            tvStartDate.isEnabled = false
-            tvEndDate.isEnabled = false
+            tvStartDate.isEnabled = editMode
+            tvEndDate.isEnabled = editMode
 
             // Disable status checkboxes
             cbEndContract.isEnabled = false
@@ -120,16 +205,26 @@ class DetailContractBottomSheet(
 
     private fun saveContractChanges() {
         views.apply {
-            // Extract deposit value from text field, removing formatting
+            // Extract deposit value from text field
             val depositValue = tvDeposit.text.toString()
                 .replace("Tiền cọc: ", "")
                 .replace("đ", "")
                 .trim()
 
+            // Extract duration value from the text
+            val durationText = tvDuration.text.toString()
+            val durationValue = durationText.replace("Thời gian: ", "")
+                .replace(" tháng", "")
+                .trim()
+                .toIntOrNull() ?: contract.duration
+
             // Create updated contract with changes
             val updatedContract = contract.copy(
                 note = txtNote.text.toString(),
-                deposit = depositValue
+                deposit = depositValue,
+                startDate = tvStartDate.text.toString(),
+                endDate = tvEndDate.text.toString(),
+                duration = durationValue
             )
 
             // Notify listener about the update

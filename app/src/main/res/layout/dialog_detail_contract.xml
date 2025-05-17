@@ -131,10 +131,16 @@
                     android:textStyle="bold"
                     android:text="Ngày bắt đầu ở"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tv_start_date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:background="@android:color/transparent"
+                    android:textSize="14sp"
+                    android:enabled="false"
                     android:text="20/7/2031"/>
 
             </LinearLayout>
@@ -152,14 +158,19 @@
                     android:textStyle="bold"
                     android:text="Ngày kết thúc"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tv_end_date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:background="@android:color/transparent"
+                    android:textSize="14sp"
+                    android:enabled="false"
                     android:text="20/7/2031"/>
 
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout

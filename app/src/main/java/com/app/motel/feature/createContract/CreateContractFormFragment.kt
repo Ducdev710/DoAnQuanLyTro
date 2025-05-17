@@ -51,9 +51,20 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
 
         views.txtName.setText(item?.roomName ?: "")
 
-        val startDateStr = DateConverter.getCurrentLocalDateTime()
+        // Set contract creation date to current date
+        val contractDateStr = DateConverter.getCurrentLocalDateTime()
+        views.txtContractDate.setText(contractDateStr)
+
+        // Set default start date to tomorrow (one day after contract creation)
+        val tomorrow = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_MONTH, 1)
+        }
+        val startDateStr = DateConverter.dateToLocalString(tomorrow.time)
+
+        // Set default end date to 1 year from start date
         val endDateStr = DateConverter.dateToLocalString(Calendar.getInstance().apply {
-            set(this.get(Calendar.YEAR) + 1, this.get(Calendar.MONTH), this.get(Calendar.DATE))
+            time = tomorrow.time
+            add(Calendar.YEAR, 1)
         }.time)
 
         // Store actual dates for backend
@@ -65,9 +76,18 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
 
         views.txtDeposit.setText(item?.rentalPrice.toStringMoney())
 
+        // Set up date picker functionality for start date
+        views.txtStartDate.setOnClickListener {
+            showStartDatePickerDialog { selectedDate ->
+                views.txtStartDate.setText(selectedDate)
+                // Update duration when start date changes
+                updateDurationText(selectedDate, views.txtEndDate.text.toString())
+            }
+        }
+
         // Set up date picker functionality for end date
         views.txtEndDate.setOnClickListener {
-            showDatePickerDialog { selectedDate ->
+            showEndDatePickerDialog(views.txtStartDate.text.toString()) { selectedDate ->
                 views.txtEndDate.setText(selectedDate)
                 // Update duration when end date changes
                 updateDurationText(views.txtStartDate.text.toString(), selectedDate)
@@ -76,7 +96,7 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
 
         mViewModel.getTenantNotRented()
 
-        views.btnSave.setOnClickListener{
+        views.btnSave.setOnClickListener {
             val currentTenantPosition = views.spinnerCustomer.selectedItemPosition
             val currentTenant: Tenant? = if(currentTenantPosition >= 0)
                 mViewModel.liveData.tenantNotRented.value?.data?.get(currentTenantPosition)
@@ -86,8 +106,8 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
                 item.id,
                 currentTenant?.id,
                 views.txtName.text.toString(),
-                DateConverter.getCurrentLocalDateTime(), // Use current date for creation
-                views.txtStartDate.text.toString(),
+                views.txtContractDate.text.toString(), // Contract creation date
+                views.txtStartDate.text.toString(),    // Start date (move-in)
                 views.txtEndDate.text.toString(),
                 views.txtDeposit.text.toString().toStringMoney(),
                 views.txtNote.text.toString(),
@@ -104,13 +124,14 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
     }
 
     /**
-     * Show date picker dialog and return selected date
+     * Show date picker dialog for start date
+     * Minimum date is tomorrow
      */
-    private fun showDatePickerDialog(onDateSelected: (String) -> Unit) {
+    private fun showStartDatePickerDialog(onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
-        val currentEndDate = DateConverter.stringToDate(views.txtEndDate.text.toString())
-        if (currentEndDate != null) {
-            calendar.time = currentEndDate
+        val currentStartDate = DateConverter.stringToDate(views.txtStartDate.text.toString())
+        if (currentStartDate != null) {
+            calendar.time = currentStartDate
         }
 
         val year = calendar.get(Calendar.YEAR)
@@ -131,6 +152,44 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
         val tomorrow = Calendar.getInstance()
         tomorrow.add(Calendar.DAY_OF_MONTH, 1)
         datePickerDialog.datePicker.minDate = tomorrow.timeInMillis
+
+        datePickerDialog.show()
+    }
+
+    /**
+     * Show date picker dialog for end date
+     * Minimum date is day after start date
+     */
+    private fun showEndDatePickerDialog(startDateStr: String, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val currentEndDate = DateConverter.stringToDate(views.txtEndDate.text.toString())
+        if (currentEndDate != null) {
+            calendar.time = currentEndDate
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = android.app.DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                calendar.set(selectedYear, selectedMonth, selectedDay)
+                val selectedDate = DateConverter.dateToLocalString(calendar.time)
+                onDateSelected(selectedDate)
+            },
+            year, month, day
+        )
+
+        // Set minimum date to day after start date
+        val minDate = DateConverter.stringToDate(startDateStr)
+        if (minDate != null) {
+            val minCalendar = Calendar.getInstance().apply {
+                time = minDate
+                add(Calendar.DAY_OF_MONTH, 1)
+            }
+            datePickerDialog.datePicker.minDate = minCalendar.timeInMillis
+        }
 
         datePickerDialog.show()
     }
@@ -175,6 +234,7 @@ class CreateContractFormFragment @Inject constructor() : AppBaseFragment<Fragmen
                 handleTenantSelected(tenants)
             }
         }
+
         mViewModel.liveData.createContract.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
