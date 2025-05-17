@@ -59,7 +59,16 @@ data class HopDongEntity(
     val maKhach: String? = null,
 
     @ColumnInfo(name = "GhiChu")
-    val ghiChu: String?
+    val ghiChu: String?,
+
+    @ColumnInfo(name = "LyDoKetThuc")
+    val lyDoKetThuc: String? = null,
+
+    @ColumnInfo(name = "SoTienHoanTra")
+    val soTienHoanTra: String? = null,
+
+    @ColumnInfo(name = "LyDoKhauTru")
+    val lyDoKhauTru: String? = null
 ) {
     companion object {
         const val STATE_ACTIVE = 1
@@ -81,7 +90,9 @@ data class HopDongEntity(
         isActive = hieuLuc,
         roomId = maPhong,
         customerId = maKhach,
-        note = ghiChu
+        note = ghiChu,
+        terminationReason = lyDoKetThuc,
+        refundAmount = soTienHoanTra,
+        deductionReason = lyDoKhauTru
     )
 }
-

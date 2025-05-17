@@ -63,6 +63,16 @@ class DetailContractBottomSheet(
 
             // Show update button only if callback is provided
             btnUpdate.isVisible = onUpdateContract != null
+
+            // Show termination details if contract is ended
+            if (contract.state == Contract.State.ENDED) {
+                layoutTerminationDetails.isVisible = true
+                tvTerminationReason.text = contract.terminationReason ?: ""
+                tvRefundAmount.text = contract.refundAmount ?: ""
+                tvDeductionReason.text = contract.deductionReason ?: ""
+            } else {
+                layoutTerminationDetails.isVisible = false
+            }
         }
     }
 
@@ -224,7 +234,11 @@ class DetailContractBottomSheet(
                 deposit = depositValue,
                 startDate = tvStartDate.text.toString(),
                 endDate = tvEndDate.text.toString(),
-                duration = durationValue
+                duration = durationValue,
+                // Preserve termination details if contract is already terminated
+                terminationReason = contract.terminationReason,
+                refundAmount = contract.refundAmount,
+                deductionReason = contract.deductionReason
             )
 
             // Notify listener about the update

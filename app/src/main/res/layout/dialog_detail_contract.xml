@@ -226,8 +226,74 @@
                 android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                 tools:ignore="SpUsage" />
         </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
+    <!-- Termination Details Section - Visible only when contract is terminated -->
+    <LinearLayout
+        android:id="@+id/layout_termination_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/PADDING_SIZE_SMALL"
+        android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
+        android:visibility="gone"
+        android:background="@drawable/background_border_radius_2">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/TEXT_SIZE_LARGE"
+            android:text="Thông tin kết thúc hợp đồng"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Lý do kết thúc:"/>
+
+        <TextView
+            android:id="@+id/tv_termination_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="@dimen/PADDING_SIZE_SMALL"
+            android:text=""
+            tools:text="Hết hạn hợp đồng"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Số tiền hoàn trả:"/>
+
+        <TextView
+            android:id="@+id/tv_refund_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="@dimen/PADDING_SIZE_SMALL"
+            android:text=""
+            tools:text="4 500 000 VND"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Lý do khấu trừ:"/>
+
+        <TextView
+            android:id="@+id/tv_deduction_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text=""
+            tools:text="Sửa chữa tủ lạnh bị hư"/>
     </LinearLayout>
 
     <LinearLayout
@@ -257,8 +323,6 @@
             android:textColor="@color/black"
             android:buttonTint="@color/check_box_color_selector"
             android:text="Hết hiệu lực"/>
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -292,5 +356,4 @@
             android:backgroundTint="@color/primary"
             android:background="@drawable/background_button"/>
     </LinearLayout>
-
 </LinearLayout>

@@ -15,6 +15,7 @@ import com.app.motel.common.utils.showToast
 import com.app.motel.common.utils.toMoney
 import com.app.motel.common.utils.toStringMoney
 import com.app.motel.core.AppBaseFragment
+import com.app.motel.data.entity.HopDongEntity
 import com.app.motel.data.model.Contract
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Status
@@ -75,11 +76,29 @@ class HandleContractTerminalFragment @Inject constructor() : AppBaseFragment<Fra
                 popFragmentWithSlide()
             }
             btnSave.setOnClickListener{
+                // Get termination details before ending the contract
+                val terminationReason = txtReson.text.toString()
+                val refundAmount = tvMoneyResult.text.toString()
+                val deductionReason = txtResonDeduction.text.toString()
+
+                // Create updated contract with termination details
+                val updatedContract = contract!!.copy(
+                    status = Contract.State.ENDED.ordinal, // Convert enum to int
+                    isActive = HopDongEntity.INACTIVE,
+                    terminationReason = terminationReason,
+                    refundAmount = refundAmount,
+                    deductionReason = deductionReason
+                )
+
+                // End the contract with the updated information
                 viewModel.endContract(
                     contract!!,
                     txtDateEnd.text.toString(),
                     cbResultDeposited.isChecked,
                     cbFullyPaid.isChecked,
+                    terminationReason,
+                    refundAmount,
+                    deductionReason
                 )
             }
         }

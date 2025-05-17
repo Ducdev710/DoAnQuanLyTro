@@ -18,7 +18,10 @@ data class Contract(
     val isActive: Int? = null,
     val roomId: String? = null,
     val customerId: String? = null,
-    val note: String?
+    val note: String?,
+    val terminationReason: String? = null,
+    val refundAmount: String? = null,
+    val deductionReason: String? = null
 ) {
     var room: Room? = null
     var tenant: Tenant? = null
@@ -40,7 +43,10 @@ data class Contract(
         hieuLuc = isActive,
         maPhong = roomId,
         maKhach = customerId,
-        ghiChu = note
+        ghiChu = note,
+        lyDoKetThuc = terminationReason,
+        soTienHoanTra = refundAmount,
+        lyDoKhauTru = deductionReason
     )
 
     fun toCreateEntity() = HopDongEntity(
@@ -55,7 +61,10 @@ data class Contract(
         hieuLuc = HopDongEntity.ACTIVE,
         maPhong = roomId,
         maKhach = customerId,
-        ghiChu = note
+        ghiChu = note,
+        lyDoKetThuc = null,
+        soTienHoanTra = null,
+        lyDoKhauTru = null
     )
 
     enum class State(
@@ -63,7 +72,7 @@ data class Contract(
     ) {
         ACTIVE("Còn hạn"),
         NEAR_END("Sắp hết hạn"),
-        ENDED("Đã hế hạn"),
+        ENDED("Đã hết hạn"),
         UNKNOWN("Không xác định");
 
         companion object {

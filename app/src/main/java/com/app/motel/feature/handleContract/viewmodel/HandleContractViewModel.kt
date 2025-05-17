@@ -119,16 +119,39 @@ class HandleContractViewModel @Inject constructor(
         dateEndStr: String?,
         hasResultDeposited: Boolean,
         hasFullyPaid: Boolean,
-    ){
+        terminationReason: String?,
+        refundAmount: String?,
+        deductionReason: String?
+    ) {
         liveData.updateContract.postValue(Resource.Loading())
-        if(DateConverter.localStringToDate(dateEndStr) == null){
+
+        // Validate required date
+        if(DateConverter.localStringToDate(dateEndStr) == null) {
             liveData.updateContract.postValue(Resource.Error(message = "Ngày kết thúc không hợp lệ"))
             return
-        }else if(!hasResultDeposited){
+        }
+
+        // Validate payment confirmations
+        else if(!hasResultDeposited) {
             liveData.updateContract.postValue(Resource.Error(message = "Bạn chưa xác nhận đã trả tiền cọc"))
             return
-        }else if(!hasFullyPaid){
+        }
+        else if(!hasFullyPaid) {
             liveData.updateContract.postValue(Resource.Error(message = "Bạn chưa xác nhận đã thanh toán đầy đủ"))
+            return
+        }
+
+        // Validate termination details
+        else if(terminationReason.isNullOrBlank()) {
+            liveData.updateContract.postValue(Resource.Error(message = "Lý do kết thúc hợp đồng không được để trống"))
+            return
+        }
+        else if(refundAmount.isNullOrBlank()) {
+            liveData.updateContract.postValue(Resource.Error(message = "Số tiền hoàn trả không được để trống"))
+            return
+        }
+        else if(deductionReason.isNullOrBlank()) {
+            liveData.updateContract.postValue(Resource.Error(message = "Lý do khấu trừ không được để trống"))
             return
         }
 
@@ -136,13 +159,16 @@ class HandleContractViewModel @Inject constructor(
             val contractUpdate = contract.copy(
                 endDate = dateEndStr,
                 isActive = HopDongEntity.INACTIVE,
-                deposit =  "${contract.deposit} (Đã trả)",
+                deposit = "${contract.deposit} (Đã trả)",
+                // Add termination details
+                terminationReason = terminationReason,
+                refundAmount = refundAmount,
+                deductionReason = deductionReason
             )
 
             val contractUpdated = repository.updateContract(contractUpdate)
-            if(contractUpdated.isSuccess()){
+            if(contractUpdated.isSuccess()) {
                 repository.updateStateRoom(contractUpdated.data?.roomId ?: "", PhongEntity.Status.EMPTY.value)
-
                 tenantRepository.removeTenantFromRoom(contractUpdated.data?.roomId ?: "")
             }
             liveData.updateContract.postValue(contractUpdated.apply {

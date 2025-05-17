@@ -25,7 +25,7 @@ import com.app.motel.data.entity.*
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
     // VerificationTokenEntity::class - removed
-], version = 6, exportSchema = false)
+], version = 7, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun boardingHouseDao(): BoardingHouseDAO
@@ -119,6 +119,16 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Define migration from version 6 to 7 for contract termination fields
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add contract termination columns to HopDong table
+                database.execSQL("ALTER TABLE HopDong ADD COLUMN LyDoKetThuc TEXT")
+                database.execSQL("ALTER TABLE HopDong ADD COLUMN SoTienHoanTra TEXT")
+                database.execSQL("ALTER TABLE HopDong ADD COLUMN LyDoKhauTru TEXT")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
@@ -131,7 +141,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppConstants.DATABASE_NAME
             )
                 //.createFromAsset(AppConstants.DATABASE_FILE_IMPORT)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                 .fallbackToDestructiveMigration() // Add this line to force recreate the database if schema doesn't match
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
