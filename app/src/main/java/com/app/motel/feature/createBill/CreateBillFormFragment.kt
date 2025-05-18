@@ -57,8 +57,13 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
                 views.txtWaterNew.text.toString().toIntOrNull(),
                 views.txtPriceService.text.toString().toMoney(),
                 views.txtDiscount.text.toString().toMoney(),
-                null
+                views.txtNote.text.toString()
             )
+        }
+
+        // Set up cancel button
+        views.btnCancel.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -104,7 +109,7 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
         mViewModel.liveData.createBill.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
-                    requireActivity().showToast("Tao hóa đơn thành công")
+                    requireActivity().showToast("Tạo hóa đơn thành công")
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
                 Status.ERROR -> {

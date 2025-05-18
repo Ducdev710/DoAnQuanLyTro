@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.common.utils.showToast
@@ -70,6 +71,10 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
                 tvPriceDiscount.text = it?.discount.toStringMoney() + " VND"
                 tvTotal.text = it?.totalAmount.toStringMoney() + " VND"
                 cbPayed.isChecked = it?.status == HoaDonEntity.STATUS_PAID
+
+                // Display note if available
+                layoutNote.isVisible = !it?.note.isNullOrBlank()
+                tvNote.text = it?.note ?: ""
 
                 isPaying = !viewModel.userController.state.isAdmin && it?.status == HoaDonEntity.STATUS_UNPAID
                 views.btnEnd.text = if (isPaying) "Thanh toán" else "Đóng"

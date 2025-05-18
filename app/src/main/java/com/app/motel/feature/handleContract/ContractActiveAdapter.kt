@@ -31,7 +31,7 @@ class ContractActiveAdapter(
                 tvState.text = "Tình trạng hợp đồng: ${item.state.value}"
                 tvState.setTextColor(binding.root.context.resources.getColor(R.color.green, binding.root.context.theme))
             }else{
-                tvState.text = "Tình trạng hợp đồng: hết hiệu lực"
+                tvState.text = "Tình trạng hợp đồng: Hết hiệu lực"
                 tvState.setTextColor(binding.root.context.resources.getColor(R.color.red, binding.root.context.theme))
             }
 

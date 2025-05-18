@@ -486,6 +486,49 @@ android:inputType="text"
 
                 </LinearLayout>
 
+                <!-- Add this just before the View spacer at the end of the LinearLayout -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin bổ sung cho hóa đơn"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        app:boxBackgroundColor="@color/background1"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="start|top"
+                            android:inputType="textMultiLine"
+                            android:imeOptions="actionDone"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
 
             </LinearLayout>
 

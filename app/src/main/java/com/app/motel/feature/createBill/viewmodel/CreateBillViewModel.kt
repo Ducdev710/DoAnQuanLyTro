@@ -92,7 +92,7 @@ class CreateBillViewModel @Inject constructor(
         servicePrice: Int?,
         discount: Int?,
         note: String?,
-    ){
+    ) {
         liveData.createBill.postValue(Resource.Loading())
 
         val room = liveData.currentRoom.value?.data
@@ -133,6 +133,10 @@ class CreateBillViewModel @Inject constructor(
             }
             newWaterMeter <= (oldWaterMeter ?: 0) -> {
                 liveData.createBill.postValue(Resource.Error(message = "Số nước mới không được thấp hơn số nước cũ"))
+                return
+            }
+            note.isNullOrBlank() -> {
+                liveData.createBill.postValue(Resource.Error(message = "Ghi chú không được để trống"))
                 return
             }
         }
