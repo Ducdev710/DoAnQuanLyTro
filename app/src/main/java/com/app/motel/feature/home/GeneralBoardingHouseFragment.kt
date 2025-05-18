@@ -102,32 +102,65 @@ class GeneralBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fragm
     }
 
     private fun handleObserverData() {
-        viewModel.liveData.boardingHouse.observe(viewLifecycleOwner){
-            if(it.isSuccess()){
-                views.tvNameBoardingHouse.text = viewModel.liveData.boardingHouse.value?.data?.name
-                views.tvBoardingHouseTotalRoom.text = (viewModel.liveData.boardingHouse.value?.data?.rooms?.size ?: 0).toString()
+        // First load all necessary data
+        val boardingHouseId = viewModel.userController.state.currentBoardingHouseId
+        viewModel.getBoardingById(boardingHouseId)
+        viewModel.getBills()
+        viewModel.getContracts()
 
-                views.lyRoomEmpty.tvPosition.text = viewModel.liveData.boardingHouse.value?.data?.getRoomEmpty?.size.toString()
-                views.lyRoomRenting.tvPosition.text = viewModel.liveData.boardingHouse.value?.data?.getRoomRenting?.size.toString()
+        viewModel.liveData.boardingHouse.observe(viewLifecycleOwner){ boardingHouseResource ->
+            if(boardingHouseResource.isSuccess()){
+                val boardingHouse = boardingHouseResource.data
+                views.tvNameBoardingHouse.text = boardingHouse?.name
+                views.tvBoardingHouseTotalRoom.text = (boardingHouse?.rooms?.size ?: 0).toString()
+
+                views.lyRoomEmpty.tvPosition.text = (boardingHouse?.getRoomEmpty?.size ?: 0).toString()
+                views.lyRoomRenting.tvPosition.text = (boardingHouse?.getRoomRenting?.size ?: 0).toString()
 
                 setupRoomStatusChart()
             }
         }
-        viewModel.liveData.contracts.observe(viewLifecycleOwner){
-            if(it.isSuccess()){
-                views.lyRoomNearEnd.tvPosition.text = (viewModel.liveData.contracts.value?.data?.filter { it.isNearEnd }?.size ?: 0).toString()
+
+        viewModel.liveData.contracts.observe(viewLifecycleOwner){ contractsResource ->
+            if(contractsResource.isSuccess()){
+                // Get unique room IDs with near-end contracts
+                val roomsWithNearEndContracts = contractsResource.data
+                    ?.filter { it.isNearEnd }
+                    ?.mapNotNull { it.roomId }
+                    ?.filter { !it.isNullOrBlank() }
+                    ?.toSet()
+                    ?: emptySet()
+
+                // Update UI with count
+                views.lyRoomNearEnd.tvPosition.text = roomsWithNearEndContracts.size.toString()
+
+                Log.d("Dashboard", "Near-end contracts: ${contractsResource.data?.count { it.isNearEnd } ?: 0}")
+                Log.d("Dashboard", "Unique rooms with near-end contracts: ${roomsWithNearEndContracts.size}")
+
                 setupRoomStatusChart()
             }
         }
-        viewModel.liveData.bills.observe(viewLifecycleOwner){
-            if(it.isSuccess()){
-                val listBillNotPayed = viewModel.liveData.bills.value?.data?.filter { it.status == HoaDonEntity.STATUS_UNPAID } ?: arrayListOf()
-                val roomNotPayed: Map<String, Bill> = listBillNotPayed.associateBy { it.roomId ?: "" }
-                views.lyRoomNotPayBill.tvPosition.text = roomNotPayed.values.size.toString()
+
+        viewModel.liveData.bills.observe(viewLifecycleOwner){ billsResource ->
+            if(billsResource.isSuccess()){
+                // Get unpaid bills
+                val unpaidBills = billsResource.data?.filter {
+                    it.status == HoaDonEntity.STATUS_UNPAID
+                } ?: emptyList()
+
+                // Get unique room IDs with unpaid bills
+                val uniqueUnpaidRooms = unpaidBills
+                    .mapNotNull { it.roomId }
+                    .filter { !it.isNullOrBlank() }
+                    .toSet()
+
+                // Update UI with count
+                views.lyRoomNotPayBill.tvPosition.text = uniqueUnpaidRooms.size.toString()
+
+                Log.d("Dashboard", "Unpaid bills: ${unpaidBills.size}")
+                Log.d("Dashboard", "Unique rooms with unpaid bills: ${uniqueUnpaidRooms.size}")
 
                 setupRoomStatusChart()
-                //setupRevenueSourcesChart()
-                //setupMonthlyTrendChart()
             }
         }
     }

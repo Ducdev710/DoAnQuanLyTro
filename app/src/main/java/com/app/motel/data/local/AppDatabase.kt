@@ -25,7 +25,7 @@ import com.app.motel.data.entity.*
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
     // VerificationTokenEntity::class - removed
-], version = 7, exportSchema = false)
+], version = 8, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun boardingHouseDao(): BoardingHouseDAO
@@ -129,6 +129,45 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Define migration from version 7 to 8 for previous meter readings
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add previous meter readings columns to HoaDon table
+                database.execSQL("ALTER TABLE HoaDon ADD COLUMN SoDienCu INTEGER")
+                database.execSQL("ALTER TABLE HoaDon ADD COLUMN SoNuocCu INTEGER")
+
+                // Update existing bills with previous readings based on older bills
+                database.execSQL("""
+                    UPDATE HoaDon AS current
+                    SET 
+                        SoDienCu = (
+                            SELECT prev.SODIEN
+                            FROM HoaDon AS prev
+                            WHERE 
+                                prev.MaPhong = current.MaPhong AND
+                                ((prev.Nam < current.Nam) OR 
+                                (prev.Nam = current.Nam AND prev.Thang < current.Thang))
+                            ORDER BY prev.Nam DESC, prev.Thang DESC
+                            LIMIT 1
+                        ),
+                        SoNuocCu = (
+                            SELECT prev.SONUOC
+                            FROM HoaDon AS prev
+                            WHERE 
+                                prev.MaPhong = current.MaPhong AND
+                                ((prev.Nam < current.Nam) OR 
+                                (prev.Nam = current.Nam AND prev.Thang < current.Thang))
+                            ORDER BY prev.Nam DESC, prev.Thang DESC
+                            LIMIT 1
+                        )
+                """)
+
+                // Set null values to 0 for previous readings
+                database.execSQL("UPDATE HoaDon SET SoDienCu = 0 WHERE SoDienCu IS NULL")
+                database.execSQL("UPDATE HoaDon SET SoNuocCu = 0 WHERE SoNuocCu IS NULL")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
@@ -141,7 +180,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppConstants.DATABASE_NAME
             )
                 //.createFromAsset(AppConstants.DATABASE_FILE_IMPORT)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
                 .fallbackToDestructiveMigration() // Add this line to force recreate the database if schema doesn't match
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {

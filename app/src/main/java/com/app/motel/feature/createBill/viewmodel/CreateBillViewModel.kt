@@ -163,6 +163,8 @@ class CreateBillViewModel @Inject constructor(
                 waterUsed = waterUsed,
                 electricityIndex = newElectricityMeter,
                 electricityUsed = electricityUsed,
+                previousElectricityIndex = oldElectricityMeter,
+                previousWaterIndex = oldWaterMeter,
                 serviceFee = servicePrice.toStringMoney(),
                 discount = discount.toStringMoney(),
                 totalAmount = total.toInt().toStringMoney(),

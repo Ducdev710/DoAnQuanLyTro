@@ -43,6 +43,12 @@ data class HoaDonEntity(
     @ColumnInfo(name = "SoDienTieuThu")
     val electricityUsed: Int?,
 
+    @ColumnInfo(name = "SoDienCu")
+    val previousElectricityIndex: Int? = null,
+
+    @ColumnInfo(name = "SoNuocCu")
+    val previousWaterIndex: Int? = null,
+
     @ColumnInfo(name = "GiaDichVu")
     val serviceFee: String?,
 
@@ -85,6 +91,8 @@ data class HoaDonEntity(
             waterUsed = waterUsed,
             electricityIndex = electricityIndex,
             electricityUsed = electricityUsed,
+            previousElectricityIndex = previousElectricityIndex,
+            previousWaterIndex = previousWaterIndex,
             serviceFee = serviceFee,
             discount = discount,
             totalAmount = total,
