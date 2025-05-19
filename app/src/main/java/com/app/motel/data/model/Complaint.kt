@@ -20,6 +20,7 @@ data class Complaint(
 
     val isRentRoom get() = type == KhieuNaiEntity.Type.RENT_ROOM.value
     val isComplaint get() = type == KhieuNaiEntity.Type.COMPLAINT.value
+    val isSystemNotification get() = type == KhieuNaiEntity.Type.APPLICATION.value
 
     fun toEntity() = KhieuNaiEntity(
         id = id,
@@ -52,5 +53,16 @@ data class Complaint(
         roomId = roomId,
         status = KhieuNaiEntity.Status.NEW.value,
         type = KhieuNaiEntity.Type.RENT_ROOM.value,
+    )
+
+    fun toEntityCreateSystemNotification() = KhieuNaiEntity(
+        id = IDManager.createID(),
+        title = title,
+        content = content,
+        createdDate = DateConverter.getCurrentStringDateTime(),
+        submittedBy = submittedBy,
+        roomId = roomId,
+        status = KhieuNaiEntity.Status.NEW.value,
+        type = KhieuNaiEntity.Type.APPLICATION.value,
     )
 }

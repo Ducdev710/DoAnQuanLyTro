@@ -1,15 +1,19 @@
 package com.app.motel.feature.handleBill.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.app.motel.core.AppBaseViewModel
 import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.model.Bill
+import com.app.motel.data.model.Complaint
 import com.app.motel.data.model.Contract
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Status
 import com.app.motel.data.model.Tenant
 import com.app.motel.data.repository.BillRepository
+import com.app.motel.data.repository.ComplaintRepository
 import com.app.motel.data.repository.ContractRepository
+import com.app.motel.data.repository.NotificationRepository
 import com.app.motel.data.repository.TenantRepository
 import com.app.motel.feature.profile.UserController
 import kotlinx.coroutines.launch
@@ -19,7 +23,8 @@ class HandleBillViewModel @Inject constructor(
     private val billRepository: BillRepository,
     private val contractRepository: ContractRepository,
     private val tenantRepository: TenantRepository,
-    val userController: UserController
+    val userController: UserController,
+    private val complaintRepository: ComplaintRepository,
 ): AppBaseViewModel<HandleBillState, HandleBillAction, HandleBillEvent>(HandleBillState()) {
     override fun handle(action: HandleBillAction) {
         // Handle actions from UI
@@ -82,7 +87,6 @@ class HandleBillViewModel @Inject constructor(
                         liveData.updateBill.postValue(Resource.Error(message = "Hóa đơn đã được thanh toán"))
                         return@launch
                     }
-                    // Check if current user is associated with this bill through any contracts
                     currentUser == null -> {
                         liveData.updateBill.postValue(Resource.Error(message = "Không thể xác thực người dùng"))
                         return@launch
@@ -98,12 +102,41 @@ class HandleBillViewModel @Inject constructor(
                 )
                 val billUpdated = billRepository.updateBill(billUpdate)
 
+                // Send notification via Complaint when a tenant pays a bill
+                if (billUpdated.status == Status.SUCCESS && !userController.state.isAdmin && currentUser != null) {
+                    val roomName = bill.room?.roomName ?: "không xác định"
+                    val billMonth = "${bill.month}/${bill.year}"
+                    val billAmount = bill.totalAmount ?: "0"
+
+                    // Create a complaint as payment notification
+                    val paymentComplaint = Complaint(
+                        title = "Thông báo thanh toán hóa đơn",
+                        content = "Phòng $roomName đã thanh toán tiền nhà tháng $billMonth. Số tiền: $billAmount VND",
+                        submittedBy = currentUser.id,
+                        roomId = bill.roomId,
+                    )
+
+                    try {
+                        // Use the new dedicated method for bill payment notifications
+                        val paymentNotification = complaintRepository.createBillPaymentNotification(paymentComplaint)
+
+                        if (paymentNotification.status != Status.SUCCESS) {
+                            Log.e("HandleBillViewModel", "Failed to send payment notification: ${paymentNotification.message}")
+                        } else {
+                            Log.d("HandleBillViewModel", "Successfully sent bill payment notification")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("HandleBillViewModel", "Error sending payment notification: ${e.message}", e)
+                    }
+                }
+
                 if (billUpdated.status == Status.SUCCESS) {
                     liveData.currentBill.postValue(billUpdate)
                 }
 
                 liveData.updateBill.postValue(billUpdated)
             } catch (e: Exception) {
+                Log.e("HandleBillViewModel", "Payment error: ${e.message}", e)
                 liveData.updateBill.postValue(Resource.Error(message = "Lỗi thanh toán: ${e.message}"))
             }
         }

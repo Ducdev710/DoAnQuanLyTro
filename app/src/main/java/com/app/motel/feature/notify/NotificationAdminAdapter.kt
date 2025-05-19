@@ -26,7 +26,7 @@ class NotificationAdminAdapter(
         binding.tvTitle.text = item.title
         binding.tvContent.text = item.content
         binding.tvCreateDate.text = DateConverter.stringToDate(item.createdDate ?: "")?.let {
-           DateConverter.dateToLocalString2(it)
+            DateConverter.dateToLocalString2(it)
         }
 
         binding.tvState.text = item.status
@@ -41,9 +41,16 @@ class NotificationAdminAdapter(
         binding.root.setOnClickListener {
             listener.onClickItem(item)
         }
-        binding.root.setOnLongClickListener {
-            listener.onClickItem(item, ItemAction.LONG_CLICK)
-            true
+
+        // Only set long click listener for complaints and rent room notifications
+        if (item.type == KhieuNaiEntity.Type.COMPLAINT.value || item.type == KhieuNaiEntity.Type.RENT_ROOM.value) {
+            binding.root.setOnLongClickListener {
+                listener.onClickItem(item, ItemAction.LONG_CLICK)
+                true
+            }
+        } else {
+            // Remove long click listener for system notifications
+            binding.root.setOnLongClickListener(null)
         }
     }
 }

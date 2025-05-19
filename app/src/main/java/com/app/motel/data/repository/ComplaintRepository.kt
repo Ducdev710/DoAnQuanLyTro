@@ -53,6 +53,19 @@ class ComplaintRepository @Inject constructor(
         }
     }
 
+    suspend fun createBillPaymentNotification(complaint: Complaint): Resource<Complaint> {
+        return try {
+            // Use the system notification entity transformation
+            val entity = complaint.toEntityCreateSystemNotification()
+            Log.d("ComplaintRepository", "Creating bill payment notification: ${entity}")
+            complaintDAO.insertComplaint(entity)
+            Resource.Success(entity.toModel())
+        } catch (e: Exception) {
+            Log.e("ComplaintRepository", "Error creating payment notification: ${e.message}", e)
+            Resource.Error(message = e.toString())
+        }
+    }
+
     suspend fun updateStateComplaint(id: String, state: String): Resource<Complaint> {
         return try {
             complaintDAO.updateStateComplaint(id, state)
@@ -61,5 +74,4 @@ class ComplaintRepository @Inject constructor(
             Resource.Error(message = e.toString())
         }
     }
-
 }

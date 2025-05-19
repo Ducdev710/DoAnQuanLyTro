@@ -69,6 +69,10 @@ class NotifyViewModel @Inject constructor(
 
     fun updateStateComplaint(complaint: Complaint, state: String){
         when{
+            complaint.isSystemNotification -> {
+                liveData.updateComplaint.postValue(Resource.Error(message = "Không thể cập nhật trạng thái thông báo hệ thống"))
+                return
+            }
             complaint.id.isBlank() -> {
                 liveData.updateComplaint.postValue(Resource.Error(message = "Không tìm thấy khiếu nại yêu cầu"))
                 return

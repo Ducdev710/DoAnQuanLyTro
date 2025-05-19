@@ -65,12 +65,13 @@ data class KhieuNaiEntity(
     enum class Type(val value: Int) {
         APPLICATION(999),
         COMPLAINT(0),
-        RENT_ROOM(1),;
+        RENT_ROOM(1), ;
 
         companion object {
             fun fromValue(value: Int) = when(value) {
                 COMPLAINT.value -> COMPLAINT
                 RENT_ROOM.value -> RENT_ROOM
+                APPLICATION.value -> APPLICATION
                 else -> COMPLAINT
             }
         }
