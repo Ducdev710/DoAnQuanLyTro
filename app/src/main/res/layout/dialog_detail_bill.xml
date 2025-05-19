@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:padding="@dimen/PADDING_SIZE_DEFAULT">
 
+        <!-- Header section unchanged -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
             android:textColor="@color/white"
             android:background="@color/primary"/>
 
+        <!-- ID and date section unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,6 +49,7 @@
                 android:text="32/7/2023"/>
         </LinearLayout>
 
+        <!-- Room and tenant info unchanged -->
         <TextView
             android:id="@+id/tv_name_room"
             android:layout_width="wrap_content"
@@ -73,6 +76,7 @@
             app:dividerColor="@color/black"
             android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
 
+        <!-- Bill info section unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +98,7 @@
                 android:text="Thông tin về các sịch vụ phòng đã sử dụng trong tháng qua"/>
         </LinearLayout>
 
-        <!-- Room price -->
+        <!-- Room price unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,7 +132,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Service fee -->
+        <!-- Service fee unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -161,7 +165,40 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Electricity information -->
+        <!-- Additional Fee - NEW SECTION -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Phụ phí"/>
+
+            <LinearLayout
+                android:id="@+id/layout_additional_fee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_additional_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="0 VND"/>
+
+                <EditText
+                    android:id="@+id/edt_additional_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Electricity info unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -264,7 +301,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Water information -->
+        <!-- Water info unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -367,7 +404,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Discount -->
+        <!-- Discount unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -401,7 +438,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Note section -->
+        <!-- Note section unchanged -->
         <LinearLayout
             android:id="@+id/layout_note"
             android:layout_width="match_parent"
@@ -446,6 +483,7 @@
             app:dividerColor="@color/black"
             android:layout_marginVertical="@dimen/PADDING_SIZE_SMALL"/>
 
+        <!-- Total amount section unchanged -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -468,6 +506,7 @@
 
         </LinearLayout>
 
+        <!-- Payment status unchanged -->
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/cb_payed"
             android:layout_width="wrap_content"
@@ -477,7 +516,7 @@
             android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"
             android:text="Đã thanh toán"/>
 
-        <!-- Button container -->
+        <!-- Button container unchanged -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

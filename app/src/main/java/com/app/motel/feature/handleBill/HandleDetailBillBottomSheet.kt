@@ -83,6 +83,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             // Get updated values from edit fields
             val roomPrice = views.edtPriceRoom.text.toString().toIntOrNull() ?: 0
             val serviceFee = views.edtPriceService.text.toString().toIntOrNull() ?: 0
+            val additionalFee = views.edtAdditionalFee.text.toString().toIntOrNull() ?: 0
             val electricityIndex = views.edtElectricityNew.text.toString().toIntOrNull() ?: 0
             val waterIndex = views.edtWaterNew.text.toString().toIntOrNull() ?: 0
             val discount = views.edtPriceDiscount.text.toString().toIntOrNull() ?: 0
@@ -111,6 +112,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             val updatedBill = currentBill.copy(
                 roomPrice = roomPrice.toDouble(),
                 serviceFee = serviceFee.toString(),
+                additionalFee = additionalFee.toString(),
                 electricityIndex = electricityIndex,
                 waterIndex = waterIndex,
                 electricityUsed = electricityUsed,
@@ -140,6 +142,11 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             tvPriceService.isVisible = false
             edtPriceService.isVisible = true
             edtPriceService.setText(bill?.serviceFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "") ?: "0")
+
+            // Additional fee
+            tvAdditionalFee.isVisible = false
+            edtAdditionalFee.isVisible = true
+            edtAdditionalFee.setText(bill?.additionalFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "") ?: "0")
 
             // Electricity readings
             tvElectricityOld.text = (bill?.previousElectricityIndex ?: 0).toString()
@@ -179,6 +186,9 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             tvPriceService.isVisible = true
             edtPriceService.isVisible = false
 
+            tvAdditionalFee.isVisible = true
+            edtAdditionalFee.isVisible = false
+
             // Electricity readings
             tvElectricityNew.isVisible = true
             edtElectricityNew.isVisible = false
@@ -213,6 +223,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
                 // Format monetary values consistently
                 tvPriceRoom.text = "${bill?.roomPrice?.toInt()?.toStringMoney()} VND"
                 tvPriceService.text = "${bill?.serviceFee?.toStringMoney()} VND"
+                tvAdditionalFee.text = "${bill?.additionalFee?.toStringMoney()} VND"
 
                 // Display meter readings
                 tvElectricityOld.text = (bill?.previousElectricityIndex ?: 0).toString()

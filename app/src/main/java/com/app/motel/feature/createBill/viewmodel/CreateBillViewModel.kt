@@ -90,6 +90,7 @@ class CreateBillViewModel @Inject constructor(
         oldWaterMeter: Int?,
         newWaterMeter: Int?,
         servicePrice: Int?,
+        additionalFee: Int?,
         discount: Int?,
         note: String?,
     ) {
@@ -152,7 +153,8 @@ class CreateBillViewModel @Inject constructor(
             val total = room?.rentalPrice.toMoney().toDouble() +
                     waterUsed * HoaDonEntity.PRICE_ELECTRICITY +
                     electricityUsed * HoaDonEntity.PRICE_WATER +
-                    (servicePrice ?: 0) -
+                    (servicePrice ?: 0) +
+                    (additionalFee ?: 0) -
                     (discount ?: 0)
 
             val newBill = Bill(
@@ -166,6 +168,7 @@ class CreateBillViewModel @Inject constructor(
                 previousElectricityIndex = oldElectricityMeter,
                 previousWaterIndex = oldWaterMeter,
                 serviceFee = servicePrice.toStringMoney(),
+                additionalFee = additionalFee.toStringMoney(),
                 discount = discount.toStringMoney(),
                 totalAmount = total.toInt().toStringMoney(),
                 roomId = room?.id ?: "",

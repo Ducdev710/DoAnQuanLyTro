@@ -52,6 +52,9 @@ data class HoaDonEntity(
     @ColumnInfo(name = "GiaDichVu")
     val serviceFee: String?,
 
+    @ColumnInfo(name = "PhuPhi")
+    val additionalFee: String? = "0",
+
     @ColumnInfo(name = "TienMienGiam")
     val discount: String? = "0",
 
@@ -94,6 +97,7 @@ data class HoaDonEntity(
             previousElectricityIndex = previousElectricityIndex,
             previousWaterIndex = previousWaterIndex,
             serviceFee = serviceFee,
+            additionalFee = additionalFee,
             discount = discount,
             totalAmount = total,
             status = status,

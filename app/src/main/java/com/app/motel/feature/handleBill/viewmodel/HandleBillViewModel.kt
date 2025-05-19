@@ -184,17 +184,21 @@ class HandleBillViewModel @Inject constructor(
                 val electricityCost = electricityUsed * HoaDonEntity.PRICE_ELECTRICITY
                 val waterCost = waterUsed * HoaDonEntity.PRICE_WATER
 
-                // Parse service fee and discount
+                // Parse service fee, additional fee, and discount
                 val serviceFee = try {
                     billNonNull.serviceFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "")?.toIntOrNull() ?: 0
+                } catch (e: Exception) { 0 }
+
+                val additionalFee = try {
+                    billNonNull.additionalFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "")?.toIntOrNull() ?: 0
                 } catch (e: Exception) { 0 }
 
                 val discount = try {
                     billNonNull.discount?.replace(" VND", "")?.replace(",", "")?.replace(" ", "")?.toIntOrNull() ?: 0
                 } catch (e: Exception) { 0 }
 
-                // Calculate total cost
-                val totalInt = (roomPrice + serviceFee + electricityCost + waterCost - discount).toInt()
+                // Calculate total cost (now including additionalFee)
+                val totalInt = (roomPrice + serviceFee + electricityCost + waterCost + additionalFee - discount).toInt()
                 val totalAmount = String.format("%,d", totalInt)
 
                 // Create updated bill
@@ -206,6 +210,7 @@ class HandleBillViewModel @Inject constructor(
                     waterUsed = waterUsed,
                     roomPrice = roomPrice,
                     serviceFee = billNonNull.serviceFee,
+                    additionalFee = billNonNull.additionalFee,
                     discount = billNonNull.discount,
                     note = billNonNull.note
                 )

@@ -486,6 +486,59 @@ android:inputType="text"
 
                 </LinearLayout>
 
+                <!-- Additional Fee -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+                    android:gravity="center_vertical"
+                    android:weightSum="9">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phụ phí"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Các phụ phí phát sinh nếu có"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_additional_fee"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                        style="@style/InputLayoutStyle1"
+                        android:layout_weight="4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_additional_fee"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="VND"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:gravity="center"
+                            android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
                 <!-- Add this just before the View spacer at the end of the LinearLayout -->
                 <LinearLayout
                     android:layout_width="match_parent"

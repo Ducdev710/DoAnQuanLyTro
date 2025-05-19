@@ -57,6 +57,7 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
                 views.txtWaterNew.text.toString().toIntOrNull(),
                 views.txtPriceService.text.toString().toMoney(),
                 views.txtDiscount.text.toString().toMoney(),
+                views.txtAdditionalFee.text.toString().toMoney(),
                 views.txtNote.text.toString()
             )
         }
