@@ -3,12 +3,14 @@ package com.app.motel.feature.tenant.viewmodel
 import android.util.Patterns
 import androidx.lifecycle.viewModelScope
 import com.app.motel.core.AppBaseViewModel
+import com.app.motel.data.entity.HopDongEntity
 import com.app.motel.data.entity.NguoiThueEntity
 import com.app.motel.data.model.CommonUser
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Room
 import com.app.motel.data.model.Tenant
 import com.app.motel.data.model.User
+import com.app.motel.data.repository.ContractRepository
 import com.app.motel.data.repository.ProfileRepository
 import com.app.motel.data.repository.RoomRepository
 import com.app.motel.data.repository.TenantFilterType
@@ -21,7 +23,8 @@ class TenantViewModel @Inject constructor(
     private val tenantRepository: TenantRepository,
     private val profileRepository: ProfileRepository,
     private val roomRepository: RoomRepository,
-    private val userController: UserController
+    private val userController: UserController,
+    private val contractRepository: ContractRepository,
 ): AppBaseViewModel<TenantState, TenantViewAction, TenantViewEvent>(TenantState()) {
     override fun handle(action: TenantViewAction) {
 
@@ -279,6 +282,8 @@ class TenantViewModel @Inject constructor(
     fun deleteTenant(tenantId: String) {
         viewModelScope.launch {
             try {
+                liveData.deleteTenant.postValue(Resource.Loading())
+
                 val currentUser = userController.state.currentUser.value?.data
                 // Get tenant first to check ownership
                 val tenant = tenantRepository.getTenantsById(tenantId)
@@ -293,7 +298,17 @@ class TenantViewModel @Inject constructor(
                     return@launch
                 }
 
-                liveData.deleteTenant.postValue(Resource.Loading())
+                // Check if tenant is a contract owner
+                val contracts = contractRepository.getContractByTenantId(tenantId)
+                val activeContracts = contracts.filter { it.isActive == HopDongEntity.ACTIVE }
+
+                if (activeContracts.isNotEmpty()) {
+                    liveData.deleteTenant.postValue(Resource.Error(
+                        message = "Không thể xóa người thuê này vì họ đang là chủ hợp đồng"
+                    ))
+                    return@launch
+                }
+
                 val result = tenantRepository.deleteTenant(tenantId)
                 liveData.deleteTenant.postValue(Resource.Success(true, "Xóa khách thuê thành công"))
             } catch (e: Exception) {

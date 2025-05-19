@@ -36,20 +36,40 @@ class BillRepository @Inject constructor(
     suspend fun getBillByTenantRentedRoom(tenantId: String): List<Bill> {
         try {
             val contractEntities = contractDAO.getByTenantId(tenantId)
+
+            // If no contracts found, we won't have any bills
+            if (contractEntities.isEmpty()) {
+                Log.e("getBillByTenantRentedRoom", "No contracts found for tenant $tenantId")
+                return listOf()
+            }
+
             val bills: ArrayList<Bill> = arrayListOf()
 
             contractEntities.forEach { contractEntity ->
+                // Debug log to check contract details
+                Log.d("Contract", "Processing contract: Room=${contractEntity.maPhong}, " +
+                        "Start=${contractEntity.ngayBatDau}, End=${contractEntity.ngayKetThuc}")
+
                 var leftDate = DateConverter.localStringToDate(contractEntity.ngayBatDau)?.toCalendar()
                 val rightDate = DateConverter.localStringToDate(contractEntity.ngayKetThuc)?.toCalendar()
-                if(leftDate != null && rightDate != null){
-                    while (leftDate!!.before(rightDate)){
-                        Log.e("getBillByTenantRentedRoom", "leftDate ${leftDate.time}")
+                val currentDate = Calendar.getInstance()
+
+                if(leftDate != null && rightDate != null) {
+                    // Use MAX of current date and rightDate to ensure we get all bills
+                    val endComparison = if (rightDate.after(currentDate)) rightDate else currentDate
+
+                    while (leftDate!!.before(endComparison)) {
+                        val month = leftDate.get(Calendar.MONTH)
+                        val year = leftDate.get(Calendar.YEAR)
+
+                        Log.d("BillCheck", "Looking for bill: Room=${contractEntity.maPhong}, Month=$month, Year=$year")
+
                         val bill = billDAO.getByRoomAndMonth(
                             contractEntity.maPhong ?: "",
-                            leftDate.get(Calendar.MONTH),
-                            leftDate.get(Calendar.YEAR),
+                            month + 1,
+                            year,
                         )
-                        if(bill != null){
+                        if(bill != null) {
                             bills.add(bill.toModel().apply {
                                 this.room = contractEntity.maPhong?.let { roomDAO.getPhongById(it)?.toModel() }
                             })
@@ -59,10 +79,11 @@ class BillRepository @Inject constructor(
                     }
                 }
             }
-            Log.e("getBillByTenantRentedRoom", "bills ok $bills")
+
+            Log.d("getBillByTenantRentedRoom", "Found ${bills.size} bills for tenant $tenantId")
             return bills.reversed()
-        }catch (e: Exception){
-            Log.e("getBillByTenantRentedRoom", "bills error $e")
+        } catch (e: Exception) {
+            Log.e("getBillByTenantRentedRoom", "Error getting bills: ${e.message}", e)
             return listOf()
         }
     }
@@ -111,6 +132,15 @@ class BillRepository @Inject constructor(
             Resource.Success(data = null, message = "Không tìm thấy hóa đơn")
         } catch (e: Exception) {
             Resource.Error(message = e.toString())
+        }
+    }
+
+    suspend fun getBillByRoomId(roomId: String): List<Bill> {
+        val bills = billDAO.getBillsByRoomId(roomId)
+        return bills.map { billWithRoom ->
+            billWithRoom.hoaDon.toModel().apply {
+                this.room = billWithRoom.phong?.toModel()
+            }
         }
     }
 

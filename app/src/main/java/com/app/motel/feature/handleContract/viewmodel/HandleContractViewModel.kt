@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.app.motel.common.service.DateConverter
 import com.app.motel.core.AppBaseViewModel
+import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.entity.HopDongEntity
 import com.app.motel.data.entity.NguoiThueEntity
 import com.app.motel.data.entity.PhongEntity
 import com.app.motel.data.model.Contract
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Tenant
+import com.app.motel.data.repository.BillRepository
 import com.app.motel.data.repository.ContractRepository
 import com.app.motel.data.repository.TenantRepository
 import com.app.motel.feature.profile.UserController
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class HandleContractViewModel @Inject constructor(
     val repository: ContractRepository,
     private val tenantRepository: TenantRepository,
+    private val billRepository: BillRepository,
     private val userController: UserController,
 ): AppBaseViewModel<HandleContractViewState, HandleContractViewAction, HandleContractViewEvent>(
     HandleContractViewState()
@@ -156,6 +159,24 @@ class HandleContractViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+            // Check for unpaid bills for this room
+            val roomId = contract.roomId
+            if (roomId != null) {
+                try {
+                    val bills = billRepository.getBillByRoomId(roomId)
+                    val unpaidBills = bills.filter { it.status == HoaDonEntity.STATUS_UNPAID }
+
+                    if (unpaidBills.isNotEmpty()) {
+                        liveData.updateContract.postValue(Resource.Error(message = "Không thể kết thúc hợp đồng vì phòng này còn ${unpaidBills.size} hóa đơn chưa thanh toán"))
+                        return@launch
+                    }
+                } catch (e: Exception) {
+                    Log.e("HandleContractViewModel", "Error checking unpaid bills: ${e.message}")
+                    liveData.updateContract.postValue(Resource.Error(message = "Lỗi khi kiểm tra hóa đơn: ${e.message}"))
+                    return@launch
+                }
+            }
+
             val contractUpdate = contract.copy(
                 endDate = dateEndStr,
                 isActive = HopDongEntity.INACTIVE,

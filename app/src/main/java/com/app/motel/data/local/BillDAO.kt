@@ -36,4 +36,7 @@ interface BillDAO {
 
     @Query("DELETE FROM HoaDon WHERE MaPhong = :roomId")
     suspend fun deleteByRoomId(roomId: String)
+
+    @Query("SELECT * FROM HoaDon WHERE maPhong = :roomId")
+    suspend fun getBillsByRoomId(roomId: String): List<HoaDonWithPhong>
 }

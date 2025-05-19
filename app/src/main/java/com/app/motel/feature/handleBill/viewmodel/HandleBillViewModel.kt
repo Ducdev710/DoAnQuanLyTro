@@ -78,18 +78,21 @@ class HandleBillViewModel @Inject constructor(
                         liveData.updateBill.postValue(Resource.Error(message = "Hóa đơn không tồn tại"))
                         return@launch
                     }
-                    // member in room can pay bill
-                    !tenantRepository.getTenantsByRoomId(bill.roomId ?: "").any { it.id == currentUser?.id } -> {
-                        liveData.updateBill.postValue(Resource.Error(message = "Bạn không có quyền thanh toán hóa đơn này"))
-                        return@launch
-                    }
                     bill.status == HoaDonEntity.STATUS_PAID -> {
                         liveData.updateBill.postValue(Resource.Error(message = "Hóa đơn đã được thanh toán"))
                         return@launch
                     }
+                    // Check if current user is associated with this bill through any contracts
+                    currentUser == null -> {
+                        liveData.updateBill.postValue(Resource.Error(message = "Không thể xác thực người dùng"))
+                        return@launch
+                    }
+                    !userController.state.isAdmin && !isUserAllowedToPayBill(currentUser.id, bill) -> {
+                        liveData.updateBill.postValue(Resource.Error(message = "Bạn không có quyền thanh toán hóa đơn này"))
+                        return@launch
+                    }
                 }
 
-                // Fix: bill is now non-null because of the when check above
                 val billUpdate = bill!!.copy(
                     status = HoaDonEntity.STATUS_PAID
                 )
@@ -103,6 +106,20 @@ class HandleBillViewModel @Inject constructor(
             } catch (e: Exception) {
                 liveData.updateBill.postValue(Resource.Error(message = "Lỗi thanh toán: ${e.message}"))
             }
+        }
+    }
+
+    /**
+     * Helper method to check if a user is allowed to pay a bill
+     * This allows tenants to pay bills even when contracts are nearly expired
+     */
+    private suspend fun isUserAllowedToPayBill(userId: String, bill: Bill): Boolean {
+        // Get all contracts associated with this user
+        val userContracts = contractRepository.getContractByTenantId(userId)
+
+        // Check if any of the user's contracts are for the room in this bill
+        return userContracts.any { contract ->
+            contract.roomId == bill.roomId
         }
     }
 
