@@ -84,35 +84,39 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             val roomPrice = views.edtPriceRoom.text.toString().toIntOrNull() ?: 0
             val serviceFee = views.edtPriceService.text.toString().toIntOrNull() ?: 0
             val additionalFee = views.edtAdditionalFee.text.toString().toIntOrNull() ?: 0
+
+            // Get both new and old readings from edit fields
+            val previousElectricityIndex = views.edtElectricityOld.text.toString().toIntOrNull() ?: 0
+            val previousWaterIndex = views.edtWaterOld.text.toString().toIntOrNull() ?: 0
+
             val electricityIndex = views.edtElectricityNew.text.toString().toIntOrNull() ?: 0
             val waterIndex = views.edtWaterNew.text.toString().toIntOrNull() ?: 0
+
             val discount = views.edtPriceDiscount.text.toString().toIntOrNull() ?: 0
             val note = views.edtNote.text.toString()
 
-            // Use previous readings directly from the current bill
-            val oldElectricityIndex = currentBill.previousElectricityIndex ?: 0
-            val oldWaterIndex = currentBill.previousWaterIndex ?: 0
-
             // Validate new readings
-            if (electricityIndex < oldElectricityIndex) {
+            if (electricityIndex < previousElectricityIndex) {
                 requireActivity().showToast("Chỉ số điện mới phải lớn hơn hoặc bằng chỉ số cũ")
                 return
             }
 
-            if (waterIndex < oldWaterIndex) {
+            if (waterIndex < previousWaterIndex) {
                 requireActivity().showToast("Chỉ số nước mới phải lớn hơn hoặc bằng chỉ số cũ")
                 return
             }
 
             // Calculate consumption based on the difference between new readings and old readings
-            val electricityUsed = electricityIndex - oldElectricityIndex
-            val waterUsed = waterIndex - oldWaterIndex
+            val electricityUsed = electricityIndex - previousElectricityIndex
+            val waterUsed = waterIndex - previousWaterIndex
 
             // Update bill with new values
             val updatedBill = currentBill.copy(
                 roomPrice = roomPrice.toDouble(),
                 serviceFee = serviceFee.toString(),
                 additionalFee = additionalFee.toString(),
+                previousElectricityIndex = previousElectricityIndex,
+                previousWaterIndex = previousWaterIndex,
                 electricityIndex = electricityIndex,
                 waterIndex = waterIndex,
                 electricityUsed = electricityUsed,
@@ -148,14 +152,22 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             edtAdditionalFee.isVisible = true
             edtAdditionalFee.setText(bill?.additionalFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "") ?: "0")
 
-            // Electricity readings
-            tvElectricityOld.text = (bill?.previousElectricityIndex ?: 0).toString()
+            // Electricity readings - OLD (now editable)
+            tvElectricityOld.isVisible = false
+            edtElectricityOld.isVisible = true
+            edtElectricityOld.setText((bill?.previousElectricityIndex ?: 0).toString())
+
+            // Electricity readings - NEW
             tvElectricityNew.isVisible = false
             edtElectricityNew.isVisible = true
             edtElectricityNew.setText(bill?.electricityIndex?.toString() ?: "0")
 
-            // Water readings
-            tvWaterOld.text = (bill?.previousWaterIndex ?: 0).toString()
+            // Water readings - OLD (now editable)
+            tvWaterOld.isVisible = false
+            edtWaterOld.isVisible = true
+            edtWaterOld.setText((bill?.previousWaterIndex ?: 0).toString())
+
+            // Water readings - NEW
             tvWaterNew.isVisible = false
             edtWaterNew.isVisible = true
             edtWaterNew.setText(bill?.waterIndex?.toString() ?: "0")
@@ -189,11 +201,17 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             tvAdditionalFee.isVisible = true
             edtAdditionalFee.isVisible = false
 
-            // Electricity readings
+            // Electricity readings - both OLD and NEW
+            tvElectricityOld.isVisible = true
+            edtElectricityOld.isVisible = false
+
             tvElectricityNew.isVisible = true
             edtElectricityNew.isVisible = false
 
-            // Water readings
+            // Water readings - both OLD and NEW
+            tvWaterOld.isVisible = true
+            edtWaterOld.isVisible = false
+
             tvWaterNew.isVisible = true
             edtWaterNew.isVisible = false
 

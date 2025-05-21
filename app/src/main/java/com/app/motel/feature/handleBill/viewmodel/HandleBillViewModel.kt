@@ -13,7 +13,6 @@ import com.app.motel.data.model.Tenant
 import com.app.motel.data.repository.BillRepository
 import com.app.motel.data.repository.ComplaintRepository
 import com.app.motel.data.repository.ContractRepository
-import com.app.motel.data.repository.NotificationRepository
 import com.app.motel.data.repository.TenantRepository
 import com.app.motel.feature.profile.UserController
 import kotlinx.coroutines.launch
@@ -158,6 +157,7 @@ class HandleBillViewModel @Inject constructor(
 
     /**
      * Updates an existing bill with new values and meter readings
+     * Now includes support for updating previous electricity and water meter readings
      */
     fun updateBill(bill: Bill?) {
         viewModelScope.launch {
@@ -179,11 +179,19 @@ class HandleBillViewModel @Inject constructor(
                         return@launch
                     }
                     bill.electricityIndex == null -> {
-                        liveData.updateBill.postValue(Resource.Error(message = "Chỉ số điện không được để trống"))
+                        liveData.updateBill.postValue(Resource.Error(message = "Chỉ số điện mới không được để trống"))
                         return@launch
                     }
                     bill.waterIndex == null -> {
-                        liveData.updateBill.postValue(Resource.Error(message = "Chỉ số nước không được để trống"))
+                        liveData.updateBill.postValue(Resource.Error(message = "Chỉ số nước mới không được để trống"))
+                        return@launch
+                    }
+                    bill.previousElectricityIndex == null -> {
+                        liveData.updateBill.postValue(Resource.Error(message = "Chỉ số điện cũ không được để trống"))
+                        return@launch
+                    }
+                    bill.previousWaterIndex == null -> {
+                        liveData.updateBill.postValue(Resource.Error(message = "Chỉ số nước cũ không được để trống"))
                         return@launch
                     }
                 }
@@ -191,12 +199,10 @@ class HandleBillViewModel @Inject constructor(
                 val billNonNull = bill!!
                 val electricityIndex = billNonNull.electricityIndex!!
                 val waterIndex = billNonNull.waterIndex!!
+                val oldElectricityIndex = billNonNull.previousElectricityIndex!!
+                val oldWaterIndex = billNonNull.previousWaterIndex!!
 
-                // Use previous index values from the bill itself
-                val oldElectricityIndex = billNonNull.previousElectricityIndex ?: 0
-                val oldWaterIndex = billNonNull.previousWaterIndex ?: 0
-
-                // Verify readings are increasing
+                // Verify readings are in correct order
                 if (electricityIndex < oldElectricityIndex) {
                     liveData.updateBill.postValue(Resource.Error(message =
                     "Chỉ số điện mới ($electricityIndex) không thể nhỏ hơn chỉ số cũ ($oldElectricityIndex)"))
@@ -209,7 +215,7 @@ class HandleBillViewModel @Inject constructor(
                     return@launch
                 }
 
-                // Calculate consumption and costs
+                // Calculate consumption with potentially updated previous readings
                 val electricityUsed = electricityIndex - oldElectricityIndex
                 val waterUsed = waterIndex - oldWaterIndex
 
@@ -234,11 +240,13 @@ class HandleBillViewModel @Inject constructor(
                 val totalInt = (roomPrice + serviceFee + electricityCost + waterCost + additionalFee - discount).toInt()
                 val totalAmount = String.format("%,d", totalInt)
 
-                // Create updated bill
+                // Create updated bill with potentially modified previous readings
                 val updatedBill = billNonNull.copy(
                     totalAmount = totalAmount,
                     electricityIndex = electricityIndex,
                     waterIndex = waterIndex,
+                    previousElectricityIndex = oldElectricityIndex,  // Include updated previous readings
+                    previousWaterIndex = oldWaterIndex,              // Include updated previous readings
                     electricityUsed = electricityUsed,
                     waterUsed = waterUsed,
                     roomPrice = roomPrice,

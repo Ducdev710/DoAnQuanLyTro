@@ -225,13 +225,26 @@
                     android:layout_weight="1"
                     android:text="Chỉ số cũ"/>
 
-                <TextView
-                    android:id="@+id/tv_electricity_old"
+                <LinearLayout
+                    android:id="@+id/layout_electricity_old"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="0"/>
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_electricity_old"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="0"/>
+
+                    <EditText
+                        android:id="@+id/edt_electricity_old"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:visibility="gone"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- New electricity meter reading -->
@@ -328,13 +341,26 @@
                     android:layout_weight="1"
                     android:text="Chỉ số cũ"/>
 
-                <TextView
-                    android:id="@+id/tv_water_old"
+                <LinearLayout
+                    android:id="@+id/layout_water_old"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="0"/>
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_water_old"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="0"/>
+
+                    <EditText
+                        android:id="@+id/edt_water_old"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:visibility="gone"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- New water meter reading -->

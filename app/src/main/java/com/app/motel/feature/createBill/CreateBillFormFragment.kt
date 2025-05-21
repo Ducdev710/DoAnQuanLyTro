@@ -48,6 +48,10 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
         val item: Room? = Gson().fromJson(arguments?.getString(ITEM_KEY), Room::class.java)
         mViewModel.initForm(item)
 
+        // Make sure electricity and water old values are editable
+        views.txtElectricityOld.isEnabled = true
+        views.txtWaterOld.isEnabled = true
+
         views.btnSave.setOnClickListener{
             mViewModel.createBill(
                 views.txtCreateDate.text.toString(),
@@ -56,8 +60,8 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
                 views.txtWaterOld.text.toString().toIntOrNull(),
                 views.txtWaterNew.text.toString().toIntOrNull(),
                 views.txtPriceService.text.toString().toMoney(),
-                views.txtDiscount.text.toString().toMoney(),
                 views.txtAdditionalFee.text.toString().toMoney(),
+                views.txtDiscount.text.toString().toMoney(),
                 views.txtNote.text.toString()
             )
         }
@@ -98,13 +102,28 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
             Log.d("previousBill", "${it.data} ${it.status} ${it.message}")
             when(it.status){
                 Status.SUCCESS -> {
-                    views.txtElectricityOld.setText(it.data?.electricityIndex?.toString() ?: 0.toString())
-                    views.txtWaterOld.setText(it.data?.waterIndex?.toString() ?: 0.toString())
+                    // Set previous electricity and water readings but keep them editable
+                    views.txtElectricityOld.setText(it.data?.electricityIndex?.toString() ?: "0")
+                    views.txtWaterOld.setText(it.data?.waterIndex?.toString() ?: "0")
+
+                    // Make sure these fields remain editable
+                    views.txtElectricityOld.isEnabled = true
+                    views.txtWaterOld.isEnabled = true
                 }
                 Status.ERROR -> {
-                    requireActivity().showToast(it.message ?: "Có lỗi xảy ra")
+                    // Even if there's an error fetching previous bill, set defaults and keep editable
+                    views.txtElectricityOld.setText("0")
+                    views.txtWaterOld.setText("0")
+                    views.txtElectricityOld.isEnabled = true
+                    views.txtWaterOld.isEnabled = true
+
+                    requireActivity().showToast(it.message ?: "Có lỗi xảy ra khi lấy hóa đơn trước")
                 }
-                else -> {}
+                else -> {
+                    // For loading or other states, ensure fields remain editable
+                    views.txtElectricityOld.isEnabled = true
+                    views.txtWaterOld.isEnabled = true
+                }
             }
         }
         mViewModel.liveData.createBill.observe(viewLifecycleOwner){
