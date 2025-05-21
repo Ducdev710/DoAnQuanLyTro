@@ -266,7 +266,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:gravity="center"
                     android:textSize="@dimen/TEXT_SIZE_LARGE"
                     android:padding="@dimen/PADDING_SIZE_SMALL"
@@ -274,6 +274,73 @@
                     android:text="9"/>
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Added Notes Field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:orientation="vertical"
+            android:padding="@dimen/PADDING_SIZE_SMALL"
+            android:background="@drawable/background_border_radius_3"
+            android:backgroundTint="@color/primaryVariant2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                android:text="Chi tiết bổ sung (ghi chú, tiện nghi)"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_bottom"
+                android:hint="Nhập ghi chú cho phòng"/>
+
+        </LinearLayout>
+
+        <!-- Added Repair Notes Field -->
+        <LinearLayout
+            android:id="@+id/repair_notes_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            android:orientation="vertical"
+            android:padding="@dimen/PADDING_SIZE_SMALL"
+            android:background="@drawable/background_border_radius_3"
+            android:backgroundTint="@color/primaryVariant2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:layout_marginBottom="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                android:text="Ghi chú sửa chữa và hỏng hóc"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_repair_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                android:padding="@dimen/PADDING_SIZE_SMALL"
+                android:background="@drawable/background_border_radius_bottom"
+                android:hint="Nhập thông tin sửa chữa và hỏng hóc"/>
 
         </LinearLayout>
 
@@ -307,8 +374,7 @@
             android:background="@drawable/background_border_radius_3"
             android:paddingHorizontal="@dimen/PADDING_SIZE_DEFAULT"
             android:paddingTop="@dimen/PADDING_SIZE_DEFAULT"
-            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
-            >
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_service"
@@ -324,8 +390,7 @@
                 android:text="Không dịch vụ nào"
                 android:textColor="@color/purple_500"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
-                />
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

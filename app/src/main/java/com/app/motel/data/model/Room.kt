@@ -11,8 +11,10 @@ data class Room(
     val rentalPrice: String = "",
     var services: String? = null,
     val status: String? = null,
-    val areaId: String? = null
-    ) {
+    val areaId: String? = null,
+    val note: String? = null,
+    val repairNote: String? = null
+) {
 
     val isEmpty get() = status == PhongEntity.Status.EMPTY.value
     val isRenting get() = status == PhongEntity.Status.RENTED.value
@@ -32,7 +34,9 @@ data class Room(
             giaThue = rentalPrice,
             dichVu = services,
             trangThai = status,
-            maKhuTro = areaId
+            maKhuTro = areaId,
+            ghiChu = note,
+            ghiChuSuaChua = repairNote
         )
     }
 
@@ -45,7 +49,9 @@ data class Room(
             giaThue = rentalPrice,
             dichVu = services,
             trangThai = PhongEntity.Status.EMPTY.value,
-            maKhuTro = areaId
+            maKhuTro = areaId,
+            ghiChu = note,
+            ghiChuSuaChua = repairNote
         )
     }
 

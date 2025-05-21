@@ -40,7 +40,13 @@ data class PhongEntity(
     val trangThai: String? = null,
 
     @ColumnInfo(name = "MaKhuTro")
-    val maKhuTro: String? = null
+    val maKhuTro: String? = null,
+
+    @ColumnInfo(name = "GhiChu")
+    val ghiChu: String? = null,
+
+    @ColumnInfo(name = "GhiChuSuaChua")
+    val ghiChuSuaChua: String? = null
 ){
     enum class Status(val value: String) {
         EMPTY("Trống"),
@@ -63,7 +69,9 @@ data class PhongEntity(
             rentalPrice = giaThue,
             services = dichVu,
             status = trangThai,
-            areaId = maKhuTro
+            areaId = maKhuTro,
+            note = ghiChu,
+            repairNote = ghiChuSuaChua
         )
     }
 }

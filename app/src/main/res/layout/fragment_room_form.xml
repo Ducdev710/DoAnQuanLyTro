@@ -164,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="VND"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
                     android:backgroundTint="@color/background1"
                     android:gravity="center"
@@ -173,6 +173,30 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+        <!-- Added Note Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
+            style="@style/InputLayoutStyle1"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/background1"
+                android:hint="Chi tiết bổ sung (ghi chú, tiện nghi)"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:gravity="top|start"
+                android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                tools:ignore="SpUsage" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btn_add_service"
             android:layout_width="wrap_content"
@@ -223,7 +247,6 @@
             android:stateListAnimator="@null"
             android:backgroundTint="@color/primary"
             android:background="@drawable/background_button"/>
-
 
     </LinearLayout>
 

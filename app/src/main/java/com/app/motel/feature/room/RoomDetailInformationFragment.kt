@@ -27,6 +27,7 @@ import javax.inject.Inject
 class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<FragmentRoomDetailInformationBinding>() {
 
     private var enableForm: Boolean = false
+    private var isAdmin: Boolean = false
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -53,12 +54,20 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
         setEnableEdittext(views.txtMaxTenant, enableForm)
         setEnableEdittext(views.txtCurrentTenant, false)
         setEnableEdittext(views.txtPriceRoom, enableForm)
+        setEnableEdittext(views.txtNote, enableForm)
         setEnableEdittext(views.txtCountService, false)
+
+        // Only show repair notes section to admins
+        if (isAdmin) {
+            views.repairNotesContainer.visibility = View.VISIBLE
+            setEnableEdittext(views.txtRepairNote, enableForm)
+        } else {
+            views.repairNotesContainer.visibility = View.GONE
+        }
 
         views.btnChangeService.isVisible = enableForm
         views.btnUpdate.isVisible = enableForm
         views.btnDelete.isVisible = enableForm
-
 
         views.btnChangeService.setOnClickListener {
             if (!enableForm) return@setOnClickListener
@@ -76,6 +85,8 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
                 views.txtArea.text.toString(),
                 views.txtMaxTenant.text.toString(),
                 views.txtPriceRoom.text.toString(),
+                views.txtNote.text.toString(),
+                if (isAdmin) views.txtRepairNote.text.toString() else null
             )
         }
 
@@ -106,13 +117,14 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
     private fun listenStateViewModel() {
         viewModel.userController.state.currentUser.observe(viewLifecycleOwner){
             enableForm = it.data?.isAdmin == true
+            isAdmin = it.data?.isAdmin == true
             initUI()
         }
         viewModel.liveData.updateRoom.observe(viewLifecycleOwner){
-             if(it.isSuccess()){
+            if(it.isSuccess()){
                 requireActivity().showToast("Cập nhật phòng thành công")
             }else if(it.isError()){
-                 requireActivity().showToast(it.message ?: "Có lỗi xảy ra")
+                requireActivity().showToast(it.message ?: "Có lỗi xảy ra")
             }
             viewModel.liveData.updateRoom.postValue(Resource.Initialize())
         }
@@ -134,6 +146,13 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
                     views.txtMaxTenant.setText(currentRoom?.maxOccupants?.toString())
                     views.txtCurrentTenant.setText(currentRoom?.tenants?.size?.toString())
                     views.txtPriceRoom.setText(currentRoom?.rentalPrice)
+                    views.txtNote.setText(currentRoom?.note)
+
+                    // Only set repair notes for admin accounts
+                    if (isAdmin) {
+                        views.txtRepairNote.setText(currentRoom?.repairNote)
+                    }
+
                     views.txtCountService.setText(currentRoom?.listService?.size?.toString())
                     adapterService.updateData(currentRoom?.listService ?: arrayListOf())
                     views.tvEmpty.isVisible = currentRoom?.listService.isNullOrEmpty()

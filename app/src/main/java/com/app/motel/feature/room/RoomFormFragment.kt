@@ -14,6 +14,7 @@ import com.app.motel.core.AppBaseFragment
 import com.app.motel.data.model.Resource
 import com.app.motel.databinding.FragmentRoomFormBinding
 import com.app.motel.feature.room.viewmodel.RoomViewModel
+import com.app.motel.feature.service.ServiceFormFragment
 import javax.inject.Inject
 
 class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormBinding>() {
@@ -36,8 +37,37 @@ class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormB
         views.btnCancel.setOnClickListener{
             popFragmentWithSlide()
         }
-        views.btnAddService.setOnClickListener{
-            navigateFragmentWithSlide(R.id.roomServiceFormFragment)
+        views.btnAddService.setOnClickListener {
+            val roomName = views.txtName.text.toString()
+            val roomPrice = views.txtPrice.text.toString()
+            val area = views.txtArea.text.toString()
+            val maxTenant = views.txtMaxTenant.text.toString()
+            val note = views.txtNote.text.toString()
+
+            // Validate required fields
+            if (roomName.isBlank() || roomPrice.isBlank()) {
+                activity?.showToast("Vui lòng điền tên phòng và giá phòng trước khi thêm dịch vụ")
+                return@setOnClickListener
+            }
+
+            // Create room and navigate to service form once room is created
+            viewModel.createRoom(roomName, area, maxTenant, roomPrice, note)
+
+            // Listen for successful room creation (one-time observer)
+            viewModel.liveData.createRoom.observe(viewLifecycleOwner) { result ->
+                if (result.isSuccess() && result.data?.id != null) {
+                    // Remove observer to prevent multiple triggers
+                    viewModel.liveData.createRoom.removeObservers(viewLifecycleOwner)
+
+                    // Navigate to service form with the new room ID
+                    navigateFragmentWithSlide(R.id.roomServiceFormFragment, args = Bundle().apply {
+                        putString(ServiceFormFragment.ROOM_ID_KEY, result.data.id)
+                    })
+
+                    // Reset create room state
+                    viewModel.liveData.createRoom.postValue(Resource.Initialize())
+                }
+            }
         }
         views.btnSave.setOnClickListener {
             viewModel.createRoom(
@@ -45,6 +75,7 @@ class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormB
                 views.txtArea.text.toString(),
                 views.txtMaxTenant.text.toString(),
                 views.txtPrice.text.toString(),
+                views.txtNote.text.toString()
             )
         }
 
@@ -61,9 +92,9 @@ class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormB
             }
         }
     }
-        override fun onDestroy() {
+
+    override fun onDestroy() {
         super.onDestroy()
         viewModel.liveData.createRoom.postValue(Resource.Initialize())
     }
-
 }

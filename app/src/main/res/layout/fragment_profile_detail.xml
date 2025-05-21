@@ -36,7 +36,7 @@
                 android:id="@+id/til_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="họ và tên"
+                android:hint="Họ và tên"
                 android:layout_marginTop="@dimen/PADDING_SIZE_SMALL"
                 style="@style/InputLayoutStyle1"
                 app:startIconDrawable="@drawable/baseline_person_24">

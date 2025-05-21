@@ -25,7 +25,7 @@ import com.app.motel.data.entity.*
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
     // VerificationTokenEntity::class - removed
-], version = 9, exportSchema = false)
+], version = 11, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun boardingHouseDao(): BoardingHouseDAO
@@ -176,6 +176,22 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Define migration from version 9 to 10 for room notes
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add notes column (GhiChu) to Phong table
+                database.execSQL("ALTER TABLE Phong ADD COLUMN GhiChu TEXT")
+            }
+        }
+
+        // Define migration from version 10 to 11 for repair notes
+        private val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add repair notes column (GhiChuSuaChua) to Phong table
+                database.execSQL("ALTER TABLE Phong ADD COLUMN GhiChuSuaChua TEXT")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
@@ -188,7 +204,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppConstants.DATABASE_NAME
             )
                 //.createFromAsset(AppConstants.DATABASE_FILE_IMPORT)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11)
                 .fallbackToDestructiveMigration() // Add this line to force recreate the database if schema doesn't match
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {

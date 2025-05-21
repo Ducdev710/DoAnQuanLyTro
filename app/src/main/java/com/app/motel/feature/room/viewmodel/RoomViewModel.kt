@@ -37,7 +37,6 @@ class RoomViewModel @Inject constructor(
     }
 
     fun setStateRoomListData(status: PhongEntity.Status?){
-
         liveData.currentRoomState.postValue(Resource.Success(status))
     }
 
@@ -85,7 +84,7 @@ class RoomViewModel @Inject constructor(
                         val roomState = liveData.currentRoomState.value?.data
                         roomRepository.geRoomBytBoardingHouseId(boardingHouseId, roomState)
 
-                    // get room to the user
+                        // get room to the user
                     }else{
                         val roomState = liveData.currentRoomState.value?.data
                         if(roomState == PhongEntity.Status.EMPTY){ // get all room empty -> user want rent
@@ -95,7 +94,6 @@ class RoomViewModel @Inject constructor(
                         val userId = userController.state.currentUserId
                         roomRepository.getCurrentRoomRentByTenantId(userId)
                     }
-
                 }
 
                 liveData.rooms.postValue(Resource.Success(rooms))
@@ -111,6 +109,8 @@ class RoomViewModel @Inject constructor(
         area: String?,
         maxTenant: String?,
         priceRoom: String?,
+        note: String? = null,
+        repairNote: String? = null
     ){
         liveData.updateRoom.postValue(Resource.Loading())
         val currentUser = userController.state.currentUser.value?.data
@@ -142,7 +142,9 @@ class RoomViewModel @Inject constructor(
                 roomName = nameRoom ?: "",
                 area = area?.toDoubleOrNull(),
                 maxOccupants = maxTenant?.toIntOrNull(),
-                rentalPrice = priceRoom.toStringMoney()
+                rentalPrice = priceRoom.toStringMoney(),
+                note = note,
+                repairNote = repairNote
             )
 
             val roomUpdated = roomRepository.updateRoom(roomUpdate)
@@ -189,6 +191,7 @@ class RoomViewModel @Inject constructor(
         area: String?,
         maxTenant: String?,
         priceRoom: String?,
+        note: String? = null
     ){
         liveData.createRoom.postValue(Resource.Loading())
 
@@ -219,7 +222,8 @@ class RoomViewModel @Inject constructor(
                 area = area?.toDoubleOrNull(),
                 maxOccupants = maxTenant?.toIntOrNull(),
                 rentalPrice = priceRoom.toStringMoney(),
-                areaId = currentBoardingHouse?.id
+                areaId = currentBoardingHouse?.id,
+                note = note
             )
 
             val roomUpdated = roomRepository.createRoom(roomUpdate)
@@ -232,7 +236,6 @@ class RoomViewModel @Inject constructor(
 
     fun rentRoom(room: Room){
         viewModelScope.launch {
-
             liveData.rentRoom.postValue(Resource.Loading())
             val currentUser = userController.state.currentUser.value?.data
 
@@ -262,6 +265,7 @@ class RoomViewModel @Inject constructor(
             liveData.rentRoom.postValue(rentRoom)
         }
     }
+
     fun loadRoomsByLandlordId(landlordId: String) {
         viewModelScope.launch {
             liveData.rooms.postValue(Resource.Loading())

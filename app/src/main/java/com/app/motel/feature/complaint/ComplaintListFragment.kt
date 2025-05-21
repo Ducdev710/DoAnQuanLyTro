@@ -11,6 +11,7 @@ import com.app.motel.R
 import com.app.motel.common.utils.navigateFragmentWithSlide
 import com.app.motel.core.AppBaseAdapter
 import com.app.motel.core.AppBaseFragment
+import com.app.motel.data.entity.KhieuNaiEntity
 import com.app.motel.data.model.Complaint
 import com.app.motel.databinding.FragmentComplaintListBinding
 import com.app.motel.feature.complaint.viewmodel.ComplaintViewModel
@@ -22,7 +23,7 @@ class ComplaintListFragment: AppBaseFragment<FragmentComplaintListBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentComplaintListBinding {
-         return FragmentComplaintListBinding.inflate(inflater, container, false)
+        return FragmentComplaintListBinding.inflate(inflater, container, false)
     }
 
     @Inject
@@ -57,10 +58,15 @@ class ComplaintListFragment: AppBaseFragment<FragmentComplaintListBinding>() {
 
     lateinit var adapter: ComplaintAdapter
     private fun listenStateViewmodel() {
-        viewmodel.liveData.complains.observe(viewLifecycleOwner){
-            adapter.updateData(it)
-            views.tvEmpty.isVisible = it.isEmpty()
+        viewmodel.liveData.complains.observe(viewLifecycleOwner){ complaints ->
+            // Filter out system notifications
+            val filteredComplaints = complaints.filter { complaint ->
+                complaint.type == KhieuNaiEntity.Type.COMPLAINT.value ||
+                        complaint.type == KhieuNaiEntity.Type.RENT_ROOM.value
+            }
+
+            adapter.updateData(filteredComplaints)
+            views.tvEmpty.isVisible = filteredComplaints.isEmpty()
         }
     }
-
 }
