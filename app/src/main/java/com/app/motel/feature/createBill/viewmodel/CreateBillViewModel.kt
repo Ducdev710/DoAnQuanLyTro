@@ -1,6 +1,7 @@
 package com.app.motel.feature.createBill.viewmodel
 
 import android.icu.util.Calendar
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.app.motel.common.service.DateConverter
 import com.app.motel.common.service.DateConverter.toCalendar
@@ -157,6 +158,14 @@ class CreateBillViewModel @Inject constructor(
                     (additionalFee ?: 0) -
                     (discount ?: 0)
 
+            // Get active contract for this room
+            val activeContract = try {
+                contractRepository.getContractActiveByRoomId(room?.id ?: "")
+            } catch (e: Exception) {
+                Log.e("CreateBillViewModel", "Error getting active contract: ${e.message}", e)
+                null
+            }
+
             val newBill = Bill(
                 name = room?.roomName,
                 createdDate = createdDate,
@@ -175,6 +184,7 @@ class CreateBillViewModel @Inject constructor(
                 month = createDate.toCalendar().get(Calendar.MONTH) + 1,
                 year = createDate.toCalendar().get(Calendar.YEAR),
                 note = note,
+                contractId = activeContract?.id // Add the contract ID to the bill
             )
 
             val contractCreated = billRepository.createBill(newBill)

@@ -14,6 +14,12 @@ import com.app.motel.data.model.Bill
             parentColumns = ["ID"],
             childColumns = ["MaPhong"],
             onDelete = ForeignKey.SET_NULL,
+        ),
+        ForeignKey(
+            entity = HopDongEntity::class,
+            parentColumns = ["ID"],
+            childColumns = ["MaHopDong"],
+            onDelete = ForeignKey.SET_NULL,
         )
     ],
 )
@@ -67,6 +73,9 @@ data class HoaDonEntity(
     @ColumnInfo(name = "MaPhong")
     val roomId: String? = null,
 
+    @ColumnInfo(name = "MaHopDong")
+    val contractId: String? = null,
+
     @ColumnInfo(name = "Thang")
     val month: Int,
 
@@ -102,6 +111,7 @@ data class HoaDonEntity(
             totalAmount = total,
             status = status,
             roomId = roomId,
+            contractId = contractId,
             month = month,
             year = year,
             note = note

@@ -20,6 +20,7 @@ data class Bill(
     val totalAmount: String?,
     val status: Int? = HoaDonEntity.STATUS_UNPAID,
     val roomId: String? = null,
+    val contractId: String? = null,
     val month: Int,
     val year: Int,
     val note: String?
@@ -45,6 +46,7 @@ data class Bill(
             total = totalAmount,
             status = status,
             roomId = roomId,
+            contractId = contractId,
             month = month,
             year = year,
             note = note
@@ -69,6 +71,7 @@ data class Bill(
             total = totalAmount,
             status = HoaDonEntity.STATUS_UNPAID,
             roomId = roomId,
+            contractId = contractId,
             month = month,
             year = year,
             note = note

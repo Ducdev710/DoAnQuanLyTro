@@ -39,7 +39,7 @@ class HandleBillViewModel @Inject constructor(
                         billRepository.getBillByBoardingHouseId(boardingHouseId)
                     } else {
                         val currentUserId = userController.state.currentUserId
-                        billRepository.getBillByTenantRentedRoom(currentUserId)
+                        billRepository.getBillsByTenantId(currentUserId)
                     }
                 }
                 liveData.bills.postValue(Resource.Success(bills))
@@ -53,13 +53,27 @@ class HandleBillViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 // Get tenant info
-                val contract: Contract? = contractRepository.getContractActiveByRoomId(bill.roomId ?: "")
+                var contract: Contract? = null
+
+                // Try to find the contract using the ID if available
+                if (bill.contractId != null && bill.contractId.isNotEmpty()) {
+                    // Get all contracts and find the matching one
+                    val contracts = contractRepository.getContractByBoardingHouseId(userController.state.currentBoardingHouseId)
+                    contract = contracts.firstOrNull { it.id == bill.contractId }
+                }
+
+                // Fall back to roomId if no contract was found
+                if (contract == null) {
+                    contract = contractRepository.getContractActiveByRoomId(bill.roomId ?: "")
+                }
+
                 val tenant: Tenant? = tenantRepository.getTenantsById(contract?.customerId ?: "")
                 bill.tenant = tenant
 
-                // Set current bill directly (no need for previous bill now)
+                // Set current bill directly
                 liveData.currentBill.postValue(bill)
             } catch (e: Exception) {
+                Log.e("HandleBillViewModel", "Error initializing bill form: ${e.message}", e)
                 liveData.updateBill.postValue(Resource.Error(message = "Lỗi khởi tạo: ${e.message}"))
             }
         }
@@ -143,13 +157,17 @@ class HandleBillViewModel @Inject constructor(
 
     /**
      * Helper method to check if a user is allowed to pay a bill
-     * This allows tenants to pay bills even when contracts are nearly expired
+     * Verifies against contract ID if available, otherwise falls back to room ID
      */
     private suspend fun isUserAllowedToPayBill(userId: String, bill: Bill): Boolean {
-        // Get all contracts associated with this user
-        val userContracts = contractRepository.getContractByTenantId(userId)
+        // First check by contract ID if available
+        if (bill.contractId != null && bill.contractId.isNotEmpty()) {
+            val userContracts = contractRepository.getContractByTenantId(userId)
+            return userContracts.any { it.id == bill.contractId }
+        }
 
-        // Check if any of the user's contracts are for the room in this bill
+        // Otherwise, check all user contracts against room ID
+        val userContracts = contractRepository.getContractByTenantId(userId)
         return userContracts.any { contract ->
             contract.roomId == bill.roomId
         }
@@ -157,7 +175,7 @@ class HandleBillViewModel @Inject constructor(
 
     /**
      * Updates an existing bill with new values and meter readings
-     * Now includes support for updating previous electricity and water meter readings
+     * Preserves contract ID when updating bills
      */
     fun updateBill(bill: Bill?) {
         viewModelScope.launch {
@@ -240,20 +258,28 @@ class HandleBillViewModel @Inject constructor(
                 val totalInt = (roomPrice + serviceFee + electricityCost + waterCost + additionalFee - discount).toInt()
                 val totalAmount = String.format("%,d", totalInt)
 
-                // Create updated bill with potentially modified previous readings
+                // Check if we need to assign a contract ID
+                val contractId = billNonNull.contractId ?: run {
+                    // Try to get active contract ID for this room
+                    val activeContract = contractRepository.getContractActiveByRoomId(billNonNull.roomId ?: "")
+                    activeContract?.id
+                }
+
+                // Create updated bill with potentially modified previous readings and contract ID
                 val updatedBill = billNonNull.copy(
                     totalAmount = totalAmount,
                     electricityIndex = electricityIndex,
                     waterIndex = waterIndex,
-                    previousElectricityIndex = oldElectricityIndex,  // Include updated previous readings
-                    previousWaterIndex = oldWaterIndex,              // Include updated previous readings
+                    previousElectricityIndex = oldElectricityIndex,
+                    previousWaterIndex = oldWaterIndex,
                     electricityUsed = electricityUsed,
                     waterUsed = waterUsed,
                     roomPrice = roomPrice,
                     serviceFee = billNonNull.serviceFee,
                     additionalFee = billNonNull.additionalFee,
                     discount = billNonNull.discount,
-                    note = billNonNull.note
+                    note = billNonNull.note,
+                    contractId = contractId
                 )
 
                 // Submit to repository

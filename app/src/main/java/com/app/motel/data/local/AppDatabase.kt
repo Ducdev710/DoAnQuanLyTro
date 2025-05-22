@@ -25,7 +25,7 @@ import com.app.motel.data.entity.*
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
     // VerificationTokenEntity::class - removed
-], version = 11, exportSchema = false)
+], version = 12, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun boardingHouseDao(): BoardingHouseDAO
@@ -192,6 +192,90 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Define migration from version 11 to 12 for bill contract ID
+        private val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add contract ID column (MaHopDong) to HoaDon table
+                database.execSQL("ALTER TABLE HoaDon ADD COLUMN MaHopDong TEXT")
+
+                // Update existing bills with contract IDs from active contracts
+                database.execSQL("""
+            UPDATE HoaDon
+            SET MaHopDong = (
+                SELECT hd.ID
+                FROM HopDong hd
+                WHERE hd.MaPhong = HoaDon.MaPhong
+                AND hd.HieuLuc = 'Đang hiệu lực'
+                LIMIT 1
+            )
+        """)
+
+                // For older bills, try to assign contracts based on date
+                database.execSQL("""
+            UPDATE HoaDon
+            SET MaHopDong = (
+                SELECT hd.ID
+                FROM HopDong hd
+                WHERE hd.MaPhong = HoaDon.MaPhong
+                AND (HoaDon.Nam * 100 + HoaDon.Thang) BETWEEN 
+                    (strftime('%Y', hd.NgayBatDau) * 100 + strftime('%m', hd.NgayBatDau)) 
+                    AND 
+                    CASE 
+                        WHEN hd.NgayKetThuc IS NULL THEN 999999
+                        ELSE (strftime('%Y', hd.NgayKetThuc) * 100 + strftime('%m', hd.NgayKetThuc))
+                    END
+                LIMIT 1
+            )
+            WHERE MaHopDong IS NULL
+        """)
+
+                // Add foreign key relationship between HoaDon and HopDong tables
+                database.execSQL("""
+            CREATE TABLE HoaDon_new (
+                ID TEXT NOT NULL PRIMARY KEY,
+                Ten TEXT,
+                MaPhong TEXT,
+                MaHopDong TEXT,
+                NgayTao TEXT,
+                Thang INTEGER NOT NULL,
+                Nam INTEGER NOT NULL,
+                GiaThue REAL NOT NULL,
+                SODIEN INTEGER,
+                SONUOC INTEGER,
+                SoDienTieuThu INTEGER,
+                SoNuocTieuThu INTEGER,
+                GiaDichVu TEXT,
+                TienMienGiam TEXT,
+                TongTien TEXT,
+                TrangThai INTEGER,
+                GhiChu TEXT,
+                SoDienCu INTEGER,
+                SoNuocCu INTEGER,
+                PhuPhi TEXT DEFAULT '0',
+                FOREIGN KEY (MaPhong) REFERENCES Phong(ID) ON DELETE SET NULL,
+                FOREIGN KEY (MaHopDong) REFERENCES HopDong(ID) ON DELETE SET NULL
+            )
+        """)
+
+                // Copy data from old table to new table
+                database.execSQL("""
+            INSERT INTO HoaDon_new (
+                ID, Ten, MaPhong, MaHopDong, NgayTao, Thang, Nam, GiaThue, 
+                SODIEN, SONUOC, SoDienTieuThu, SoNuocTieuThu, GiaDichVu, 
+                TienMienGiam, TongTien, TrangThai, GhiChu, SoDienCu, SoNuocCu, PhuPhi
+            ) SELECT 
+                ID, Ten, MaPhong, MaHopDong, NgayTao, Thang, Nam, GiaThue, 
+                SODIEN, SONUOC, SoDienTieuThu, SoNuocTieuThu, GiaDichVu, 
+                TienMienGiam, TongTien, TrangThai, GhiChu, SoDienCu, SoNuocCu, PhuPhi
+            FROM HoaDon
+        """)
+
+                // Drop old table and rename new table
+                database.execSQL("DROP TABLE HoaDon")
+                database.execSQL("ALTER TABLE HoaDon_new RENAME TO HoaDon")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
@@ -204,7 +288,11 @@ abstract class AppDatabase : RoomDatabase() {
                 AppConstants.DATABASE_NAME
             )
                 //.createFromAsset(AppConstants.DATABASE_FILE_IMPORT)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11)
+                .addMigrations(
+                    MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6,
+                    MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11,
+                    MIGRATION_11_12
+                )
                 .fallbackToDestructiveMigration() // Add this line to force recreate the database if schema doesn't match
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {

@@ -33,8 +33,26 @@ class BillRepository @Inject constructor(
         }
     }
 
+    suspend fun getBillsByTenantId(tenantId: String): List<Bill> {
+        try {
+            val bills = billDAO.getBillsByTenantId(tenantId)
+            return bills.map { billWithRoom ->
+                billWithRoom.hoaDon.toModel().apply {
+                    this.room = billWithRoom.phong?.toModel()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("getBillsByTenantId", "Error getting bills: ${e.message}", e)
+            return listOf()
+        }
+    }
+
     suspend fun getBillByTenantRentedRoom(tenantId: String): List<Bill> {
         try {
+            // Use the new contract ID-based method instead
+            return getBillsByTenantId(tenantId)
+
+            /* Legacy implementation - keeping for reference
             val contractEntities = contractDAO.getByTenantId(tenantId)
 
             // If no contracts found, we won't have any bills
@@ -82,6 +100,7 @@ class BillRepository @Inject constructor(
 
             Log.d("getBillByTenantRentedRoom", "Found ${bills.size} bills for tenant $tenantId")
             return bills.reversed()
+            */
         } catch (e: Exception) {
             Log.e("getBillByTenantRentedRoom", "Error getting bills: ${e.message}", e)
             return listOf()
@@ -90,7 +109,6 @@ class BillRepository @Inject constructor(
 
     suspend fun checkBillCreateDate(roomId: String, createdDate: Calendar): Resource<Bill> {
         return try {
-
             for (currentMonthSearchIndex in 0 .. SEARCH_MONTH_MAX_LENGTH) {
                 val forwardDate = DateConverter.calculateMonth(
                     createdDate.time,
@@ -124,7 +142,7 @@ class BillRepository @Inject constructor(
                     previousDate.get(Calendar.MONTH) + 1,
                     previousDate.get(Calendar.YEAR),
                 )
-                Log.e("getPreviousBill", "bill $${previousDate.time} $bill")
+                Log.d("getPreviousBill", "bill $${previousDate.time} $bill")
                 if (bill != null) {
                     return Resource.Success(bill.toModel())
                 }
@@ -144,6 +162,11 @@ class BillRepository @Inject constructor(
         }
     }
 
+    suspend fun getBillsByContractId(contractId: String): List<Bill> {
+        val entities = billDAO.getAllByContract(contractId)
+        return entities.map { it.toModel() }
+    }
+
     suspend fun createBill(bill: Bill): Resource<Bill>{
         return try {
             val billEntity = bill.toCreateEntity()
@@ -160,6 +183,15 @@ class BillRepository @Inject constructor(
             billDAO.update(billEntity)
             Resource.Success(billEntity.toModel())
         }catch (e: Exception){
+            Resource.Error(message = e.toString())
+        }
+    }
+
+    suspend fun updateBillsWithContractId(roomId: String, contractId: String): Resource<Boolean> {
+        return try {
+            billDAO.updateBillsWithContractId(roomId, contractId)
+            Resource.Success(true)
+        } catch (e: Exception) {
             Resource.Error(message = e.toString())
         }
     }
