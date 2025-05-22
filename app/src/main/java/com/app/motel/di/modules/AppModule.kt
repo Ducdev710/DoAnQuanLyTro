@@ -146,6 +146,7 @@ object AppModule {
         boardingHouseDAO = db.boardingHouseDao(),
         roomDAO = db.roomDao(),
         tenantRepository = tenantRepository,
+        serviceDAO = db.serviceDao(),
     )
 
     @Provides

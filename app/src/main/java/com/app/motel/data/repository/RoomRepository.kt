@@ -22,6 +22,7 @@ class RoomRepository @Inject constructor(
     private val boardingHouseDAO: BoardingHouseDAO,
     private val roomDAO: RoomDAO,
     private val tenantRepository: TenantRepository,
+    private val serviceDAO: ServiceDAO,
 ) {
 
     suspend fun geRoomBytBoardingHouseId(boardingHouseId: String, state: PhongEntity.Status? = null): List<Room> {
@@ -98,9 +99,13 @@ class RoomRepository @Inject constructor(
         return try {
             val roomEntity = room.toEntity()
 
+            // First delete all services associated with this room
+            serviceDAO.deleteServicesByRoomId(room.id)
+
+            // Then delete the room
             roomDAO.delete(roomEntity)
             Resource.Success(roomEntity.toModel())
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             Resource.Error(message = e.toString())
         }
     }

@@ -40,4 +40,7 @@ interface ServiceDAO {
 
     @Query("SELECT * FROM DichVu WHERE MaKhuTro = :boardingHouseId AND isAppliesAllRoom = 1")
     suspend fun getServiceByKhuTroIdAndAllRooms(boardingHouseId: String): List<DichVuEntity>
+
+    @Query("DELETE FROM DichVu WHERE MaPhong = :roomId")
+    suspend fun deleteServicesByRoomId(roomId: String)
 }

@@ -164,7 +164,7 @@ class RoomViewModel @Inject constructor(
                 return
             }
             roomDelete == null -> {
-                liveData.deleteRoom.postValue(Resource.Error(message = "Không tìm thấy dịch vụ"))
+                liveData.deleteRoom.postValue(Resource.Error(message = "Không tìm thấy phòng"))
                 return
             }
             roomDelete.isRenting || roomDelete.contract != null -> {
