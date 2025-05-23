@@ -233,9 +233,15 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
     fun listenStateViewModel() {
         viewModel.liveData.currentBill.observe(viewLifecycleOwner) { bill ->
             views.apply {
-                tvCraeteDate.text = bill?.createdDate
+                tvCreateDate.text = bill?.createdDate
                 tvNameRoom.text = "Phòng: ${bill?.room?.roomName ?: ""}"
-                tvTenantName.text = "Tên khách: ${bill?.tenant?.fullName ?: ""}"
+
+                // Only show tenant name for admin users
+                tvTenantName.isVisible = viewModel.userController.state.isAdmin
+                if (viewModel.userController.state.isAdmin) {
+                    tvTenantName.text = "Tên khách: ${bill?.tenant?.fullName ?: ""}"
+                }
+
                 tvBillDate.text = "Hóa đơn tháng ${bill?.month ?: ""}/${bill?.year ?: ""}"
 
                 // Show payment date if available (bill is paid)
