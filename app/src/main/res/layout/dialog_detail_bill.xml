@@ -70,6 +70,28 @@
             android:layout_height="wrap_content"
             android:text="Hóa đơn tháng: 7/2023"/>
 
+        <!-- Payment Date - NEW SECTION -->
+        <LinearLayout
+            android:id="@+id/layout_payment_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày thanh toán: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_payment_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:text=""/>
+        </LinearLayout>
+
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

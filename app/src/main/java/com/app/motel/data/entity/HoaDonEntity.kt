@@ -34,6 +34,9 @@ data class HoaDonEntity(
     @ColumnInfo(name = "NgayTao")
     val createdDate: String?,
 
+    @ColumnInfo(name = "NgayThanhToan")
+    val paymentDate: String? = null,
+
     @ColumnInfo(name = "GiaThue")
     val rentPrice: Double,
 
@@ -98,6 +101,7 @@ data class HoaDonEntity(
             id = id,
             name = ten,
             createdDate = createdDate,
+            paymentDate = paymentDate,
             roomPrice = rentPrice,
             waterIndex = waterIndex,
             waterUsed = waterUsed,

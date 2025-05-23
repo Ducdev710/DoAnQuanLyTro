@@ -238,6 +238,13 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
                 tvTenantName.text = "Tên khách: ${bill?.tenant?.fullName ?: ""}"
                 tvBillDate.text = "Hóa đơn tháng ${bill?.month ?: ""}/${bill?.year ?: ""}"
 
+                // Show payment date if available (bill is paid)
+                tvPaymentDate.apply {
+                    isVisible = !bill?.paymentDate.isNullOrBlank()
+                    text = bill?.paymentDate ?: ""
+                }
+                layoutPaymentDate.isVisible = !bill?.paymentDate.isNullOrBlank()
+
                 // Format monetary values consistently
                 tvPriceRoom.text = "${bill?.roomPrice?.toInt()?.toStringMoney()} VND"
                 tvPriceService.text = "${bill?.serviceFee?.toStringMoney()} VND"

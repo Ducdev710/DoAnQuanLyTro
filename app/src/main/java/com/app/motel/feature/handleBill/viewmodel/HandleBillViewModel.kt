@@ -16,6 +16,9 @@ import com.app.motel.data.repository.ContractRepository
 import com.app.motel.data.repository.TenantRepository
 import com.app.motel.feature.profile.UserController
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class HandleBillViewModel @Inject constructor(
@@ -110,8 +113,13 @@ class HandleBillViewModel @Inject constructor(
                     }
                 }
 
+                // Format current date as string for payment timestamp
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+                val paymentDateString = dateFormat.format(Date())
+
                 val billUpdate = bill!!.copy(
-                    status = HoaDonEntity.STATUS_PAID
+                    status = HoaDonEntity.STATUS_PAID,
+                    paymentDate = paymentDateString
                 )
                 val billUpdated = billRepository.updateBill(billUpdate)
 

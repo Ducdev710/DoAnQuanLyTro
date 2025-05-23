@@ -25,7 +25,7 @@ import com.app.motel.data.entity.*
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
     // VerificationTokenEntity::class - removed
-], version = 12, exportSchema = false)
+], version = 13, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun boardingHouseDao(): BoardingHouseDAO
@@ -276,6 +276,21 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Define migration from version 12 to 13 for payment date
+        private val MIGRATION_12_13 = object : Migration(12, 13) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add payment date column (NgayThanhToan) to HoaDon table
+                database.execSQL("ALTER TABLE HoaDon ADD COLUMN NgayThanhToan TEXT")
+
+                // Set payment date for already paid bills to current date
+                database.execSQL("""
+                    UPDATE HoaDon
+                    SET NgayThanhToan = date('now')
+                    WHERE TrangThai = 1
+                """)
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
@@ -291,7 +306,7 @@ abstract class AppDatabase : RoomDatabase() {
                 .addMigrations(
                     MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6,
                     MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11,
-                    MIGRATION_11_12
+                    MIGRATION_11_12, MIGRATION_12_13
                 )
                 .fallbackToDestructiveMigration() // Add this line to force recreate the database if schema doesn't match
                 .addCallback(object : RoomDatabase.Callback() {
