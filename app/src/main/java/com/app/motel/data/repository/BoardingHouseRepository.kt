@@ -94,14 +94,32 @@ class BoardingHouseRepository @Inject constructor(
 
         return (boardingHouse.firstOrNull{ it.id == currentBoardingHouse }
             ?: boardingHouse.firstOrNull())?.toModel()?.apply {
-                prefs.edit().putString(userBoardingHouseKey, id).apply()
-            }
+            prefs.edit().putString(userBoardingHouseKey, id).apply()
+        }
     }
 
-    fun setCurrentBoardingHouse(userId: String, boardingHouse: BoardingHouse){
+    suspend fun setCurrentBoardingHouse(userId: String, boardingHouse: BoardingHouse){
         val userBoardingHouseKey = AppConstants.BOARDING_HOUSE_ID_KEY + userId
 
         prefs.edit().putString(userBoardingHouseKey, boardingHouse.id).apply()
+
+        // Update the boarding house in the database
+        try {
+            val entity = boardingHouse.toEntity()
+            boardingHouseDAO.update(entity)
+        } catch (e: Exception) {
+            Log.e("BoardingHouseRepo", "Error updating boarding house prices: ${e.message}")
+        }
+    }
+
+    suspend fun updateBoardingHousePrices(boardingHouse: BoardingHouse): Resource<BoardingHouse> {
+        return try {
+            val entity = boardingHouse.toEntity()
+            boardingHouseDAO.update(entity)
+            Resource.Success(entity.toModel(), message = "Cập nhật giá điện, nước thành công")
+        } catch (e: Exception) {
+            Resource.Error(message = "Lỗi cập nhật giá điện, nước: ${e.message}")
+        }
     }
 
     suspend fun deleteAllRelateToBoardingHouse(boardingHouseId: String): Boolean {
@@ -123,5 +141,4 @@ class BoardingHouseRepository @Inject constructor(
             false
         }
     }
-
 }

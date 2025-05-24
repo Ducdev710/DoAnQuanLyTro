@@ -181,6 +181,51 @@
                     android:background="@color/grey"
                     android:alpha="0.3"/>
 
+                <!-- New section: Giá điện nước -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá điện nước"
+                    android:textSize="@dimen/TEXT_SIZE_LARGE"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_DEFAULT"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thông tin giá điện và nước áp dụng hàng tháng"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textSize="@dimen/TEXT_SIZE_DEFAULT"
+                    android:textColor="@color/grey"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/tv_electricity_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá 1 số điện: 3,500 VNĐ/số"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/tv_water_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá 1 số nước: 20,000 VNĐ/khối"
+                    android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/PADDING_SIZE_DEFAULT"
+                    tools:ignore="HardcodedText" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey"
+                    android:alpha="0.3"/>
+
                 <!-- Second section: Thanh toán tiền trọ -->
                 <TextView
                     android:layout_width="wrap_content"

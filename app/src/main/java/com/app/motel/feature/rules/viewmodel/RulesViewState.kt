@@ -11,6 +11,7 @@ class RulesViewState: AppViewLiveData {
 
     val addRules = MutableLiveData<Resource<Rules>>()
     val saveRules = MutableLiveData<Resource<Boolean>>()
+    val utilityPrices = MutableLiveData<Resource<UtilityPrices>>()
 
     val getAllRulesActive get () = rules.value?.data?.filter { it.status == QuyDinhEntity.STATUS_ACTIVE } ?: arrayListOf()
     val getAllRules get () = rules.value?.data ?: arrayListOf()

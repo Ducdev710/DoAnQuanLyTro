@@ -36,6 +36,7 @@ class RulesContentFragment @Inject constructor() : AppBaseFragment<FragmentRules
         init()
         listenStateViewModel()
         loadLandlordInfo()
+        observeUtilityPrices()
     }
 
     var adapter: RulesAdapter = RulesAdapter(object : AppBaseAdapter.AppListener<Rules>() {
@@ -71,6 +72,24 @@ class RulesContentFragment @Inject constructor() : AppBaseFragment<FragmentRules
             // Add bank information display
             views.txtBank.text = "Ngân hàng: ${landlordInfo.bankName ?: "Chưa cập nhật"}"
             views.txtNumberBank.text = "Số tài khoản: ${landlordInfo.accountNumber ?: "Chưa cập nhật"}"
+        }
+    }
+
+    private fun observeUtilityPrices() {
+        // For tenant accounts, explicitly fetch boarding house data
+        if (!viewModel.userController.state.isAdmin) {
+            viewModel.getTenantBoardingHouse()
+        }
+
+        // Observe utility prices from the ViewModel's LiveData
+        viewModel.liveData.utilityPrices.observe(viewLifecycleOwner) { resource ->
+            if (resource.isSuccess()) {
+                val prices = resource.data
+                if (prices != null) {
+                    views.tvElectricityPrice.text = "Giá 1 số điện: ${prices.electricityPrice} VNĐ/số"
+                    views.tvWaterPrice.text = "Giá 1 khối nước: ${prices.waterPrice} VNĐ/khối"
+                }
+            }
         }
     }
 }

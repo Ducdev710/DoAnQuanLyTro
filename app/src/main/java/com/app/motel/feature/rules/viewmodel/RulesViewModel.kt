@@ -39,6 +39,21 @@ class RulesViewModel @Inject constructor(
                             getLandlordInfo()
                         }
 
+                        // Get boarding house information for utility prices
+                        val boardingHouse = if (boardingHouseId.isNotEmpty()) {
+                            rulesRepository.getBoardingHouseById(boardingHouseId)
+                        } else null
+
+                        // Store utility prices for tenant users
+                        if (boardingHouse != null) {
+                            liveData.utilityPrices.postValue(Resource.Success(
+                                UtilityPrices(
+                                    electricityPrice = boardingHouse.giaDien,
+                                    waterPrice = boardingHouse.giaNuoc
+                                )
+                            ))
+                        }
+
                         // Find any existing contact information rule
                         val contactRule = tenantRules.find {
                             it.title.contains("Thông tin liên hệ", ignoreCase = true)
@@ -48,12 +63,21 @@ class RulesViewModel @Inject constructor(
                             // Update the content of the existing contact rule
                             val updatedRules = tenantRules.map { rule ->
                                 if (rule.id == contactRule.id) {
+                                    // Include electricity and water prices if available
+                                    val utilityPrices = if (boardingHouse != null) {
+                                        """
+                                    
+                                    Giá điện: ${formatPrice(boardingHouse.giaDien)} VNĐ/số
+                                    Giá nước: ${formatPrice(boardingHouse.giaNuoc)} VNĐ/khối
+                                    """.trimIndent()
+                                    } else ""
+
                                     rule.copy(content = """
-                                    Số điện thoại: ${landlordInfo.phoneNumber}
-                                    Email: ${landlordInfo.email}
-                                    Ngân hàng: ${landlordInfo.bankName ?: ""}
-                                    Số tài khoản: ${landlordInfo.accountNumber ?: ""}
-                                    """.trimIndent())
+                                Số điện thoại: ${landlordInfo.phoneNumber}
+                                Email: ${landlordInfo.email}
+                                Ngân hàng: ${landlordInfo.bankName ?: ""}
+                                Số tài khoản: ${landlordInfo.accountNumber ?: ""}$utilityPrices
+                                """.trimIndent())
                                 } else {
                                     rule
                                 }
@@ -65,10 +89,26 @@ class RulesViewModel @Inject constructor(
                     }
                 }
                 liveData.rules.postValue(Resource.Success(rules))
+
+                // For landlords, get utility prices from current boarding house
+                if (userController.state.isAdmin) {
+                    userController.state.currentBoardingHouse.value?.data?.let { boardingHouse ->
+                        liveData.utilityPrices.postValue(Resource.Success(
+                            UtilityPrices(
+                                electricityPrice = boardingHouse.giaDien,
+                                waterPrice = boardingHouse.giaNuoc
+                            )
+                        ))
+                    }
+                }
             }catch (e: Exception){
                 liveData.rules.postValue(Resource.Error(message = e.message ?: "Unknown error"))
             }
         }
+    }
+
+    private fun formatPrice(price: Int): String {
+        return price.toString().chunked(3).joinToString(",")
     }
 
     suspend fun getLandlordInfo(): LandlordInfo {
@@ -195,6 +235,45 @@ class RulesViewModel @Inject constructor(
         }
     }
 
+    fun getTenantBoardingHouse() {
+        viewModelScope.launch {
+            try {
+                if (!userController.state.isAdmin) {
+                    val tenantId = userController.state.currentUserId
+                    if (tenantId.isNotEmpty()) {
+                        // Get boarding house for this tenant
+                        val boardingHouseId = userController.state.currentBoardingHouseId
+                        if (boardingHouseId.isNotEmpty()) {
+                            val boardingHouse = rulesRepository.getBoardingHouseById(boardingHouseId)
+                            if (boardingHouse != null) {
+                                // Post utility prices to LiveData
+                                liveData.utilityPrices.postValue(Resource.Success(
+                                    UtilityPrices(
+                                        electricityPrice = boardingHouse.giaDien,
+                                        waterPrice = boardingHouse.giaNuoc
+                                    )
+                                ))
+                            }
+                        } else {
+                            // Try to get boarding house by tenant ID if we don't have the ID
+                            val boardingHouse = rulesRepository.getBoardingHouseByTenantId(tenantId)
+                            if (boardingHouse != null) {
+                                liveData.utilityPrices.postValue(Resource.Success(
+                                    UtilityPrices(
+                                        electricityPrice = boardingHouse.giaDien,
+                                        waterPrice = boardingHouse.giaNuoc
+                                    )
+                                ))
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                // Log error but don't crash
+            }
+        }
+    }
+
     fun handleRules(rule: Rules, isUpdate: Boolean = true){
         val currentUser = userController.state.currentUser.value?.data
 
@@ -251,4 +330,9 @@ data class LandlordInfo(
     val email: String,
     val bankName: String? = null,
     val accountNumber: String? = null
+)
+
+data class UtilityPrices(
+    val electricityPrice: Int,
+    val waterPrice: Int
 )

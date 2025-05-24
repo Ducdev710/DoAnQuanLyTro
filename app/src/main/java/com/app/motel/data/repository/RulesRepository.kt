@@ -3,6 +3,7 @@ package com.app.motel.data.repository
 import com.app.motel.data.local.BoardingHouseDAO
 import com.app.motel.data.local.RulesDAO
 import com.app.motel.data.local.UserDAO
+import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Rules
 import com.app.motel.feature.rules.viewmodel.LandlordInfo
@@ -43,6 +44,18 @@ class RulesRepository @Inject constructor(
             accountNumber = landlord.soTaiKhoan
         )
     }
+
+    suspend fun getBoardingHouseById(boardingHouseId: String): BoardingHouse? {
+        val boardingHouseEntity = boardingHouseDAO.getById(boardingHouseId) ?: return null
+        return boardingHouseEntity.toModel()
+    }
+
+    suspend fun getBoardingHouseByTenantId(tenantId: String): BoardingHouse? {
+        val boardingHouseEntities = boardingHouseDAO.getByTenantId(tenantId)
+        if (boardingHouseEntities.isEmpty()) return null
+        return boardingHouseEntities.firstOrNull()?.toModel()
+    }
+
 
     suspend fun getLandlordIdForTenant(tenantId: String): String? {
         // Find boarding houses where this tenant lives

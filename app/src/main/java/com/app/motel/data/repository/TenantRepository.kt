@@ -142,7 +142,6 @@ class TenantRepository @Inject constructor(
         }
     }
 
-    // In TenantRepository.kt
     suspend fun updateTenantRentToRoom(tenantId: String, roomId: String?): Resource<Tenant> {
         return withContext(Dispatchers.IO) {
             try {

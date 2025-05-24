@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.app.motel.core.AppBaseViewModel
 import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.model.Bill
+import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Complaint
 import com.app.motel.data.model.Contract
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Status
 import com.app.motel.data.model.Tenant
 import com.app.motel.data.repository.BillRepository
+import com.app.motel.data.repository.BoardingHouseRepository
 import com.app.motel.data.repository.ComplaintRepository
 import com.app.motel.data.repository.ContractRepository
 import com.app.motel.data.repository.TenantRepository
@@ -27,6 +29,7 @@ class HandleBillViewModel @Inject constructor(
     private val tenantRepository: TenantRepository,
     val userController: UserController,
     private val complaintRepository: ComplaintRepository,
+    private val boardingHouseRepository: BoardingHouseRepository,
 ): AppBaseViewModel<HandleBillState, HandleBillAction, HandleBillEvent>(HandleBillState()) {
     override fun handle(action: HandleBillAction) {
         // Handle actions from UI
@@ -183,7 +186,7 @@ class HandleBillViewModel @Inject constructor(
 
     /**
      * Updates an existing bill with new values and meter readings
-     * Preserves contract ID when updating bills
+     * Uses electricity and water prices from the BoardingHouse settings
      */
     fun updateBill(bill: Bill?) {
         viewModelScope.launch {
@@ -245,9 +248,16 @@ class HandleBillViewModel @Inject constructor(
                 val electricityUsed = electricityIndex - oldElectricityIndex
                 val waterUsed = waterIndex - oldWaterIndex
 
+                // Get current boarding house to fetch the electricity and water prices
+                val currentBoardingHouse = boardingHouseRepository.getCurrentBoardingHouse(userController.state.currentUserId)
+
+                // Use prices from the boarding house or default if not available
+                val electricityPrice = currentBoardingHouse?.giaDien ?: 3500
+                val waterPrice = currentBoardingHouse?.giaNuoc ?: 20000
+
                 val roomPrice = billNonNull.roomPrice ?: 0.0
-                val electricityCost = electricityUsed * HoaDonEntity.PRICE_ELECTRICITY
-                val waterCost = waterUsed * HoaDonEntity.PRICE_WATER
+                val electricityCost = electricityUsed * electricityPrice
+                val waterCost = waterUsed * waterPrice
 
                 // Parse service fee, additional fee, and discount
                 val serviceFee = try {

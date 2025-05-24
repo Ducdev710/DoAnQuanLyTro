@@ -1,12 +1,8 @@
 package com.app.motel.feature.profile
 
-import androidx.lifecycle.viewModelScope
 import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.CommonUser
 import com.app.motel.data.model.Resource
-import com.app.motel.data.model.Room
-import com.app.motel.data.model.Tenant
-import com.app.motel.data.model.User
 import com.app.motel.data.repository.BoardingHouseRepository
 import com.app.motel.data.repository.ProfileRepository
 import kotlinx.coroutines.CoroutineScope
@@ -66,14 +62,45 @@ class UserController @Inject constructor(
         if(currentUser?.id == null || !currentUser.isAdmin){
             return false
         }
-        try {
-            boardingHouseRepository.setCurrentBoardingHouse(currentUser.id, boardingHouse)
-            scope.launch {
+
+        scope.launch {
+            try {
+                // Call the suspend function within a coroutine
+                boardingHouseRepository.setCurrentBoardingHouse(currentUser.id, boardingHouse)
                 getCurrentBoardingHouse(currentUser)
+            } catch (e: Exception) {
+                // Handle error if needed
             }
-            return true
-        }catch (e: Exception){
+        }
+        return true
+    }
+
+    fun updateBoardingHousePrices(electricityPrice: Int, waterPrice: Int): Boolean {
+        val currentUser = state.currentUser.value?.data
+        val currentBoardingHouse = state.currentBoardingHouse.value?.data
+
+        if(currentUser?.id == null || !currentUser.isAdmin || currentBoardingHouse == null){
             return false
         }
+
+        // Create updated boarding house with new prices
+        val updatedBoardingHouse = currentBoardingHouse.copy(
+            giaDien = electricityPrice,
+            giaNuoc = waterPrice
+        )
+
+        // Update in repository and set as current
+        scope.launch {
+            try {
+                val result = boardingHouseRepository.updateBoardingHousePrices(updatedBoardingHouse)
+                if (result.isSuccess()) {
+                    boardingHouseRepository.setCurrentBoardingHouse(currentUser.id, updatedBoardingHouse)
+                    getCurrentBoardingHouse(currentUser)
+                }
+            } catch (e: Exception) {
+                // Handle error if needed
+            }
+        }
+        return true
     }
 }

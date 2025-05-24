@@ -13,6 +13,7 @@ import com.app.motel.data.model.Bill
 import com.app.motel.data.model.Resource
 import com.app.motel.data.model.Room
 import com.app.motel.data.repository.BillRepository
+import com.app.motel.data.repository.BoardingHouseRepository
 import com.app.motel.data.repository.ContractRepository
 import com.app.motel.data.repository.RoomRepository
 import com.app.motel.data.repository.ServiceRepository
@@ -26,6 +27,7 @@ class CreateBillViewModel @Inject constructor(
     private val serviceRepository: ServiceRepository,
     private val roomRepository: RoomRepository,
     private val userController: UserController,
+    private val boardingHouseRepository: BoardingHouseRepository,
 ): AppBaseViewModel<CreateBillViewState, CreateBillViewAction, CreateBillViewEvent>(
     CreateBillViewState()
 ) {
@@ -151,9 +153,17 @@ class CreateBillViewModel @Inject constructor(
 
             val waterUsed = newWaterMeter!! - (oldWaterMeter ?: 0)
             val electricityUsed = newElectricityMeter!! - (oldElectricityMeter ?: 0)
+
+            // Get current boarding house to fetch the electricity and water prices
+            val currentBoardingHouse = boardingHouseRepository.getCurrentBoardingHouse(userController.state.currentUserId)
+
+            // Use prices from the boarding house or default if not available
+            val electricityPrice = currentBoardingHouse?.giaDien ?: 3500
+            val waterPrice = currentBoardingHouse?.giaNuoc ?: 20000
+
             val total = room?.rentalPrice.toMoney().toDouble() +
-                    waterUsed * HoaDonEntity.PRICE_ELECTRICITY +
-                    electricityUsed * HoaDonEntity.PRICE_WATER +
+                    electricityUsed * electricityPrice +
+                    waterUsed * waterPrice +
                     (servicePrice ?: 0) +
                     (additionalFee ?: 0) -
                     (discount ?: 0)

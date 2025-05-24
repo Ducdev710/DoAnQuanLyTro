@@ -38,7 +38,13 @@ data class KhuTroEntity(
     val trangThai: Int?,
 
     @ColumnInfo(name = "MoTa")
-    val moTa: String?
+    val moTa: String?,
+
+    @ColumnInfo(name = "GiaDien")
+    val giaDien: Int = 3500,
+
+    @ColumnInfo(name = "GiaNuoc")
+    val giaNuoc: Int = 20000
 ){
     companion object{
         const val STATE_ACTIVE = 1
@@ -52,7 +58,9 @@ data class KhuTroEntity(
             roomCount = soLuongPhong,
             ownerId = maChuNha,
             isActive = trangThai == 1,
-            description = moTa
+            description = moTa,
+            giaDien = giaDien,
+            giaNuoc = giaNuoc
         )
     }
 }

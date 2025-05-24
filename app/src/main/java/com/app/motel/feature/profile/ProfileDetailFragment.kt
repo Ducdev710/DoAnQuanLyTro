@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.motel.AppApplication
 import com.app.motel.common.utils.showToast
 import com.app.motel.core.AppBaseFragment
+import com.app.motel.data.model.BoardingHouse
 import com.app.motel.databinding.FragmentProfileDetailBinding
 import com.app.motel.feature.tenant.viewmodel.TenantViewModel
 import javax.inject.Inject
@@ -53,9 +54,10 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                 val email = txtEmail.text.toString()
                 val homeTown = txtHomeTown.text.toString()
                 val idCard = txtIdCard.text.toString()
-                val bankName = txtBank.text.toString() // Add bank name
-                val accountNumber = txtNumberBank.text.toString() // Add account number
+                val bankName = txtBank.text.toString()
+                val accountNumber = txtNumberBank.text.toString()
 
+                // Save user info
                 viewmodel.updateCurrentUser(
                     currentUser = profileController.state.getCurrentUser,
                     fullName = fullName,
@@ -66,9 +68,32 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                     idCard = idCard,
                     password = txtPassword.text.toString(),
                     username = txtUsername.text.toString(),
-                    bankName = bankName, // Pass bank name to viewModel
-                    accountNumber = accountNumber // Pass account number to viewModel
+                    bankName = bankName,
+                    accountNumber = accountNumber
                 )
+
+                // If user is admin and electricity/water price fields are visible, update boarding house
+                if (profileController.state.getCurrentUser?.isAdmin == true &&
+                    tilElectricityPrice.isVisible &&
+                    tilWaterPrice.isVisible) {
+
+                    val currentBoardingHouse = profileController.state.getCurrentBoardingHouse
+                    currentBoardingHouse?.let {
+                        try {
+                            val electricityPrice = txtElectricityPrice.text.toString().toIntOrNull() ?: 3500
+                            val waterPrice = txtWaterPrice.text.toString().toIntOrNull() ?: 20000
+
+                            val updatedBoardingHouse = it.copy(
+                                giaDien = electricityPrice,
+                                giaNuoc = waterPrice
+                            )
+
+                            profileController.setCurrentBoardingHouse(updatedBoardingHouse)
+                        } catch (e: Exception) {
+                            requireActivity().showToast("Lỗi cập nhật giá điện nước: ${e.message}")
+                        }
+                    }
+                }
             }
         }
     }
@@ -94,6 +119,20 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                 tilNumberBank.isVisible = it.data?.isAdmin == true
                 tilHomeTown.isVisible = it.data?.isAdmin == false
                 tilIdCard.isVisible = it.data?.isAdmin == false
+
+                // Show electricity and water price fields only for admins
+                tilElectricityPrice.isVisible = it.data?.isAdmin == true
+                tilWaterPrice.isVisible = it.data?.isAdmin == true
+            }
+        }
+
+        // Observe the current boarding house to display electricity and water prices
+        profileController.state.currentBoardingHouse.observe(viewLifecycleOwner) { resource ->
+            resource.data?.let { boardingHouse ->
+                views.apply {
+                    txtElectricityPrice.setText(boardingHouse.giaDien.toString())
+                    txtWaterPrice.setText(boardingHouse.giaNuoc.toString())
+                }
             }
         }
 
@@ -105,5 +144,4 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
             }
         }
     }
-
 }

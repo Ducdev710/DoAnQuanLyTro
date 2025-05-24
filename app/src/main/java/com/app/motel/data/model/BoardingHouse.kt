@@ -11,7 +11,9 @@ data class BoardingHouse(
     val roomCount: Int?,
     val ownerId: String? = null,
     val isActive: Boolean = true,
-    val description: String? = null
+    val description: String? = null,
+    val giaDien: Int = 3500,
+    val giaNuoc: Int = 20000
 ){
     var rooms: List<Room>? = null
     var service: List<Service>? = null
@@ -29,7 +31,9 @@ data class BoardingHouse(
             soLuongPhong = roomCount,
             maChuNha = ownerId,
             trangThai = if (isActive) KhuTroEntity.STATE_ACTIVE else KhuTroEntity.STATE_INACTIVE,
-            moTa = description
+            moTa = description,
+            giaDien = giaDien,
+            giaNuoc = giaNuoc
         )
     }
 
@@ -41,7 +45,9 @@ data class BoardingHouse(
             soLuongPhong = roomCount,
             maChuNha = ownerId,
             trangThai = KhuTroEntity.STATE_ACTIVE,
-            moTa = description
+            moTa = description,
+            giaDien = giaDien,
+            giaNuoc = giaNuoc
         )
     }
 }
