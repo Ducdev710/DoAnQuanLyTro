@@ -2,7 +2,7 @@ package com.app.motel.common
 
 object AppConstants {
     const val DATABASE_NAME: String = "app_database.db"
-    const val DATABASE_FILE_IMPORT: String = "databases/quan_ly_cho_thue.db"
+    const val DATABASE_FILE_IMPORT: String = "databases/app_database_db.db"
 
     const val PREFS_NAME: String = "prefs_name"
     const val TOKEN_KEY: String = "token_key"

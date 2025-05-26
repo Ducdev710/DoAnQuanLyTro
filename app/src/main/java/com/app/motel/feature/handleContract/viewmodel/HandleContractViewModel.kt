@@ -6,16 +6,17 @@ import com.app.motel.common.service.DateConverter
 import com.app.motel.core.AppBaseViewModel
 import com.app.motel.data.entity.HoaDonEntity
 import com.app.motel.data.entity.HopDongEntity
-import com.app.motel.data.entity.NguoiThueEntity
 import com.app.motel.data.entity.PhongEntity
 import com.app.motel.data.model.Contract
 import com.app.motel.data.model.Resource
-import com.app.motel.data.model.Tenant
 import com.app.motel.data.repository.BillRepository
 import com.app.motel.data.repository.ContractRepository
 import com.app.motel.data.repository.TenantRepository
 import com.app.motel.feature.profile.UserController
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 class HandleContractViewModel @Inject constructor(
@@ -67,12 +68,61 @@ class HandleContractViewModel @Inject constructor(
     fun updateContract(contract: Contract) {
         viewModelScope.launch {
             liveData.updateContract.postValue(Resource.Loading())
-            val result = repository.updateContract(contract)
+
+            // Tính lại thời hạn hợp đồng trước khi cập nhật
+            val updatedContract = calculateDuration(contract)
+
+            val result = repository.updateContract(updatedContract)
             if (result.isSuccess()) {
                 // Refresh the contract list if update was successful
                 getContracts()
             }
             liveData.updateContract.postValue(result)
+        }
+    }
+
+    /**
+     * Tính toán thời hạn hợp đồng dựa trên ngày bắt đầu và ngày kết thúc
+     */
+    private fun calculateDuration(contract: Contract): Contract {
+        try {
+            val startDateStr = contract.startDate
+            val endDateStr = contract.endDate
+
+            if (!startDateStr.isNullOrEmpty() && !endDateStr.isNullOrEmpty()) {
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+                val startDate = dateFormat.parse(startDateStr)
+                val endDate = dateFormat.parse(endDateStr)
+
+                if (startDate != null && endDate != null) {
+                    val startCalendar = Calendar.getInstance()
+                    startCalendar.time = startDate
+
+                    val endCalendar = Calendar.getInstance()
+                    endCalendar.time = endDate
+
+                    // Tính toán số tháng giữa hai ngày
+                    val yearDiff = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR)
+                    val monthDiff = endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH)
+
+                    // Công thức tính thời hạn theo tháng
+                    var months = yearDiff * 12 + monthDiff
+
+                    // Chỉ cộng thêm 1 tháng khi ngày kết thúc lớn hơn ngày bắt đầu
+                    // Nếu ngày kết thúc = ngày bắt đầu, đó chính xác là N tháng (không cộng thêm)
+                    if (endCalendar.get(Calendar.DAY_OF_MONTH) > startCalendar.get(Calendar.DAY_OF_MONTH)) {
+                        months += 1
+                    }
+
+                    // Đảm bảo thời hạn không âm
+                    return contract.copy(duration = months.coerceAtLeast(0))
+                }
+            }
+            return contract
+        } catch (e: Exception) {
+            Log.e("HandleContractViewModel", "Error calculating duration: ${e.message}")
+            return contract
         }
     }
 
@@ -109,7 +159,8 @@ class HandleContractViewModel @Inject constructor(
         viewModelScope.launch {
             val contractUpdate = contract.copy(
                 startDate = DateConverter.getCurrentLocalDateTime(),
-                endDate = newEndDate
+                endDate = newEndDate,
+                duration = duration // Thêm duration từ tham số đầu vào
             )
 
             val contractUpdated = repository.updateContract(contractUpdate)
@@ -177,7 +228,9 @@ class HandleContractViewModel @Inject constructor(
                 }
             }
 
-            val contractUpdate = contract.copy(
+            // Tính lại thời hạn hợp đồng dựa trên ngày kết thúc mới
+            val contractWithEndDate = contract.copy(endDate = dateEndStr)
+            val updatedContract = calculateDuration(contractWithEndDate).copy(
                 endDate = dateEndStr,
                 isActive = HopDongEntity.INACTIVE,
                 deposit = "${contract.deposit} (Đã trả)",
@@ -187,7 +240,7 @@ class HandleContractViewModel @Inject constructor(
                 deductionReason = deductionReason
             )
 
-            val contractUpdated = repository.updateContract(contractUpdate)
+            val contractUpdated = repository.updateContract(updatedContract)
             if(contractUpdated.isSuccess()) {
                 repository.updateStateRoom(contractUpdated.data?.roomId ?: "", PhongEntity.Status.EMPTY.value)
                 tenantRepository.removeTenantFromRoom(contractUpdated.data?.roomId ?: "")

@@ -12,7 +12,9 @@ import com.app.motel.core.AppBaseBottomSheet
 import com.app.motel.data.entity.HopDongEntity
 import com.app.motel.data.model.Contract
 import com.app.motel.databinding.DialogDetailContractBinding
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class DetailContractBottomSheet(
     private val contract: Contract,
@@ -172,22 +174,39 @@ class DetailContractBottomSheet(
 
             if (startDateStr.isEmpty() || endDateStr.isEmpty()) return
 
-            // Parse dates
-            val startParts = startDateStr.split("/")
-            val endParts = endDateStr.split("/")
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val startDate = dateFormat.parse(startDateStr) ?: return
+            val endDate = dateFormat.parse(endDateStr) ?: return
 
-            if (startParts.size != 3 || endParts.size != 3) return
+            val startCalendar = Calendar.getInstance()
+            startCalendar.time = startDate
 
-            val startYear = startParts[2].toInt()
-            val startMonth = startParts[1].toInt()
-            val endYear = endParts[2].toInt()
-            val endMonth = endParts[1].toInt()
+            val endCalendar = Calendar.getInstance()
+            endCalendar.time = endDate
 
-            // Calculate duration in months
-            val months = (endYear - startYear) * 12 + (endMonth - startMonth)
+            // Tính toán số tháng giữa hai ngày
+            val yearDiff = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR)
+            val monthDiff = endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH)
+
+            // Công thức tính thời hạn theo tháng
+            var months = yearDiff * 12 + monthDiff
+
+            // Nếu là cùng ngày trong tháng hoặc ngày cuối > ngày đầu thì tính tròn 1 tháng
+            // Nếu ngày cuối < ngày đầu thì không tính tròn tháng
+            if (endCalendar.get(Calendar.DAY_OF_MONTH) > startCalendar.get(Calendar.DAY_OF_MONTH)) {
+                months += 1
+            }
+
+            // Trường hợp đặc biệt: nếu chính xác 1 tháng (ví dụ: 25/7 - 25/8)
+            if (months == 1 && endCalendar.get(Calendar.DAY_OF_MONTH) == startCalendar.get(Calendar.DAY_OF_MONTH)) {
+                months = 1
+            }
+
+            // Đảm bảo thời hạn không âm
+            val finalDuration = months.coerceAtLeast(0)
 
             // Update duration text
-            val durationText = "Thời gian: $months tháng"
+            val durationText = "Thời gian: $finalDuration tháng"
             views.tvDuration.text = durationText
         } catch (e: Exception) {
             // If calculation fails, don't update the duration

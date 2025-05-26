@@ -123,6 +123,10 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                 // Show electricity and water price fields only for admins
                 tilElectricityPrice.isVisible = it.data?.isAdmin == true
                 tilWaterPrice.isVisible = it.data?.isAdmin == true
+
+                // Hide the entire utility prices section for tenants
+                tvUtilityPricesTitle.isVisible = it.data?.isAdmin == true
+                layoutUtilityPrices.isVisible = it.data?.isAdmin == true
             }
         }
 
