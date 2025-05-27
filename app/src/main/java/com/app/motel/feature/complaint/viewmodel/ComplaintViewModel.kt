@@ -38,18 +38,28 @@ class ComplaintViewModel @Inject constructor(
         liveData.updateComplaint.postValue(Resource.Initialize())
     }
 
-    fun addComplaint(title: String, content: String){
+    fun addComplaint(title: String, content: String) {
         viewModelScope.launch {
-
             liveData.updateComplaint.postValue(Resource.Loading())
             val currentUserId = userController.state.currentUserId
+
+            // First check for direct contracts
             val currentContract = contractRepository.getContractActiveByTenantId(currentUserId)
+
+            // If no direct contract, check if user is a resident in any active room
+            val roomId = if (currentContract != null) {
+                currentContract.roomId
+            } else {
+                // Get room ID for resident who is not the primary contract holder
+                contractRepository.getRoomIdForResident(currentUserId)
+            }
+
             when {
                 currentUserId.isBlank() -> {
                     liveData.updateComplaint.postValue(Resource.Error(message = "Không tìm thấy người dùng"))
                     return@launch
                 }
-                currentContract == null -> {
+                roomId == null -> {
                     liveData.updateComplaint.postValue(Resource.Error(message = "Không tìm thấy phòng hiện tại của bạn"))
                     return@launch
                 }
@@ -63,15 +73,15 @@ class ComplaintViewModel @Inject constructor(
                 }
             }
 
-            val rentRoomInsert = Complaint(
+            val complaintToInsert = Complaint(
                 title = title,
                 content = content,
                 submittedBy = currentUserId,
-                roomId = currentContract?.roomId,
+                roomId = roomId,
             )
 
-            val rentRoom = complaintRepository.createComplaint(rentRoomInsert)
-            liveData.updateComplaint.postValue(rentRoom)
+            val result = complaintRepository.createComplaint(complaintToInsert)
+            liveData.updateComplaint.postValue(result)
         }
     }
 }

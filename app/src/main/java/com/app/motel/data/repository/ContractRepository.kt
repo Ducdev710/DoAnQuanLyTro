@@ -55,6 +55,18 @@ class ContractRepository @Inject constructor(
         }?.toModel()
     }
 
+    suspend fun getRoomIdForResident(userId: String): String? {
+        // Get the room ID for a resident who may not be the primary contract holder
+        val tenant = tenantDAO.getNguoiThueById(userId)
+
+        // Check if tenant exists and has a rented room
+        if (tenant?.trangThai == NguoiThueEntity.Status.ACTIVE.value && !tenant.maPhong.isNullOrBlank()) {
+            return tenant.maPhong
+        }
+
+        return null
+    }
+
     suspend fun createContract(contract: Contract): Resource<Contract>{
         return try {
             val contractEntity = contract.toCreateEntity()
