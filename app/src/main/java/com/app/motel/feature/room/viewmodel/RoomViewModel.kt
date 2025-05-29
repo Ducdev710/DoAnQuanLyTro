@@ -266,14 +266,78 @@ class RoomViewModel @Inject constructor(
         }
     }
 
-    fun loadRoomsByLandlordId(landlordId: String) {
+    fun loadRoomsByLandlordId(landlordId: String, boardingHouseId: String? = null) {
         viewModelScope.launch {
             liveData.rooms.postValue(Resource.Loading())
             try {
-                val rooms = roomRepository.getAvailableRoomsByLandlordId(landlordId)
+                val rooms = if (boardingHouseId != null) {
+                    // If boardingHouseId is provided, only get rooms from that specific boarding house
+                    roomRepository.getAvailableRoomsByBoardingHouseId(boardingHouseId)
+                } else {
+                    // Otherwise get all available rooms from the landlord
+                    roomRepository.getAvailableRoomsByLandlordId(landlordId)
+                }
                 liveData.rooms.postValue(Resource.Success(rooms))
             } catch (e: Exception) {
                 liveData.rooms.postValue(Resource.Error(message = e.message ?: "Không thể tải danh sách phòng"))
+            }
+        }
+    }
+
+    fun loadEmptyRoomsForTenant(tenant: Tenant) {
+        viewModelScope.launch {
+            liveData.rooms.postValue(Resource.Loading())
+            try {
+                val currentRentedRoomId = tenant.roomId
+
+                if (currentRentedRoomId != null) {
+                    // Get tenant's current room to find its boarding house
+                    val currentRoom = roomRepository.getRoomById(currentRentedRoomId)
+
+                    if (currentRoom != null && currentRoom.areaId != null) {
+                        // Get boarding house info first
+                        val boardingHouseResource = boardingHouseRepository.getBoardingHouseById(currentRoom.areaId)
+                        val boardingHouse = boardingHouseResource.data
+
+                        // Get empty rooms from the same boarding house
+                        val roomsInSameBoardingHouse = roomRepository.getAvailableRoomsByBoardingHouseId(currentRoom.areaId)
+
+                        // Attach boarding house to each room without modifying areaId
+                        val enrichedRooms = roomsInSameBoardingHouse.map { room ->
+                            // Create a new room with the boarding house info
+                            room.boardingHouse = boardingHouse
+                            room
+                        }
+
+                        liveData.rooms.postValue(Resource.Success(enrichedRooms))
+                    } else if (tenant.landlordId != null) {
+                        // Fallback to landlord's rooms
+                        loadRoomsByLandlordId(tenant.landlordId)
+                    } else {
+                        // Last resort: all empty rooms
+                        val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
+                        liveData.rooms.postValue(Resource.Success(allEmptyRooms))
+                    }
+                } else if (tenant.landlordId != null) {
+                    // If tenant doesn't have a room yet but has a landlord
+                    loadRoomsByLandlordId(tenant.landlordId)
+                } else {
+                    // If we don't know anything about the tenant, show all empty rooms
+                    val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
+                    liveData.rooms.postValue(Resource.Success(allEmptyRooms))
+                }
+            } catch (e: Exception) {
+                Log.e("RoomViewModel", "Error loading rooms for tenant: ${e.message}")
+                liveData.rooms.postValue(Resource.Error(message = e.message ?: "Không thể tải danh sách phòng"))
+
+                // Try to recover by showing all empty rooms
+                try {
+                    val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
+                    liveData.rooms.postValue(Resource.Success(allEmptyRooms))
+                } catch (e2: Exception) {
+                    // Give up
+                    liveData.rooms.postValue(Resource.Error(message = "Không thể tải danh sách phòng"))
+                }
             }
         }
     }

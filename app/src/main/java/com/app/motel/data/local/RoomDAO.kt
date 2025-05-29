@@ -46,4 +46,7 @@ interface RoomDAO {
 
     @Query("DELETE FROM Phong WHERE MaKhuTro = :id")
     suspend fun deleteByBoardingHouseId(id: String)
+
+    @Query("SELECT * FROM phong WHERE MaKhuTro = :boardingHouseId AND TrangThai = :status")
+    suspend fun getRoomsByBoardingHouseIdAndStatus(boardingHouseId: String, status: String): List<PhongEntity>
 }

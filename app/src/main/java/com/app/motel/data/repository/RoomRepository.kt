@@ -74,6 +74,14 @@ class RoomRepository @Inject constructor(
         return roomEntity?.toModel()
     }
 
+    suspend fun getAvailableRoomsByBoardingHouseId(boardingHouseId: String): List<Room> {
+        val roomEntities = roomDAO.getRoomsByBoardingHouseIdAndStatus(
+            boardingHouseId,
+            PhongEntity.Status.EMPTY.value
+        )
+        return roomEntities.map { it.toModel() }
+    }
+
     suspend fun createRoom(room: Room): Resource<Room>{
         return try {
             val roomEntity = room.toCreateEntity()

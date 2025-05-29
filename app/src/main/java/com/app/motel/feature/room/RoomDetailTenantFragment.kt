@@ -51,7 +51,6 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
     }
 
     private fun initUI() {
-
         views.btnAddTenant.isVisible = enableForm
         views.btnCreateContract.isVisible = enableForm
 
@@ -80,14 +79,29 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
                             TenantFormFragment.ITEM_KEY, json) })
                     }
                     AppBaseAdapter.ItemAction.LONG_CLICK -> {
-                        // Check if tenant is a contract holder
-                        if (item.isContractHolder) {
+                        if(!enableForm) return
+
+                        // Get the current room and its active contract
+                        val currentRoom = viewModel.liveData.currentRoom.value?.data
+                        val contract = currentRoom?.contract
+
+                        // If tenant is a contract holder, check if they're the holder of the CURRENT active contract
+                        // This requires checking both the contract's activity and if this tenant is its current holder
+                        val isCurrentActiveContractHolder = item.isContractHolder &&
+                                contract != null &&
+                                contract.status != 0 &&
+                                contract.customerId == item.id
+
+                        if (isCurrentActiveContractHolder) {
                             requireActivity().showDialogConfirm(
                                 title = "Không thể xóa chủ hợp đồng",
-                                content = "Người thuê ${item.fullName} là chủ hợp đồng. Không thể xóa.",
-                                confirm = {}
+                                content = "Người thuê ${item.fullName} là chủ hợp đồng đang có hiệu lực. Không thể xóa.",
+                                confirm = {},
+                                showCancel = false,
+                                confirmText = "OK"
                             )
                         } else {
+                            // Allow deletion for regular tenants or former contract holders
                             requireActivity().showDialogConfirm(
                                 title = "Xác nhận xóa người thuê",
                                 content = "Bạn có chắc muốn xóa người thuê ${item.fullName} khỏi phòng ${item.room?.roomName}",
@@ -112,7 +126,13 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
                 views.lyEmpty.isVisible = it.data?.contract == null
                 views.lyTenant.isVisible = it.data?.contract != null
                 adapter.updateData(it.data?.tenants ?: arrayListOf())
-                views.btnAddTenant.isVisible = it.data?.maxOccupants == null || it.data.maxOccupants > (it.data.tenants?.size ?: 0)
+
+                // Only show Add Tenant button if user is admin AND there's space available
+                val hasSpace = it.data?.maxOccupants == null ||
+                        it.data.maxOccupants > (it.data.tenants?.size ?: 0)
+
+                // Use enableForm (which is true only for admin users) to control visibility
+                views.btnAddTenant.isVisible = enableForm && hasSpace
             }
         }
 
@@ -126,5 +146,4 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
             tenantViewModel.liveData.updateTenant.postValue(Resource.Initialize())
         }
     }
-
 }

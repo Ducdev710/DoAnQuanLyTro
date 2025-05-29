@@ -110,10 +110,13 @@ class RoomListFragment @Inject constructor() : AppBaseFragment<FragmentListRoomB
                 // If user is a tenant (not admin) and viewing empty rooms
                 if (currentUser != null && !currentUser.isAdmin && roomState == PhongEntity.Status.EMPTY) {
                     currentUser.child?.let { child ->
-                        if (child is Tenant && child.landlordId != null) {
-                            // Load only empty rooms from tenant's landlord
-                            viewModel.loadRoomsByLandlordId(child.landlordId)
-                            return@observe
+                        if (child is Tenant) {
+                            val tenant = child
+                            if (tenant.landlordId != null) {
+                                // Load empty rooms for this tenant
+                                viewModel.loadEmptyRoomsForTenant(tenant)
+                                return@observe
+                            }
                         }
                     }
                 }
