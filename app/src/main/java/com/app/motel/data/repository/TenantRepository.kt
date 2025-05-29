@@ -220,4 +220,8 @@ class TenantRepository @Inject constructor(
         return filteredTenants.map { fetchTenantData(it.toModel()) }
     }
 
+    suspend fun updateTenantContractHolderStatus(tenantId: String, isContractHolder: Boolean) {
+        val value = if (isContractHolder) 1 else 0
+        tenantDAO.updateContractHolderStatus(tenantId, value)
+    }
 }

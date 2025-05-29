@@ -242,8 +242,22 @@ class HandleContractViewModel @Inject constructor(
 
             val contractUpdated = repository.updateContract(updatedContract)
             if(contractUpdated.isSuccess()) {
+                // Update room status to empty
                 repository.updateStateRoom(contractUpdated.data?.roomId ?: "", PhongEntity.Status.EMPTY.value)
+
+                // Remove tenants from room
                 tenantRepository.removeTenantFromRoom(contractUpdated.data?.roomId ?: "")
+
+                // Reset the contract holder status for the tenant
+                contract.customerId?.let { tenantId ->
+                    try {
+                        // Update the tenant's isContractHolder status to false (0)
+                        tenantRepository.updateTenantContractHolderStatus(tenantId, false)
+                        Log.d("HandleContractViewModel", "Reset contract holder status for tenant ID: $tenantId")
+                    } catch (e: Exception) {
+                        Log.e("HandleContractViewModel", "Error updating tenant contract holder status: ${e.message}")
+                    }
+                }
             }
             liveData.updateContract.postValue(contractUpdated.apply {
                 message = "Kết thúc hợp đồng thành công"

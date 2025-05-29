@@ -92,4 +92,7 @@ interface TenantDAO {
 
     @Query("SELECT * FROM NguoiThue WHERE MaChuNha = :landlordId AND MaKhuTro = :boardingHouseId")
     suspend fun getTenantsByLandlordAndBoardingHouse(landlordId: String, boardingHouseId: String): List<NguoiThueEntity>
+
+    @Query("UPDATE NguoiThue SET LaChuHopDong = :status WHERE Id = :tenantId")
+    suspend fun updateContractHolderStatus(tenantId: String, status: Int)
 }
