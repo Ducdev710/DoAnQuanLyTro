@@ -318,13 +318,31 @@ class RoomViewModel @Inject constructor(
                         val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
                         liveData.rooms.postValue(Resource.Success(allEmptyRooms))
                     }
-                } else if (tenant.landlordId != null) {
-                    // If tenant doesn't have a room yet but has a landlord
-                    loadRoomsByLandlordId(tenant.landlordId)
                 } else {
-                    // If we don't know anything about the tenant, show all empty rooms
-                    val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
-                    liveData.rooms.postValue(Resource.Success(allEmptyRooms))
+                    // For new tenants (without a room)
+                    if (tenant.boardingHouseId != null) {
+                        // If the tenant has a specific boarding house association,
+                        // only show empty rooms from that boarding house
+                        val boardingHouseResource = boardingHouseRepository.getBoardingHouseById(tenant.boardingHouseId)
+                        val boardingHouse = boardingHouseResource.data
+                        val roomsInBoardingHouse = roomRepository.getAvailableRoomsByBoardingHouseId(tenant.boardingHouseId)
+
+                        // Attach boarding house info to each room
+                        val enrichedRooms = roomsInBoardingHouse.map { room ->
+                            room.boardingHouse = boardingHouse
+                            room
+                        }
+
+                        liveData.rooms.postValue(Resource.Success(enrichedRooms))
+                    } else if (tenant.landlordId != null) {
+                        // If tenant doesn't have a specific boarding house but has a landlord,
+                        // show empty rooms from all boarding houses owned by that landlord
+                        loadRoomsByLandlordId(tenant.landlordId)
+                    } else {
+                        // If we don't know anything about the tenant, show all empty rooms
+                        val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
+                        liveData.rooms.postValue(Resource.Success(allEmptyRooms))
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("RoomViewModel", "Error loading rooms for tenant: ${e.message}")
