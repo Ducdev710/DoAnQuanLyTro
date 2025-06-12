@@ -41,6 +41,7 @@ class ComplaintListFragment: AppBaseFragment<FragmentComplaintListBinding>() {
     }
 
     private fun initUI() {
+        //Lấy danh sách khiếu nại từ ViewModel
         viewmodel.getComplaint()
 
         adapter = ComplaintAdapter(object : AppBaseAdapter.AppListener<Complaint>(){
@@ -51,12 +52,18 @@ class ComplaintListFragment: AppBaseFragment<FragmentComplaintListBinding>() {
             }
         })
         views.rcv.adapter = adapter
+        //Nhấn nút Add để chuyển đến màn hình tạo mới khiếu nại
         views.btnAdd.setOnClickListener{
             navigateFragmentWithSlide(R.id.complaintFormFragment)
         }
     }
 
     lateinit var adapter: ComplaintAdapter
+
+    //Quan sát complains LiveData từ ViewModel
+    //Lọc danh sách để chỉ hiển thị các loại khiếu nại cụ thể (khiếu nại thông thường và yêu cầu thuê phòng)
+    //Cập nhật adapter với danh sách đã lọc
+    //Hiển thị thông báo trống nếu không có khiếu nại nào sau khi lọc
     private fun listenStateViewmodel() {
         viewmodel.liveData.complains.observe(viewLifecycleOwner){ complaints ->
             // Filter out system notifications

@@ -86,6 +86,9 @@ class BoardingHouseRepository @Inject constructor(
         }
     }
 
+    //Kiểm tra từ SharedPreferences
+    //Nếu không tìm thấy, lấy nhà trọ đầu tiên
+    //Lưu lại ID vào SharedPreferences
     suspend fun getCurrentBoardingHouse(userId: String): BoardingHouse?{
         val userBoardingHouseKey = AppConstants.BOARDING_HOUSE_ID_KEY + userId
 
@@ -98,6 +101,8 @@ class BoardingHouseRepository @Inject constructor(
         }
     }
 
+    //Lưu ID vào SharedPreferences
+    //Cập nhật dữ liệu trong database
     suspend fun setCurrentBoardingHouse(userId: String, boardingHouse: BoardingHouse){
         val userBoardingHouseKey = AppConstants.BOARDING_HOUSE_ID_KEY + userId
 
@@ -122,6 +127,11 @@ class BoardingHouseRepository @Inject constructor(
         }
     }
 
+    //Xóa tất cả dữ liệu liên quan:
+    //Cập nhật trạng thái người thuê
+    //Xóa hóa đơn, hợp đồng, khiếu nại liên quan đến mỗi phòng
+    //Xóa nội quy, thông báo, dịch vụ liên quan đến nhà trọ
+    //Xóa tất cả phòng thuộc nhà trọ
     suspend fun deleteAllRelateToBoardingHouse(boardingHouseId: String): Boolean {
         return try{
             roomDAO.getPhongsByKhuTroId(boardingHouseId).forEach { phongEntity ->

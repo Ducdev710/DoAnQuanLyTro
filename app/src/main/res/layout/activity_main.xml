@@ -24,7 +24,7 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_main"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.app.motel.ui.BadgeBottomNavigationView
         android:id="@+id/nav_bottom"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -33,6 +33,7 @@
         android:background="@color/background1"
         app:itemIconTint="@color/icon2"
         app:itemTextColor="@color/textColor3"
+        app:menu="@menu/menu_bottom_admin"
         />
 
 </RelativeLayout>

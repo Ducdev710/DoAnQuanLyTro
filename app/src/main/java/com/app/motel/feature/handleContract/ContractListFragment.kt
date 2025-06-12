@@ -42,6 +42,8 @@ class ContractListFragment : AppBaseFragment<FragmentContractListBinding>() {
     private fun init() {
         viewModel.getContracts()
         viewModel.setCurrentStateContract(views.tabBar.currentPosition)
+
+        // Thiết lập listener cho CustomTabBar để chuyển đổi giữa hợp đồng đang hoạt động và không hoạt động
         views.tabBar.setOnTabSelectedListener(object: CustomTabBar.OnTabSelectedListener{
             override fun onTabSelected(position: Int) {
                 if(position == 0){
@@ -51,6 +53,10 @@ class ContractListFragment : AppBaseFragment<FragmentContractListBinding>() {
                 }
             }
         })
+
+        //Tạo adapter với callback xử lý khi người dùng nhấp vào hợp đồng
+        //Hiển thị dialog chi tiết hợp đồng khi người dùng nhấp vào một hợp đồng
+        //Cung cấp callback để cập nhật hợp đồng từ dialog
         adapter = ContractActiveAdapter(object: AppBaseAdapter.AppListener<Contract>(){
             override fun onClickItem(item: Contract, action: AppBaseAdapter.ItemAction) {
                 when(action){

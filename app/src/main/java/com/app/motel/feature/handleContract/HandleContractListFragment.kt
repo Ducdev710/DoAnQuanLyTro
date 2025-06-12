@@ -43,11 +43,15 @@ class HandleContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
 
     private fun init() {
         viewModel.getContracts()
+
+        // Thiết lập tab selection listener
         views.tabBar.setOnTabSelectedListener(object: CustomTabBar.OnTabSelectedListener{
             override fun onTabSelected(position: Int) {
                 viewModel.setCurrentStateContract(position)
             }
         })
+
+        // Thiết lập tab được chọn dựa trên trạng thái hợp đồng hiện tại
         views.tabBar.post {
             views.tabBar.setTabSelected(when(viewModel.liveData.currentStateContract.value){
                 Contract.State.ACTIVE -> 0
@@ -60,13 +64,14 @@ class HandleContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
             override fun onClickItem(item: Contract, action: AppBaseAdapter.ItemAction) {
                 when(action){
                     AppBaseAdapter.ItemAction.CLICK -> {
+                        // Hiển thị bottom sheet chi tiết hợp đồng
                         DetailContractBottomSheet(
                             contract = item,
                             onUpdateContract = { updatedContract ->
                                 viewModel.viewModelScope.launch {
                                     val result = viewModel.repository.updateContract(updatedContract)
                                     if (result.isSuccess()) {
-                                        viewModel.getContracts() // Refresh list after update
+                                        viewModel.getContracts() // Cập nhật lại danh sách hợp đồng
                                     }
                                 }
                             }
@@ -75,11 +80,13 @@ class HandleContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
                         )
                     }
                     AppBaseAdapter.ItemAction.EDIT -> {
+                        // Hiển thị bottom sheet gia hạn hợp đồng
                         RefreshContractBottomSheet(item).show(
                             parentFragmentManager, RefreshContractBottomSheet::class.java.simpleName
                         )
                     }
                     AppBaseAdapter.ItemAction.DELETE -> {
+                        // Chuyển đến fragment kết thúc hợp đồng
                         navigateFragmentWithSlide(R.id.handleContractTerminalFragment, Bundle().apply {
                             putString(HandleContractTerminalFragment.CONTRACT_KEY, Gson().toJson(item))
                         })
@@ -92,12 +99,14 @@ class HandleContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
     }
 
     private fun listenStateViewModel() {
+        // Quan sát contracts để cập nhật danh sách khi dữ liệu thay đổi
         viewModel.liveData.contracts.observe(viewLifecycleOwner){
             if(it.isSuccess()){
                 adapter.updateData(viewModel.liveData.getContractToState)
                 views.tvEmpty.isVisible = viewModel.liveData.getContractToState.isEmpty()
             }
         }
+        //Quan sát currentStateContract để cập nhật danh sách khi chuyển tab
         viewModel.liveData.currentStateContract.observe(viewLifecycleOwner){
             adapter.updateData(viewModel.liveData.getContractToState)
             views.tvEmpty.isVisible = viewModel.liveData.getContractToState.isEmpty()

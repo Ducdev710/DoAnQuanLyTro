@@ -22,11 +22,22 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/**
+ * Module chính cung cấp các dependency cho toàn bộ ứng dụng.
+ * Sử dụng Dagger để quản lý dependency injection.
+ */
 @Module
 object AppModule {
+    /**
+     * Cung cấp đối tượng RemoteDataSource để thực hiện các yêu cầu mạng.
+     */
     @Provides
     fun providerRemoteDateSource(): RemoteDataSource = RemoteDataSource()
 
+    /**
+     * Cung cấp singleton instance của AppDatabase để truy cập local database.
+     * Sử dụng annotation @Singleton để đảm bảo chỉ có một instance duy nhất trong ứng dụng.
+     */
     @Provides
     @Singleton
     fun providerAppDatabase(context: Context): AppDatabase = AppDatabase.getInstance(context)
@@ -37,6 +48,10 @@ object AppModule {
         context: Context
     ): ApiMock = remoteDataSource.buildApi(ApiMock::class.java, context, AppConstants.MOCK_BASE_URL)
 
+
+    /**
+     * Cung cấp HomeRepository để quản lý dữ liệu liên quan đến màn hình chính.
+     */
     @Provides
     fun providerHomeRepository(
         api: ApiMock,
@@ -52,6 +67,9 @@ object AppModule {
     @Singleton
     fun provideOtpService(): OtpService = OtpService()*/
 
+    /**
+     * Cung cấp AuthRepository để quản lý dữ liệu xác thực người dùng.
+     */
     @Provides
     fun providerAuthRepository(
         api: ApiMock,

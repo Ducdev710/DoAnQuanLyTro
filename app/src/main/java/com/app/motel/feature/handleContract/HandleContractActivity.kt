@@ -17,6 +17,7 @@ import javax.inject.Inject
 
 class HandleContractActivity() : AppBaseActivity<ActivityHandleContractBinding>() {
 
+    //Định nghĩa key để truyền trạng thái hợp đồng
     companion object{
         const val CONTRACT_STATE_KEY = "CONTRACT_STATE_KEY"
     }
@@ -41,16 +42,19 @@ class HandleContractActivity() : AppBaseActivity<ActivityHandleContractBinding>(
     }
 
     private fun init(){
+        // Thiết lập xử lý sự kiện back
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleBackWithAnimation()
             }
         })
+        // Lắng nghe thay đổi destination để điều chỉnh hiển thị title
         findNavController(R.id.fragment_view).addOnDestinationChangedListener { controller, destination, arguments ->
             val isHomeFragment = destination.id == R.id.handleContractListFragment
             supportActionBar?.setDisplayShowTitleEnabled(isHomeFragment)
         }
 
+        // Xử lý tham số từ Intent
         val status: String? = intent.getStringExtra(CONTRACT_STATE_KEY)
         if(status != null){
             mViewModel.liveData.currentStateContract.postValue(Contract.State.getStateByValue(status))

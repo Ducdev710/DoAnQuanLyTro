@@ -33,6 +33,9 @@ class RoomViewModel @Inject constructor(
 ): AppBaseViewModel<RoomViewState, RoomViewAction, RoomViewEvent>(
     RoomViewState()
 ) {
+    // Lưu trữ ID khu trọ hiện tại đang được duyệt
+    private var currentBrowsingBoardingHouseId: String? = null
+
     override fun handle(action: RoomViewAction) {
     }
 
@@ -64,6 +67,11 @@ class RoomViewModel @Inject constructor(
             }
 
             liveData.currentRoom.value = Resource.Success(roomFind)
+
+            // Lưu lại ID khu trọ của phòng này để dùng sau khi gửi yêu cầu thuê
+            if (roomFind.areaId != null) {
+                currentBrowsingBoardingHouseId = roomFind.areaId
+            }
         }
     }
 
@@ -78,19 +86,18 @@ class RoomViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val rooms = userController.state.getCurrentUser.let {
-                    // get room to the admin
+                    // Lấy phòng theo khu trọ và trạng thái
                     if(it?.isAdmin == true){
                         val boardingHouseId = userController.state.currentBoardingHouseId
                         val roomState = liveData.currentRoomState.value?.data
                         roomRepository.geRoomBytBoardingHouseId(boardingHouseId, roomState)
 
-                        // get room to the user
                     }else{
                         val roomState = liveData.currentRoomState.value?.data
-                        if(roomState == PhongEntity.Status.EMPTY){ // get all room empty -> user want rent
+                        if(roomState == PhongEntity.Status.EMPTY){ // Nếu đang xem phòng trống: hiển thị phòng có thể thuê
                             return@let roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
                         }
-                        // get current room by tenant id
+                        // Hiển thị phòng đang thuê
                         val userId = userController.state.currentUserId
                         roomRepository.getCurrentRoomRentByTenantId(userId)
                     }
@@ -263,6 +270,34 @@ class RoomViewModel @Inject constructor(
 
             val rentRoom = complaintRepository.createRequireRentRoom(rentRoomInsert)
             liveData.rentRoom.postValue(rentRoom)
+
+            // Cập nhật lại danh sách phòng trống của khu trọ hiện tại
+            if (room.areaId != null) {
+                refreshRoomsByBoardingHouse(room.areaId)
+            } else if (currentBrowsingBoardingHouseId != null) {
+                refreshRoomsByBoardingHouse(currentBrowsingBoardingHouseId!!)
+            }
+        }
+    }
+
+    fun refreshRoomsByBoardingHouse(boardingHouseId: String) {
+        viewModelScope.launch {
+            try {
+                val rooms = roomRepository.getAvailableRoomsByBoardingHouseId(boardingHouseId)
+                val boardingHouseResource = boardingHouseRepository.getBoardingHouseById(boardingHouseId)
+                val boardingHouse = boardingHouseResource.data
+
+                // Gắn thông tin khu trọ vào mỗi phòng
+                val enrichedRooms = rooms.map { room ->
+                    room.boardingHouse = boardingHouse
+                    room
+                }
+
+                liveData.rooms.postValue(Resource.Success(enrichedRooms))
+            } catch (e: Exception) {
+                Log.e("RoomViewModel", "Error refreshing rooms: ${e.message}")
+                // Giữ nguyên trạng thái danh sách phòng hiện tại
+            }
         }
     }
 
@@ -272,6 +307,7 @@ class RoomViewModel @Inject constructor(
             try {
                 val rooms = if (boardingHouseId != null) {
                     // If boardingHouseId is provided, only get rooms from that specific boarding house
+                    currentBrowsingBoardingHouseId = boardingHouseId
                     roomRepository.getAvailableRoomsByBoardingHouseId(boardingHouseId)
                 } else {
                     // Otherwise get all available rooms from the landlord
@@ -291,15 +327,18 @@ class RoomViewModel @Inject constructor(
                 val currentRentedRoomId = tenant.roomId
 
                 if (currentRentedRoomId != null) {
-                    // Get tenant's current room to find its boarding house
+                    // Lấy thông tin phòng hiện tại của người thuê
                     val currentRoom = roomRepository.getRoomById(currentRentedRoomId)
 
                     if (currentRoom != null && currentRoom.areaId != null) {
-                        // Get boarding house info first
+                        // Lưu lại ID khu trọ hiện tại
+                        currentBrowsingBoardingHouseId = currentRoom.areaId
+
+                        // Lấy thông tin khu trọ từ phòng hiện tại
                         val boardingHouseResource = boardingHouseRepository.getBoardingHouseById(currentRoom.areaId)
                         val boardingHouse = boardingHouseResource.data
 
-                        // Get empty rooms from the same boarding house
+                        // Lấy danh sách phòng trống trong cùng khu trọ
                         val roomsInSameBoardingHouse = roomRepository.getAvailableRoomsByBoardingHouseId(currentRoom.areaId)
 
                         // Attach boarding house to each room without modifying areaId
@@ -319,10 +358,12 @@ class RoomViewModel @Inject constructor(
                         liveData.rooms.postValue(Resource.Success(allEmptyRooms))
                     }
                 } else {
-                    // For new tenants (without a room)
+                    // Với trường hợp người thuê không có phòng hiện tại
                     if (tenant.boardingHouseId != null) {
-                        // If the tenant has a specific boarding house association,
-                        // only show empty rooms from that boarding house
+                        // Nếu người thuê có boarding house ID,
+                        // Chỉ lấy các phòng trống trong boarding house đó
+                        currentBrowsingBoardingHouseId = tenant.boardingHouseId
+
                         val boardingHouseResource = boardingHouseRepository.getBoardingHouseById(tenant.boardingHouseId)
                         val boardingHouse = boardingHouseResource.data
                         val roomsInBoardingHouse = roomRepository.getAvailableRoomsByBoardingHouseId(tenant.boardingHouseId)
@@ -335,11 +376,11 @@ class RoomViewModel @Inject constructor(
 
                         liveData.rooms.postValue(Resource.Success(enrichedRooms))
                     } else if (tenant.landlordId != null) {
-                        // If tenant doesn't have a specific boarding house but has a landlord,
-                        // show empty rooms from all boarding houses owned by that landlord
+                        // Nếu người thuê có chủ nhà ID, không có boarding house ID,
+                        // lấy tất cả các phòng trống của chủ nhà đó
                         loadRoomsByLandlordId(tenant.landlordId)
                     } else {
-                        // If we don't know anything about the tenant, show all empty rooms
+                        // Nếu không có thông tin nào về khu trọ hay chủ nhà, lây tất cả các phòng trống trong CSDL
                         val allEmptyRooms = roomRepository.getRoomByStatus(PhongEntity.Status.EMPTY)
                         liveData.rooms.postValue(Resource.Success(allEmptyRooms))
                     }

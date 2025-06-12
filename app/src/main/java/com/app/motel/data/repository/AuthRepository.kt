@@ -81,7 +81,16 @@ class AuthRepository @Inject constructor(
         }
     }*/
 
-    // Kept for backward compatibility
+    //Validate đầu vào:
+    //Số điện thoại: 10 số, bắt đầu với 0
+    //Mật khẩu: tối thiểu 6 ký tự
+    //Bảo mật:
+    //Băm mật khẩu với SecurityHelper.hashPassword()
+    //Kiểm tra trùng lặp username, email, số điện thoại
+    //Xử lý lỗi:
+    //Bắt tất cả exception và trả về dưới dạng Resource.Error
+    //Thông báo lỗi cụ thể cho từng trường hợp
+
     suspend fun register(user: User): Resource<CommonUser> {
         // Validate phone number format (10 digits starting with 0)
         if (user.phoneNumber != null && (!user.phoneNumber.startsWith("0") || user.phoneNumber.length != 10 || !user.phoneNumber.all { it.isDigit() })) {
@@ -114,6 +123,16 @@ class AuthRepository @Inject constructor(
             Resource.Error(message = e.toString())
         }
     }
+
+    //Hỗ trợ hai loại tài khoản:
+    //Admin: Kiểm tra mật khẩu băm với BCrypt
+    //Tenant: So sánh trực tiếp mật khẩu plaintext
+    //Kiểm tra trạng thái:
+    //Tài khoản bị khóa
+    //Tài khoản không tồn tại
+    //Kết quả trả về:
+    //CommonUser.AdminUser hoặc CommonUser.NormalUser
+    //Bao gồm mật khẩu gốc (không băm) để sử dụng trong ứng dụng
 
     suspend fun login(username: String, password: String): Resource<CommonUser> {
         return try {
@@ -152,3 +171,10 @@ class AuthRepository @Inject constructor(
         }
     }
 }
+
+//Xử lý dữ liệu
+//Sử dụng Resource<T> để đóng gói kết quả API (Success/Error)
+//Chuyển đổi giữa các model dữ liệu (Entity <-> Model)
+//Kết nối với Room Database thông qua DAO
+//Repository này được thiết kế để hoạt động hiệu quả với Coroutines (suspend functions) và
+// tuân thủ nguyên tắc Single Responsibility trong kiến trúc MVVM.

@@ -57,6 +57,11 @@ class TenantListFragment : AppBaseFragment<FragmentTenantListBinding>() {
         })
         views.rcv.adapter = adapter
         views.txtSearch.setText(viewModel.liveData.searchText.value ?: "")
+
+        //Lọc người thuê theo 3 trạng thái:
+        //ACTIVE: Người đang thuê phòng
+        //INACTIVE: Người không thuê phòng/Người thuê mới
+        //TEMPORARY_ABSENT: Người đã chuyển đi
         views.tabBar.setOnTabSelectedListener(object: CustomTabBar.OnTabSelectedListener{
             override fun onTabSelected(position: Int) {
                 when(position){
@@ -82,8 +87,12 @@ class TenantListFragment : AppBaseFragment<FragmentTenantListBinding>() {
         }
     }
 
-
+    //Mỗi khi có thay đổi:
+    //Lấy danh sách đã lọc từ ViewModel qua getter getListTenantByStateSearch
+    //Cập nhật adapter với danh sách mới
+    //Hiển thị/ẩn thông báo trống dựa trên kết quả lọc
     private fun listenStateViewModel() {
+        //Khi danh sách người thuê được tải
         viewModel.liveData.tenants.observe(viewLifecycleOwner){
             if(it.isSuccess()){
                 val tenants = viewModel.liveData.getListTenantByStateSearch
@@ -91,11 +100,13 @@ class TenantListFragment : AppBaseFragment<FragmentTenantListBinding>() {
                 views.tvEmpty.isVisible = tenants.isEmpty()
             }
         }
+        //Khi bộ lọc thay đổi
         viewModel.liveData.filterState.observe(viewLifecycleOwner){
             val tenants = viewModel.liveData.getListTenantByStateSearch
             adapter.updateData(tenants)
             views.tvEmpty.isVisible = tenants.isEmpty()
         }
+        //Khi từ khóa tìm kiếm thay đổi
         viewModel.liveData.searchText.observe(viewLifecycleOwner){
             val tenants = viewModel.liveData.getListTenantByStateSearch
             adapter.updateData(tenants)

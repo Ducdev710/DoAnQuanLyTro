@@ -22,6 +22,7 @@ data class Complaint(
     val isComplaint get() = type == KhieuNaiEntity.Type.COMPLAINT.value
     val isSystemNotification get() = type == KhieuNaiEntity.Type.APPLICATION.value
 
+    //Chuyển sang entity để lưu trữ
     fun toEntity() = KhieuNaiEntity(
         id = id,
         title = title,
@@ -33,6 +34,7 @@ data class Complaint(
         status = status
     )
 
+    //Tạo mới khiếu nại
     fun toEntityCreateComplaint() = KhieuNaiEntity(
         id = IDManager.createID(),
         title = title,
@@ -44,6 +46,7 @@ data class Complaint(
         type = KhieuNaiEntity.Type.COMPLAINT.value,
     )
 
+    //Tạo mới yêu cầu thuê phòng
     fun toEntityCreateRentRoom() = KhieuNaiEntity(
         id = IDManager.createID(),
         title = title,
@@ -55,6 +58,7 @@ data class Complaint(
         type = KhieuNaiEntity.Type.RENT_ROOM.value,
     )
 
+    //Tạo mới thông báo hệ thống
     fun toEntityCreateSystemNotification() = KhieuNaiEntity(
         id = IDManager.createID(),
         title = title,

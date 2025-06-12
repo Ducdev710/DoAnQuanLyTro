@@ -40,7 +40,7 @@ class CreateBillListFragment @Inject constructor() : AppBaseFragment<FragmentCre
     lateinit var adapter: RoomBillAdapter
 
     private fun init() {
-        viewModel.getService()
+        viewModel.getRoom()
 
         adapter = RoomBillAdapter(object: AppBaseAdapter.AppListener<Room>(){
             override fun onClickItem(item: Room, action: AppBaseAdapter.ItemAction) {
@@ -50,6 +50,9 @@ class CreateBillListFragment @Inject constructor() : AppBaseFragment<FragmentCre
         views.rcv.adapter = adapter
     }
 
+    //Lấy danh sách phòng đang được thuê thông qua viewModel.liveData.roomsRented
+    //Cập nhật adapter với danh sách phòng đang được thuê
+    //Hiển thị thông báo trống nếu không có phòng nào đang được thuê
     private fun listenStateViewModel() {
         viewModel.liveData.rooms.observe(viewLifecycleOwner){
             if(it.isSuccess()){

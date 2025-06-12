@@ -58,6 +58,8 @@ class TenantFormFragment : AppBaseFragment<FragmentTenantFormBinding>() {
         views.txtBirthDay.setOnEndDrawableClick {
             showDialogBirdDay()
         }
+        //Khi click nút thêm/sửa: thu thập dữ liệu từ form và gọi handleTenant trên ViewModel
+        //Xử lý chung cho cả thêm mới và cập nhật (dựa vào tham số tenant)
         views.btnAdd.setOnClickListener {
             viewModel.handleTenant(
                 tenant = viewModel.liveData.currentTenant.value,
@@ -83,11 +85,11 @@ class TenantFormFragment : AppBaseFragment<FragmentTenantFormBinding>() {
             // Toggle lock state
             viewModel.changeStateTenant(currentTenant, !isLock)
 
-            // Update UI immediately for better user experience
+            // Cập nhật UI ngay lập tức để phản hồi người dùng
             updateLockButtonUI(!isLock)
         }
     }
-
+    // Cập nhật UI của nút khóa dựa trên trạng thái hiện tại
     private fun updateLockButtonUI(isLocked: Boolean) {
         views.btnLock.apply {
             val lockIcon = getChildAt(0) as? ImageView
@@ -117,28 +119,28 @@ class TenantFormFragment : AppBaseFragment<FragmentTenantFormBinding>() {
                     txtUsername.setText(tenant.username)
                     txtPassword.setText(tenant.password)
 
-                    // Update lock button UI based on current state
+                    // Cập nhật trạng thái của nút khóa
                     updateLockButtonUI(tenant.isLock)
 
-                    // Check if tenant is temporarily absent
+                    // Xử lý trường hợp đặc biệt: người thuê đã chuyển đi
                     if (tenant.status == NguoiThueEntity.Status.TEMPORARY_ABSENT.value) {
-                        // Change button appearance to delete
+                        // Chuyển nút cập nhật thành nút xóa
                         btnUpdate.apply {
                             // Find the child views within the LinearLayout
                             val imageView = getChildAt(0) as ImageView
                             val textView = getChildAt(2) as TextView
 
-                            // Update the text and appearance
+                            // Câp nhật văn bản và biểu tượng
                             textView.text = "Xóa"
                             textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                             imageView.setImageResource(R.drawable.ic_delete)
 
-                            // Change background
+                            // Đổi màu nền của nút
                             background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_red_rounded)
 
                             // Set click listener
                             setOnClickListener {
-                                // Show confirmation dialog
+                                // Hiển thị hộp thoại xác nhận xóa
                                 AlertDialog.Builder(requireContext())
                                     .setTitle("Xác nhận xóa")
                                     .setMessage("Bạn có chắc chắn muốn xóa khách thuê ĐÃ CHUYỂN ĐI này?")
@@ -151,16 +153,16 @@ class TenantFormFragment : AppBaseFragment<FragmentTenantFormBinding>() {
                             }
                         }
 
-                        // For temporary absent tenants, only disable editing but allow lock/unlock
+                        // Với người thuê đã chuyển đi, không cho phép chỉnh sửa thông tin, chi cho khóa/mở khóa
                         disableFormEditing(keepLockEnabled = true)
                     } else {
-                        // Regular tenant - keep save button
+                        // Người thuê bình thường, giữ lại nút cập nhật
                         btnUpdate.apply {
                             // Find the child views within the LinearLayout
                             val imageView = getChildAt(0) as ImageView
                             val textView = getChildAt(2) as TextView
 
-                            // Update the text and appearance
+                            // Câp nhật văn bản và biểu tượng
                             textView.text = "Lưu"
                             textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                             imageView.setImageResource(R.drawable.baseline_edit_24)
@@ -211,6 +213,7 @@ class TenantFormFragment : AppBaseFragment<FragmentTenantFormBinding>() {
         }
     }
 
+    //Tham số keepLockEnabled cho phép giữ nút khóa hoạt động ngay cả khi form bị vô hiệu hóa
     private fun disableFormEditing(keepLockEnabled: Boolean = false) {
         views.apply {
             txtFullName.isEnabled = false

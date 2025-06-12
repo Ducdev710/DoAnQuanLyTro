@@ -57,7 +57,7 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                 val bankName = txtBank.text.toString()
                 val accountNumber = txtNumberBank.text.toString()
 
-                // Save user info
+                // Cập nhật thông tin người dùng
                 viewmodel.updateCurrentUser(
                     currentUser = profileController.state.getCurrentUser,
                     fullName = fullName,
@@ -72,7 +72,7 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                     accountNumber = accountNumber
                 )
 
-                // If user is admin and electricity/water price fields are visible, update boarding house
+                // Cập nhật giá điện nước nếu là chủ nhà
                 if (profileController.state.getCurrentUser?.isAdmin == true &&
                     tilElectricityPrice.isVisible &&
                     tilWaterPrice.isVisible) {
@@ -114,23 +114,24 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                 txtBank.setText(currentUser?.bankName)
                 txtNumberBank.setText(currentUser?.accountNumber)
 
+                //// Hiển thị/ẩn các trường dựa trên vai trò
                 tilEmail.isVisible = it.data?.isAdmin == true
                 tilBank.isVisible = it.data?.isAdmin == true
                 tilNumberBank.isVisible = it.data?.isAdmin == true
                 tilHomeTown.isVisible = it.data?.isAdmin == false
                 tilIdCard.isVisible = it.data?.isAdmin == false
 
-                // Show electricity and water price fields only for admins
+                // Hiển thị phần giá điện nước chỉ cho chủ nhà
                 tilElectricityPrice.isVisible = it.data?.isAdmin == true
                 tilWaterPrice.isVisible = it.data?.isAdmin == true
 
-                // Hide the entire utility prices section for tenants
+                // Ẩn các trường không cần thiết với tài khoản người thuê
                 tvUtilityPricesTitle.isVisible = it.data?.isAdmin == true
                 layoutUtilityPrices.isVisible = it.data?.isAdmin == true
             }
         }
 
-        // Observe the current boarding house to display electricity and water prices
+        // Quan sát thông tin khu trọ để hiển thị giá điện nước
         profileController.state.currentBoardingHouse.observe(viewLifecycleOwner) { resource ->
             resource.data?.let { boardingHouse ->
                 views.apply {
@@ -139,7 +140,7 @@ class ProfileDetailFragment : AppBaseFragment<FragmentProfileDetailBinding>() {
                 }
             }
         }
-
+        // Quan sát kết quả cập nhật người dùng
         viewmodel.liveData.updateCurrentUser.observe(viewLifecycleOwner){
             if(it.isLoading() || it.isInitialize()) return@observe
             requireActivity().showToast(it.message ?: if(it.isSuccess()) "Thành công" else "Thất bại")

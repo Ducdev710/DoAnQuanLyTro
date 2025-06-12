@@ -41,12 +41,13 @@ class HandleBillActivity : AppBaseActivity<ActivityHandleBillBinding>() {
         viewModel.liveData
     }
     private fun init(){
+        //Xử lý nút Back để có animation
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleBackWithAnimation()
             }
         })
-
+        //Lấy trạng thái hóa đơn từ intent,mặc định là đã thanh toán
         val status: Int = intent.getIntExtra(BILL_STATE_KEY, HoaDonEntity.STATUS_PAID)
         viewModel.liveData.filterState.postValue(status)
     }
@@ -67,6 +68,8 @@ class HandleBillActivity : AppBaseActivity<ActivityHandleBillBinding>() {
         }
     }
 
+    //Nếu đang ở fragment danh sách hóa đơn (màn hình chính): kết thúc Activity
+    //Nếu đang ở fragment khác (như chi tiết hóa đơn): quay lại fragment trước đó
     private fun handleBackWithAnimation() {
         val navController = findNavController(R.id.fragment_view)
 

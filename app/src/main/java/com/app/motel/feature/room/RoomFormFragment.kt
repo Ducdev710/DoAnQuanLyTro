@@ -44,22 +44,22 @@ class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormB
             val maxTenant = views.txtMaxTenant.text.toString()
             val note = views.txtNote.text.toString()
 
-            // Validate required fields
+            // Kiểm tra thông tin phòng có hợp lệ không
             if (roomName.isBlank() || roomPrice.isBlank()) {
                 activity?.showToast("Vui lòng điền tên phòng và giá phòng trước khi thêm dịch vụ")
                 return@setOnClickListener
             }
 
-            // Create room and navigate to service form once room is created
+            // Tạo phòng để lấy ID rồi chuyển đến form thêm dịch vụ
             viewModel.createRoom(roomName, area, maxTenant, roomPrice, note)
 
             // Listen for successful room creation (one-time observer)
             viewModel.liveData.createRoom.observe(viewLifecycleOwner) { result ->
                 if (result.isSuccess() && result.data?.id != null) {
-                    // Remove observer to prevent multiple triggers
+                    // Sử dụng removeObservers để tránh gọi nhiều lần
                     viewModel.liveData.createRoom.removeObservers(viewLifecycleOwner)
 
-                    // Navigate to service form with the new room ID
+                    // Truyền ID phòng vừa tạo qua Bundle
                     navigateFragmentWithSlide(R.id.roomServiceFormFragment, args = Bundle().apply {
                         putString(ServiceFormFragment.ROOM_ID_KEY, result.data.id)
                     })
@@ -82,6 +82,8 @@ class RoomFormFragment @Inject constructor() : AppBaseFragment<FragmentRoomFormB
         listenStateViewModel()
     }
 
+    //Quay lại màn hình trước và hiển thị thông báo khi tạo thành công
+    //Hiển thị thông báo lỗi khi tạo thất bại
     private fun listenStateViewModel() {
         viewModel.liveData.createRoom.observe(viewLifecycleOwner){
             if(it.isSuccess()){

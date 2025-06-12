@@ -39,12 +39,14 @@ class RuleFormFragment @Inject constructor() : AppBaseFragment<FragmentRuleFormB
         listenStateViewModel()
     }
 
+    //Khởi tạo adapter với listener xử lý click vào item để sửa nội quy
     var adapter: RulesAdapter = RulesAdapter(object : AppBaseAdapter.AppListener<Rules>() {
         override fun onClickItem(item: Rules, action: AppBaseAdapter.ItemAction) {
             showAddDialog(item)
         }
     })
 
+    //Tải danh sách nội quy từ ViewModel
     private fun init() {
         viewModel.getRules()
         views.rcv.adapter = adapter
@@ -58,6 +60,9 @@ class RuleFormFragment @Inject constructor() : AppBaseFragment<FragmentRuleFormB
         }
     }
 
+    //Quan sát rules LiveData và cập nhật adapter khi có dữ liệu mới
+    //Hiển thị thông báo thành công khi lưu thành công
+    //Tải lại danh sách nội quy sau khi lưu
     private fun listenStateViewModel() {
         viewModel.liveData.rules.observe(viewLifecycleOwner){
             val rules: List<Rules> = viewModel.liveData.getAllRulesActive
@@ -73,6 +78,9 @@ class RuleFormFragment @Inject constructor() : AppBaseFragment<FragmentRuleFormB
         }
     }
 
+    //Sử dụng tham số rules để xác định:
+    //Nếu null: Thêm mới nội quy (tạo ID mới)
+    //Nếu không null: Cập nhật nội quy hiện có
     private fun showAddDialog(rules: Rules? = null){
         val dialog = AppBaseDialog.Builder(requireContext(), DialogAddRulesBinding.inflate(layoutInflater))
             .isBorderRadius(false)

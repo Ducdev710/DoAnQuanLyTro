@@ -6,6 +6,9 @@ import com.app.motel.data.model.BoardingHouse
 import com.app.motel.data.model.Resource
 
 class BoardingHouseState : AppViewLiveData {
+
+    //isUpdateBoardingHousetrả về true nếu đang ở chế độ cập nhật (có khu trọ hiện tại)
+    //phân biệt giữa chế độ tạo mới và cập nhật khu trọ
     val isUpdateBoardingHouse get () = currentBoardingHouse.value != null
 
     val currentBoardingHouse = MutableLiveData<BoardingHouse>()

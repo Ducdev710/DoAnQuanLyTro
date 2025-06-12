@@ -40,6 +40,8 @@ class CreateContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
 
     lateinit var adapter: RoomContractAdapter
 
+    //Khởi tạo adapter với xử lý sự kiện khi chọn phòng
+    //Khi chọn phòng, chuyển sang màn hình form tạo hợp đồng với dữ liệu phòng đã chọn
     private fun init() {
         viewModel.getRoom()
 
@@ -51,6 +53,9 @@ class CreateContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
         views.rcv.adapter = adapter
     }
 
+    //Khi nhận được danh sách, cập nhật adapter với chỉ các phòng còn trống
+    //Hiển thị thông báo "Không có phòng" nếu danh sách trống
+    //Xử lý trường hợp có phòng được chọn trước
     private fun listenStateViewModel() {
         viewModel.liveData.rooms.observe(viewLifecycleOwner){
             if(it.isSuccess()){
@@ -63,6 +68,11 @@ class CreateContractListFragment @Inject constructor() : AppBaseFragment<Fragmen
         }
     }
 
+    //Xử lý sự kiện khi có phòng được chọn trước
+    //Kiểm tra nếu có ID phòng được chọn trước (từ Intent)
+    //Tìm phòng tương ứng trong danh sách phòng trống
+    //Nếu tìm thấy, chuyển ngay đến màn hình form tạo hợp đồng
+    //Nếu không tìm thấy, hiển thị thông báo lỗi
     private fun handleRoomSelected(rooms: List<Room>) {
         if(viewModel.liveData.currentRoomId != null){
             val item = rooms.firstOrNull{it.id == viewModel.liveData.currentRoomId}

@@ -20,3 +20,5 @@ fun TextInputEditText.setOnEndDrawableClick(listener: () -> Unit) {
         false
     }
 }
+
+//xử lý sự kiện nhấn vào drawable bên phải của TextInputEditText (Ứng dụng mở Dialog chọn ngày sinh)

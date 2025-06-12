@@ -47,6 +47,13 @@ class LoginFragment @Inject constructor() : AppBaseFragment<FragmentLoginBinding
 
 
     private var dialogLoading: Dialog? = null
+
+    //Phương thức handleStateViewModel() theo dõi LiveData từ ViewModel
+    //Xử lý các trạng thái khác nhau của tiến trình đăng nhập:
+    //Loading: Hiển thị dialog loading
+    //Success: Chuyển đến MainActivity
+    //Error: Hiển thị thông báo lỗi
+    //Initialize: Reset UI
     private fun handleStateViewModel() {
         viewModel.liveData.apply {
             login.observe(viewLifecycleOwner){
@@ -78,3 +85,7 @@ class LoginFragment @Inject constructor() : AppBaseFragment<FragmentLoginBinding
     }
 
 }
+
+//Fragment này tuân theo mô hình MVVM, sử dụng ViewModel để quản lý logic nghiệp vụ và trạng thái,
+//đồng thời sử dụng data binding để kết nối UI với dữ liệu. Nó cũng sử dụng dependency injection
+//để dễ dàng kiểm thử và giảm sự phụ thuộc.

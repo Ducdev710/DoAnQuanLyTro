@@ -21,6 +21,7 @@ import java.text.Normalizer
 import java.util.Locale
 import java.util.regex.Pattern
 
+    //Mở rộng để quan sát LiveData chứa đối tượng Resource, chỉ xử lý dữ liệu chưa được xử lý
     inline fun <T> LiveData<Resource<T>>.observe(
         owner: LifecycleOwner,
         crossinline onChanged: (Resource<T>) -> Unit
@@ -30,6 +31,7 @@ import java.util.regex.Pattern
         }
     }
 
+    // Cho phép quan sát LiveData chỉ một lần duy nhất, sau đó tự động hủy đăng ký Observer
     fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: Observer<T>) {
         observe(owner, object : Observer<T> {
             override fun onChanged(value: T) {
@@ -39,6 +41,7 @@ import java.util.regex.Pattern
         })
     }
 
+    //Đánh dấu chuỗi bắt buộc bằng cách thêm dấu sao đỏ
     fun String.require(): CharSequence{
         return SpannableStringBuilder().apply {
             append(this@require)
@@ -46,6 +49,7 @@ import java.util.regex.Pattern
         }
     }
 
+    //Chuyển đổi chuỗi số sang kiểu Int, loại bỏ dấu phẩy và khoảng trắng
     fun String?.toMoney(): Int{
         return this
             ?.replace(",", "")
@@ -54,6 +58,7 @@ import java.util.regex.Pattern
             ?.toIntOrNull() ?: 0
     }
 
+    //Định dạng chuỗi số thành dạng tiền tệ với dấu phân cách ngàn
     fun String?.toStringMoney(): String{
         return try {
             val money = this.toMoney()
@@ -69,6 +74,7 @@ import java.util.regex.Pattern
         }
     }
 
+    //Chuyển đổi bất kỳ đối tượng nào thành chuỗi tiền tệ với dấu phân cách ngàn
     fun Any?.toStringMoney(): String {
         return try {
             val number = when (this) {
@@ -82,7 +88,7 @@ import java.util.regex.Pattern
         }
     }
 
-
+    //Định dạng số phòng, nếu số phòng nhỏ hơn 100 thì thêm tiền tố 100
     fun Int.formatRoomName(): String {
         return if (this < 100) {
             (this + 100).toString()
@@ -91,10 +97,12 @@ import java.util.regex.Pattern
         }
     }
 
+    //Hiển thị thông báo Toast với thời gian dài
     fun Context.showToast(message: String){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
+    //Hiển thị hộp thoại xác nhận với tiêu đề, nội dung và các nút xác nhận, hủy
     fun Context.showDialogConfirm(
         title: String,
         content: String?,
@@ -130,6 +138,7 @@ import java.util.regex.Pattern
         }
     }
 
+    //So sánh tìm kiếm chuỗi không phân biệt dấu tiếng Việt
     @SuppressLint("SuspiciousIndentation")
     fun String.containsSearch(str: String): Boolean {
         val normalized1 = Normalizer.normalize(this, Normalizer.Form.NFD)

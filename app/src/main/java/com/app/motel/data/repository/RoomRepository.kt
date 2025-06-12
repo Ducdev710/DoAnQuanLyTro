@@ -25,6 +25,7 @@ class RoomRepository @Inject constructor(
     private val serviceDAO: ServiceDAO,
 ) {
 
+    //Lấy danh sách phòng theo nhà trọ và trạng thái (nếu có)
     suspend fun geRoomBytBoardingHouseId(boardingHouseId: String, state: PhongEntity.Status? = null): List<Room> {
         val roomEntities = roomDAO.getPhongsByKhuTroId(boardingHouseId, state?.value)
         return roomEntities.map {
@@ -34,6 +35,7 @@ class RoomRepository @Inject constructor(
         }
     }
 
+    //Lấy phòng đang thuê của người thuê
     suspend fun getCurrentRoomRentByTenantId(tenantId: String, status: PhongEntity.Status? = null): List<Room> {
         val roomEntities = roomDAO.getCurrentRoomRentByTenantId(tenantId, status?.value)
         return roomEntities.map {
@@ -43,6 +45,7 @@ class RoomRepository @Inject constructor(
         }
     }
 
+    //Lấy danh sách phòng theo trạng thái
     suspend fun getRoomByStatus( status: PhongEntity.Status? = null): List<Room> {
         val roomEntities = roomDAO.getPhongsByStatus(status?.value)
         return roomEntities.map {
@@ -53,6 +56,7 @@ class RoomRepository @Inject constructor(
         }
     }
 
+    //Lấy danh sách phòng trống theo chủ trọ
     suspend fun getAvailableRoomsByLandlordId(landlordId: String): List<Room> {
         val roomEntities = roomDAO.getAvailableRoomsByLandlordId(landlordId)
         return roomEntities.map {
@@ -62,6 +66,7 @@ class RoomRepository @Inject constructor(
         }
     }
 
+    //Lấy thông tin nhà trọ và tất cả phòng thuộc nhà trọ đó
     suspend fun getBoardingRoomById(boardingHouseId: String): BoardingHouse? {
         val boardingHousesEntity: KhuTroEntity? = boardingHouseDAO.getById(boardingHouseId)
         return boardingHousesEntity?.toModel().apply {
@@ -69,11 +74,13 @@ class RoomRepository @Inject constructor(
         }
     }
 
+    //Lấy thông tin một phòng cụ thể
     suspend fun getRoomById(roomId: String): Room? {
         val roomEntity = roomDAO.getPhongById(roomId)
         return roomEntity?.toModel()
     }
 
+    //Lấy danh sách phòng trống trong một nhà trọ
     suspend fun getAvailableRoomsByBoardingHouseId(boardingHouseId: String): List<Room> {
         val roomEntities = roomDAO.getRoomsByBoardingHouseIdAndStatus(
             boardingHouseId,

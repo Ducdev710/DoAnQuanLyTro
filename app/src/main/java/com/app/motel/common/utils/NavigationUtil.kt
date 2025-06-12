@@ -15,62 +15,72 @@ import androidx.navigation.fragment.findNavController
 import com.app.motel.R
 
 // navigate fragment
-fun Fragment.navigateFragmentWithSlide(fragmentId: Int, args: Bundle? = null) {
-    val navOptions = NavOptions.Builder()
-        .setEnterAnim(R.anim.slide_in_right)
-        .setExitAnim(R.anim.slide_out_left)
-        .setPopEnterAnim(R.anim.slide_in_left)
-        .setPopExitAnim(R.anim.slide_out_right)
-        .build()
 
-    findNavController().navigate(fragmentId, args, navOptions)
-}
+    //Điều hướng đến fragment mới với hiệu ứng trượt, cho phép truyền đối số
+    fun Fragment.navigateFragmentWithSlide(fragmentId: Int, args: Bundle? = null) {
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_in_right)
+            .setExitAnim(R.anim.slide_out_left)
+            .setPopEnterAnim(R.anim.slide_in_left)
+            .setPopExitAnim(R.anim.slide_out_right)
+            .build()
 
-fun Fragment.popFragmentWithSlide() {
-    findNavController().popBackStack()
-}
+        findNavController().navigate(fragmentId, args, navOptions)
+    }
 
-fun Activity.navigateFragment(viewId: Int,fragmentId: Int, args: Bundle? = null) {
-    ((this as AppCompatActivity).supportFragmentManager.findFragmentById(viewId) as NavHostFragment)
-        .navController.navigate(fragmentId, args)
-}
+    //Quay lại fragment trước đó trong ngăn xếp điều hướng
+    fun Fragment.popFragmentWithSlide() {
+        findNavController().popBackStack()
+    }
 
-fun Activity.navigateFragmentWithSlide(viewId: Int,fragmentId: Int, args: Bundle? = null) {
-    val navOptions = NavOptions.Builder()
-        .setEnterAnim(R.anim.slide_in_right)
-        .setExitAnim(R.anim.slide_out_left)
-        .setPopEnterAnim(R.anim.slide_in_left)
-        .setPopExitAnim(R.anim.slide_out_right)
-        .build()
+    //Cho phép Activity điều hướng đến fragment mới không có hiệu ứng
+    fun Activity.navigateFragment(viewId: Int,fragmentId: Int, args: Bundle? = null) {
+        ((this as AppCompatActivity).supportFragmentManager.findFragmentById(viewId) as NavHostFragment)
+            .navController.navigate(fragmentId, args)
+    }
 
-    ((this as AppCompatActivity).supportFragmentManager.findFragmentById(viewId) as NavHostFragment)
-        .navController.navigate(fragmentId, args, navOptions)
-}
+    //Cho phép Activity điều hướng đến fragment mới với hiệu ứng trượt
+    fun Activity.navigateFragmentWithSlide(viewId: Int,fragmentId: Int, args: Bundle? = null) {
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_in_right)
+            .setExitAnim(R.anim.slide_out_left)
+            .setPopEnterAnim(R.anim.slide_in_left)
+            .setPopExitAnim(R.anim.slide_out_right)
+            .build()
 
-fun Activity.popFragmentWithSlide(viewId: Int) {
-    findNavController(viewId).popBackStack()
-}
+        ((this as AppCompatActivity).supportFragmentManager.findFragmentById(viewId) as NavHostFragment)
+            .navController.navigate(fragmentId, args, navOptions)
+    }
 
-// navigate activity
-fun Activity.startActivityWithTransition(intent: Intent) {
-    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
-    startActivity(intent, options.toBundle())
-}
+    //Cho phép Activity quay lại fragment trước đó trong ngăn xếp điều hướng
+    fun Activity.popFragmentWithSlide(viewId: Int) {
+        findNavController(viewId).popBackStack()
+    }
 
-fun Activity.startActivityWithSlide(intent: Intent, launcher: ActivityResultLauncher<Intent>? = null) {
-    val options = ActivityOptions.makeCustomAnimation(
-        this,
-        R.anim.slide_in_right,
-        R.anim.slide_out_left
-    )
+    // navigate activity
 
-    if(launcher != null){
-        launcher.launch(intent)
-    }else{
+    //Khởi động Activity mới với hiệu ứng chuyển cảnh mặc định
+    fun Activity.startActivityWithTransition(intent: Intent) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
         startActivity(intent, options.toBundle())
     }
-}
 
-fun Activity.finishActivityWithTransition() {
-    finishAfterTransition()
-}
+    //Khởi động Activity mới với hiệu ứng trượt, có thể sử dụng ActivityResultLauncher để nhận kết quả trả về
+    fun Activity.startActivityWithSlide(intent: Intent, launcher: ActivityResultLauncher<Intent>? = null) {
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
+
+        if(launcher != null){
+            launcher.launch(intent)
+        }else{
+            startActivity(intent, options.toBundle())
+        }
+    }
+
+    //Kết thúc Activity hiện tại với hiệu ứng chuyển cảnh
+    fun Activity.finishActivityWithTransition() {
+        finishAfterTransition()
+    }

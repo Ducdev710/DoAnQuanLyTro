@@ -43,11 +43,12 @@ class BoardingHouseViewModel @Inject constructor(
                 return
             }
             address.isNullOrBlank() -> {
-                liveData.saveBoardingHouse.postValue(Resource.Error(message = "Dịa chỉ không được để trống"))
+                liveData.saveBoardingHouse.postValue(Resource.Error(message = "Địa chỉ không được để trống"))
                 return
             }
         }
 
+        //Lưu khu trọ hiện tại khi tạo mới thành công
         viewModelScope.launch {
             val boardingHouseSave = if(liveData.isUpdateBoardingHouse) liveData.currentBoardingHouse.value!!.copy(
                 name = name!!,
@@ -128,6 +129,7 @@ class BoardingHouseViewModel @Inject constructor(
         }
     }
 
+    //Khởi tạo form chỉnh sửa
     fun initForm(boardingHouse: BoardingHouse?) {
         liveData.currentBoardingHouse.postValue(boardingHouse)
     }

@@ -10,22 +10,24 @@ import com.app.motel.data.model.Bill
 import com.app.motel.data.model.Resource
 
 class HandleBillState: AppViewLiveData {
-    // Filter and navigation state
+    // Lưu trạng thái lọc theo tình trạng thanh toán, mặc định là "đã thanh toán"
     val filterState = MutableLiveData(HoaDonEntity.STATUS_PAID)
+
+    //Lưu thời gian hiện tại dùng để lọc hóa đơn theo tháng/năm
     val currentDate = MutableLiveData(DateConverter.getCurrentDateTime().toCalendar())
 
-    // List of bills
+    // Danh sách hóa đơn
     val bills = MutableLiveData<Resource<List<Bill>>>()
 
-    // Current bill being edited
+    // Hóa đơn hiện tại đang được xử lý
     val currentBill = MutableLiveData<Bill>()
 
-    // Update operation state
+    // Theo dõi trạng thái của thao tác cập nhật hóa đơna
     val updateBill = MutableLiveData<Resource<Bill>>()
 
     /**
-     * Filters the bill list based on payment status and date
-     * If user is admin, also filters by month/year
+     * Nếu người dùng là admin, thêm điều kiện lọc theo tháng/năm hiện tại
+     * Nếu không phải admin, chỉ lọc theo trạng thái thanh toán
      */
     fun getListBillByFilter(isAdmin: Boolean): List<Bill> = (bills.value?.data ?: arrayListOf()).filter {
         it.status == filterState.value

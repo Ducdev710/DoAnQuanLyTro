@@ -1,5 +1,10 @@
 package com.app.motel.data.model
 
+/**
+ * Lớp trừu tượng đóng gói thông tin người dùng trong hệ thống.
+ * Sử dụng sealed class để giới hạn các loại người dùng có thể tồn tại.
+ * Hỗ trợ hai loại người dùng: Admin(chủ nhà) và Người dùng thông thường(khách thuê).
+ */
 sealed class CommonUser {
 
     abstract val id: String
@@ -15,15 +20,27 @@ sealed class CommonUser {
     abstract val role: Role
 
     val isAdmin get() = role == Role.admin
+
+    /**
+     * Đối tượng gốc chứa thông tin chi tiết của người dùng
+     * (User cho Chủ nhà, Tenant cho khach thuê).
+     */
     abstract val child: Any
 
-    // Add extension properties to access bank information
+    /**
+     * Thuộc tính mở rộng để truy cập thông tin ngân hàng
+     * Chỉ có giá trị với người dùng chủ nhà
+     */
     val bankName: String?
         get() = if (isAdmin && child is User) (child as User).bankName else null
 
     val accountNumber: String?
         get() = if (isAdmin && child is User) (child as User).accountNumber else null
 
+    /**
+     * Đại diện cho người dùng có quyền admin (chủ nhà)
+     * @param child Đối tượng User chứa thông tin chi tiết
+     */
     data class AdminUser(
         override val child: User,
     ): CommonUser() {
@@ -40,6 +57,10 @@ sealed class CommonUser {
         override val role = Role.admin
     }
 
+    /**
+     * Đại diện cho người dùng thông thường (khách thuê)
+     * @param child Đối tượng Tenant chứa thông tin chi tiết
+     */
     data class NormalUser(
         override val child: Tenant,
     ): CommonUser() {
@@ -56,6 +77,9 @@ sealed class CommonUser {
         override val role = Role.user
     }
 
+    /**
+     * Tạo bản sao của đối tượng với các thông tin được cập nhật
+     */
     fun copy(
         fullName: String,
         birthDay: String?,
@@ -86,7 +110,10 @@ sealed class CommonUser {
         ))
     }
 
-    // Add an overloaded copy method that handles bank information
+    /**
+     * Phiên bản nạp chồng của phương thức copy bổ sung thông tin ngân hàng
+     * @return Đối tượng CommonUser mới với thông tin đã cập nhật
+     */
     fun copy(
         fullName: String,
         birthDay: String?,

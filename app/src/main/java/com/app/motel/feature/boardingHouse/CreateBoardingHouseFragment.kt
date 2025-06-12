@@ -59,9 +59,11 @@ class CreateBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fragme
         }
         viewModel.liveData.saveBoardingHouse.observe(viewLifecycleOwner){
             when(it.status){
+                // Hiển thị dialog loading
                 Status.LOADING -> {
                     dialogLoading = showLoadingDialog(requireContext(), layoutInflater)
                 }
+                // Đóng dialog loading, hiển thị thông báo thành công
                 Status.SUCCESS -> {
                     dialogLoading?.dismiss()
                     dialogLoading = null
@@ -76,6 +78,7 @@ class CreateBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fragme
                         }
                     }
                 }
+                // Hiển thị thông báo lỗi và đóng dialog loading
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                     dialogLoading?.dismiss()

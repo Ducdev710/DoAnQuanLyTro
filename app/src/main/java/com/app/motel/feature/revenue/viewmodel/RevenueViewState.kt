@@ -11,7 +11,11 @@ import com.app.motel.data.model.Resource
 
 class RevenueViewState: AppViewLiveData {
     val bills = MutableLiveData<Resource<List<Bill>>>()
+
+    //Thời gian hiện tại (mặc định), được sử dụng để lọc hóa đơn theo tháng/năm
     val currentDate = MutableLiveData(DateConverter.getCurrentDateTime().toCalendar())
+
+    //Trạng thái lọc hóa đơn, mặc định là STATUS_PAID (đã thanh toán)
     val filterState = MutableLiveData(HoaDonEntity.STATUS_PAID)
 
     fun getListBillByFilter(isAdmin: Boolean): List<Bill> {

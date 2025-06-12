@@ -26,7 +26,9 @@ import javax.inject.Inject
 
 class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServiceFormBinding>() {
     companion object{
+        //Key để truyền dữ liệu dịch vụ hiện có (khi sửa)
         const val ITEM_KEY = "service_item"
+        //Key để truyền roomId nếu tạo dịch vụ cho một phòng cụ thể
         const val ROOM_ID_KEY = "room_id"
     }
 
@@ -45,7 +47,7 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (requireActivity().application as AppApplication).appComponent.inject(this)
 
-        // Get roomId from arguments if available
+        // Lấy roomId từ arguments
         roomId = arguments?.getString(ROOM_ID_KEY)
 
         init()
@@ -55,11 +57,12 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
     }
 
     private fun init() {
+        // Lấy dịch vụ từ arguments nếu có (khi sửa)
         val item = Gson().fromJson(arguments?.getString(ITEM_KEY), Service::class.java)
         viewModel.initForm(item)
         views.txtName.setText(item?.name ?: "")
 
-        // Hide the checkbox if creating for a specific room
+        // Ẩn checkbox nếu đang tạo dịch vụ cho phòng cụ thể
         if (roomId != null) {
             views.cbApplyAllRoom.visibility = View.GONE
         }
@@ -88,10 +91,10 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
     }
 
     private fun setupValidation() {
-        // Initial state - check if creating new service
+        // Kiểm tra trạng thái ban đầu - có phải đang tạo dịch vụ mới không
         val isNewService = viewModel.liveData.currentService.value == null
 
-        // Only disable save button for new global services (not room-specific)
+        // Chỉ vô hiệu hóa nút lưu cho dịch vụ chung mới (không phải dịch vụ riêng phòng)
         if (isNewService && roomId == null) {
             views.btnSave.isEnabled = false
         }
@@ -101,15 +104,14 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
             val priceNotEmpty = views.txtlPrice.text.toString().trim().isNotEmpty()
             val isApplyToAllRooms = views.cbApplyAllRoom.isChecked
 
-            // For new global service, require the checkbox to be checked
-            // For room-specific service, don't require the checkbox
+            // Đối với dịch vụ chung mới, yêu cầu phải chọn checkbox
             val isValid = nameNotEmpty && priceNotEmpty &&
                     (roomId != null || !isNewService || isApplyToAllRooms)
 
             views.btnSave.isEnabled = isValid
         }
 
-        // Add text watchers
+        // Thêm các text watcher
         views.txtName.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -122,7 +124,7 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
             override fun afterTextChanged(s: Editable?) { validateForm() }
         })
 
-        // Add checkbox listener (only if checkbox is visible)
+        // Thêm listener cho checkbox (chỉ khi checkbox hiển thị)
         if (roomId == null) {
             views.cbApplyAllRoom.setOnCheckedChangeListener { _, _ -> validateForm() }
         }
@@ -137,15 +139,16 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
             views.txtlPrice.setText(it?.price.toStringMoney())
             views.tvTypePay.text = it?.typePay ?: DichVuEntity.TypePay.FREE.typeName
 
-            // Only show and set checkbox if not room-specific
+            // Chỉ hiển thị và thiết lập checkbox nếu không phải dịch vụ riêng phòng
             if (roomId == null) {
                 views.cbApplyAllRoom.isChecked = it?.isAppliesAllRoom ?: false
             }
 
+            //Thiết lập text cho các nút dựa vào chế độ (thêm/sửa)
             views.btnSave.text = if(it == null) "Lưu" else "Cập nhật"
             views.btnDeletel.text = if(it == null) "Đóng" else "Xóa"
 
-            // Re-validate form when service data changes
+            // Validation lại form khi dữ liệu dịch vụ thay đổi
             setupValidation()
         }
 
@@ -176,11 +179,12 @@ class ServiceFormFragment @Inject constructor() : AppBaseFragment<FragmentServic
             views.tvTypePay.text = adapter.getCurrentItem.typeName
             dialog.dismiss()
 
-            // Revalidate form after selecting payment type
+            // Validation lại form sau khi chọn loại thanh toán
             setupValidation()
         }
     }
 
+    //Xóa form khi fragment bị hủy
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearForm()

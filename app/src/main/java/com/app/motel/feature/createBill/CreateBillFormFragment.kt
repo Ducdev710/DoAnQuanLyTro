@@ -44,6 +44,10 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
         super.onViewCreated(view, savedInstanceState)
     }
 
+    //Nhận dữ liệu phòng được truyền từ màn hình danh sách
+    //Khởi tạo form với thông tin phòng
+    //Thiết lập trường nhập liệu cho chỉ số điện, nước cũ có thể chỉnh sửa
+    //Xử lý sự kiện nhấn nút Lưu và Hủy
     private fun init() {
         val item: Room? = Gson().fromJson(arguments?.getString(ITEM_KEY), Room::class.java)
         mViewModel.initForm(item)
@@ -140,6 +144,7 @@ class CreateBillFormFragment @Inject constructor() : AppBaseFragment<FragmentCre
         }
     }
 
+    //Đặt lại trạng thái các LiveData khi Fragment bị hủy
     override fun onDestroy() {
         super.onDestroy()
         mViewModel.clearStateCreate()

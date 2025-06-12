@@ -17,116 +17,120 @@ import com.app.motel.databinding.LayoutTabBarBinding
 class CustomTabBar(context: Context?, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
 
-    interface OnTabSelectedListener {
-        fun onTabSelected(position: Int)
-    }
+        //Định nghĩa callback interface để thông báo khi tab được chọn
+        interface OnTabSelectedListener {
+            fun onTabSelected(position: Int)
+        }
 
-    private var tabSelectedListener: OnTabSelectedListener? = null
-    fun setOnTabSelectedListener(listener: OnTabSelectedListener) {
-        tabSelectedListener = listener
-    }
+        private var tabSelectedListener: OnTabSelectedListener? = null
+        fun setOnTabSelectedListener(listener: OnTabSelectedListener) {
+            tabSelectedListener = listener
+        }
 
-    private var binding: LayoutTabBarBinding = LayoutTabBarBinding
-        .inflate(LayoutInflater.from(context), this, true)
-    private lateinit var listTabName: List<String>
-    private lateinit var listTabTv: List<TextView>
-    var currentPosition = 0
-    init {
-        setupAttrs(attrs)
-        setupUI()
-    }
+        private var binding: LayoutTabBarBinding = LayoutTabBarBinding
+            .inflate(LayoutInflater.from(context), this, true)
+        private lateinit var listTabName: List<String>
+        private lateinit var listTabTv: List<TextView>
+        var currentPosition = 0
+        init {
+            setupAttrs(attrs)
+            setupUI()
+        }
 
-    fun setTabs(tabs: List<String>) {
-        listTabName = tabs
-        setupUI()
-    }
+        fun setTabs(tabs: List<String>) {
+            listTabName = tabs
+            setupUI()
+        }
 
-    private fun setupAttrs(attrs: AttributeSet?) {
-        val typedArray = context.theme.obtainStyledAttributes(
-            attrs, R.styleable.CustomTabBar,
-            0, 0)
+        //Đọc thuộc tính entries từ XML thông qua TypedArray
+        //Chuyển đổi mảng các tên tab thành List<String>
+        //Giải phóng TypedArray khi hoàn thành
+        private fun setupAttrs(attrs: AttributeSet?) {
+            val typedArray = context.theme.obtainStyledAttributes(
+                attrs, R.styleable.CustomTabBar,
+                0, 0)
 
-        listTabName = typedArray
-            .getTextArray(R.styleable.CustomTabBar_android_entries)
-            .toList().map {
-                it.toString()
+            listTabName = typedArray
+                .getTextArray(R.styleable.CustomTabBar_android_entries)
+                .toList().map {
+                    it.toString()
+                }
+
+            typedArray.recycle()
+        }
+
+        private fun setupUI() {
+            // Xóa các tab cũ
+            binding.viewTabsWrapper.removeAllViews()
+
+            //Tạo TextView cho từng tab
+            listTabTv = listTabName.mapIndexed { position, tabName ->
+                initTabTv(tabName, position)
             }
 
-        typedArray.recycle()
-    }
+            //Thiết lập container cho các tab
+            binding.viewTabsWrapper.apply {
+                weightSum = listTabTv.size.toFloat()
+                listTabTv.forEach {
+                    this.addView(it)
+                }
+            }
 
-    private fun setupUI() {
-        // Clear old tabs
-        binding.viewTabsWrapper.removeAllViews()
-
-        //textview
-        listTabTv = listTabName.mapIndexed { position, tabName ->
-            initTabTv(tabName, position)
-        }
-
-        //view_tabs_wrapper
-        binding.viewTabsWrapper.apply {
-            weightSum = listTabTv.size.toFloat()
-            listTabTv.forEach {
-                this.addView(it)
+            //Thiết lập container cho indicator
+            binding.viewIndicatorWrapper.apply {
+                //weight sum = number of tabs
+                weightSum = listTabTv.size.toFloat()
             }
         }
 
-        //view_indicator_wrapper
-        binding.viewIndicatorWrapper.apply {
-            //weight sum = number of tabs
-            weightSum = listTabTv.size.toFloat()
-        }
-    }
-
-    private fun initTabTv(tabName: String, position: Int) = TextView(context).apply {
-        text = tabName
-        layoutParams = LinearLayout.LayoutParams(
-            0,
-            LayoutParams.MATCH_PARENT,
-            1f
-        )
-        gravity = Gravity.CENTER
-        textSize = 14f
-        typeface = Typeface.DEFAULT_BOLD
-        isAllCaps = true
-        setPadding(2, 2, 2, 2)
-
-        // Set initial color
-        setTextColor(
-            ContextCompat.getColor(
-                this.context,
-                if (position == currentPosition) R.color.white else R.color.textColor2
+        private fun initTabTv(tabName: String, position: Int) = TextView(context).apply {
+            text = tabName
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LayoutParams.MATCH_PARENT,
+                1f
             )
-        )
+            gravity = Gravity.CENTER
+            textSize = 14f
+            typeface = Typeface.DEFAULT_BOLD
+            isAllCaps = true
+            setPadding(2, 2, 2, 2)
 
-        setOnClickListener {
-            setTabSelected(position)
-        }
-    }
-
-    fun setTabSelected(position: Int) {
-        tabSelectedListener?.onTabSelected(position)
-
-        ObjectAnimator.ofFloat(
-            binding.viewIndicator,
-            View.TRANSLATION_X,
-            binding.viewIndicator.x,
-            listTabTv[position].x
-        ).apply {
-            duration = 300
-            start()
-        }
-
-        currentPosition = position
-        listTabTv.forEachIndexed { i, textView ->
-            textView.setTextColor(
+            // Thiết lập màu ban đầu
+            setTextColor(
                 ContextCompat.getColor(
-                    context,
-                    if (i == position) R.color.white else R.color.textColor2
+                    this.context,
+                    if (position == currentPosition) R.color.white else R.color.textColor2
                 )
             )
+
+            setOnClickListener {
+                setTabSelected(position)
+            }
         }
-    }
+
+        fun setTabSelected(position: Int) {
+            tabSelectedListener?.onTabSelected(position)
+
+            ObjectAnimator.ofFloat(
+                binding.viewIndicator,
+                View.TRANSLATION_X,
+                binding.viewIndicator.x,
+                listTabTv[position].x
+            ).apply {
+                duration = 300
+                start()
+            }
+
+            currentPosition = position
+            listTabTv.forEachIndexed { i, textView ->
+                textView.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (i == position) R.color.white else R.color.textColor2
+                    )
+                )
+            }
+        }
 
 }

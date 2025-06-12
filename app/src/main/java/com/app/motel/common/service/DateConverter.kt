@@ -27,6 +27,7 @@ object DateConverter {
         }
     }
 
+    //Trả về thời gian hiện tại dưới dạng chuỗi theo định dạng PATTERN_DATE_FORMAT
     fun getCurrentStringDateTime(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val currentDateTime = LocalDateTime.now()
@@ -38,6 +39,7 @@ object DateConverter {
         }
     }
 
+    //Trả về thời gian hiện tại dưới dạng chuỗi theo định dạng LOCAL_DATE_FORMAT
     fun getCurrentLocalDateTime(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val currentDateTime = LocalDateTime.now()
@@ -49,6 +51,7 @@ object DateConverter {
         }
     }
 
+    //Tính số ngày chênh lệch giữa hai chuỗi ngày tháng
     fun getDaysDifference(date1: String?, date2: String?): Long {
         if(date1.isNullOrEmpty() || date2.isNullOrEmpty()) return 0;
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -65,6 +68,7 @@ object DateConverter {
         }
     }
 
+    //Kiểm tra liệu danh sách các ngày có gần nhau (trong vòng 60 phút)
     fun areDatesClose(dates: List<String>): Boolean {
         if (dates.size < 2) return true
 
@@ -83,6 +87,7 @@ object DateConverter {
         return true
     }
 
+    //Chuyển chuỗi định dạng PATTERN_DATE_FORMAT thành đối tượng Date
     fun stringToDate(dateString: String?): Date?{
         val format = SimpleDateFormat(PATTERN_DATE_FORMAT, Locale.getDefault())
         return try{
@@ -92,6 +97,7 @@ object DateConverter {
         }
     }
 
+    //Chuyển chuỗi định dạng LOCAL_DATE_FORMAT thành đối tượng Date
     fun localStringToDate(dateString: String?): Date?{
         val format = SimpleDateFormat(LOCAL_DATE_FORMAT, Locale.getDefault())
         return try{
@@ -101,16 +107,19 @@ object DateConverter {
         }
     }
 
+    //Chuyển đối tượng Date thành chuỗi định dạng LOCAL_DATE_FORMAT
     fun dateToLocalString(date: Date): String {
         val format = SimpleDateFormat(LOCAL_DATE_FORMAT, Locale.getDefault())
         return format.format(date)
     }
 
+    //Chuyển đối tượng Date thành chuỗi định dạng LOCAL_DATE_FORMAT2 (có giờ phút)
     fun dateToLocalString2(date: Date): String {
         val format = SimpleDateFormat(LOCAL_DATE_FORMAT2, Locale.getDefault())
         return format.format(date)
     }
 
+    //Tính số tháng chênh lệch giữa hai đối tượng Date
     fun monthsBetweenDates(date1: Date, date2: Date): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
@@ -127,6 +136,7 @@ object DateConverter {
         }
     }
 
+    //Thêm một số tháng nhất định vào một đối tượng Date
     fun addMonthsToDate(date: Date, monthsToAdd: Int): Date {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
@@ -139,6 +149,7 @@ object DateConverter {
         }
     }
 
+    //Tính toán và trả về đối tượng Calendar sau khi thêm một số tháng vào ngày cụ thể
     fun calculateMonth(date: Date, monthCountToCalculate: Int): Calendar {
         val calendar = Calendar.getInstance()
         calendar.time = date

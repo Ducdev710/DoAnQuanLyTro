@@ -27,10 +27,10 @@ class RulesViewModel @Inject constructor(
                     if(it){
                         rulesRepository.getRulesByBoardingHouseId(userController.state.currentBoardingHouseId)
                     }else{
-                        // For tenants, get rules
+                        // Lấy nội quy cho người thuê
                         val tenantRules = rulesRepository.getRulesByTenantId(userController.state.currentUserId)
 
-                        // Get landlord information directly from repository
+                        // Lấy thông tin chủ trọ
                         val boardingHouseId = userController.state.currentBoardingHouseId
                         val landlordInfo = if (boardingHouseId.isNotEmpty()) {
                             rulesRepository.getLandlordInfoByBoardingHouseId(boardingHouseId)
@@ -39,7 +39,7 @@ class RulesViewModel @Inject constructor(
                             getLandlordInfo()
                         }
 
-                        // Get boarding house information for utility prices
+                        // Lấy thông tin về giá điện và nước của khu trọ
                         val boardingHouse = if (boardingHouseId.isNotEmpty()) {
                             rulesRepository.getBoardingHouseById(boardingHouseId)
                         } else null
@@ -60,7 +60,7 @@ class RulesViewModel @Inject constructor(
                         }
 
                         if (contactRule != null) {
-                            // Update the content of the existing contact rule
+                            // Cập nhât nội dung của quy định liên hệ
                             val updatedRules = tenantRules.map { rule ->
                                 if (rule.id == contactRule.id) {
                                     // Include electricity and water prices if available
@@ -90,7 +90,7 @@ class RulesViewModel @Inject constructor(
                 }
                 liveData.rules.postValue(Resource.Success(rules))
 
-                // For landlords, get utility prices from current boarding house
+                // Lấy giá điện và nước của khu trọ cho tài khoản chủ nhà
                 if (userController.state.isAdmin) {
                     userController.state.currentBoardingHouse.value?.data?.let { boardingHouse ->
                         liveData.utilityPrices.postValue(Resource.Success(
@@ -111,6 +111,7 @@ class RulesViewModel @Inject constructor(
         return price.toString().chunked(3).joinToString(",")
     }
 
+    // Lấy thông tin chủ trọ cho người thuê
     suspend fun getLandlordInfo(): LandlordInfo {
         try {
             // For tenant users, try to get landlord info from repository first
@@ -235,6 +236,7 @@ class RulesViewModel @Inject constructor(
         }
     }
 
+    // Lấy thông tin khu trọ cho người thuê
     fun getTenantBoardingHouse() {
         viewModelScope.launch {
             try {
@@ -274,6 +276,7 @@ class RulesViewModel @Inject constructor(
         }
     }
 
+    // Xử lý thêm, cập nhật hoặc xóa nội quy
     fun handleRules(rule: Rules, isUpdate: Boolean = true){
         val currentUser = userController.state.currentUser.value?.data
 
@@ -309,6 +312,7 @@ class RulesViewModel @Inject constructor(
         liveData.addRules.postValue(Resource.Success(rule))
     }
 
+    // Lưu danh sách nội quy
     fun saveRules(rules: List<Rules>){
         val currentUser = userController.state.currentUser.value?.data
 

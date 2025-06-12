@@ -21,6 +21,7 @@ class DetailContractBottomSheet(
     private val onUpdateContract: ((Contract) -> Unit)? = null
 ): AppBaseBottomSheet<DialogDetailContractBinding>() {
 
+    //Biến isEditMode quản lý trạng thái chỉnh sửa
     private var isEditMode = false
 
     override fun getBinding(
@@ -30,9 +31,11 @@ class DetailContractBottomSheet(
         return DialogDetailContractBinding.inflate(inflater, container, false)
     }
 
+    //Mở rộng bottom sheet
     override val isExpanded: Boolean
         get() = true
 
+    //Được đặt false để không bo góc phần trên
     override val isBorderRadiusTop: Boolean
         get() = false
 
@@ -58,15 +61,15 @@ class DetailContractBottomSheet(
             cbEndContract.isChecked = contract.state == Contract.State.ENDED
             cbInactive.isChecked = contract.isActive == HopDongEntity.INACTIVE
 
-            // Set initial editable state
+            // Thiết lập trạng thái chỉnh sửa ban đầu
             txtNote.isEnabled = false
             cbEndContract.isEnabled = false
             cbInactive.isEnabled = false
 
-            // Show update button only if callback is provided
+            // Hiển thị nút cập nhật chỉ khi có callback
             btnUpdate.isVisible = onUpdateContract != null
 
-            // Show termination details if contract is ended
+            // Hiển thị chi tiết kết thúc hợp đồng nếu đã kết thúc
             if (contract.state == Contract.State.ENDED) {
                 layoutTerminationDetails.isVisible = true
                 tvTerminationReason.text = contract.terminationReason ?: ""
@@ -84,40 +87,40 @@ class DetailContractBottomSheet(
                 dismiss()
             }
 
-            // Check if contract is active
+            // Kiểm tra hợp đồng có đang hoạt động
             val isActiveContract = contract.isActive == HopDongEntity.ACTIVE
 
-            // Get current user ID from wherever you store it (SharedPreferences, etc.)
+            // Lấy ID người dùng hiện tại từ SharedPreferences
             val currentUserId = requireContext().getSharedPreferences(AppConstants.PREFS_NAME, 0)
                 .getString(AppConstants.USER_ID_KEY, "") ?: ""
 
-            // Check if current user is the tenant (hide button for tenant)
+            // Kiểm tra người dùng hiện tại có phải là người thuê (Ẩn button với khách thuê)
             val isTenant = currentUserId == contract.customerId
 
-            // Only show update button if:
-            // 1. Callback exists
-            // 2. Contract is active
-            // 3. User is NOT the tenant
+            // Chỉ hiển thị nút cập nhật nếu:
+            // 1. Có callback
+            // 2. Hợp đồng đang hoạt động
+            // 3. Người dùng KHÔNG phải là người thuê
             btnUpdate.isVisible = onUpdateContract != null && isActiveContract && !isTenant
 
             btnUpdate.setOnClickListener {
                 if (isEditMode) {
-                    // Save changes
+                    // Lưu thay đổi
                     saveContractChanges()
                 } else {
-                    // Enter edit mode
+                    // Vào chế độ chỉnh sửa
                     toggleEditMode(true)
                 }
             }
 
-            // Add date picker functionality for start date
+            // Thêm chức năng date picker cho ngày bắt đầu
             tvStartDate.setOnClickListener {
                 if (isEditMode) {
                     showDatePicker(true)
                 }
             }
 
-            // Add date picker functionality for end date
+            // Thêm chức năng date picker cho ngày kết thúc
             tvEndDate.setOnClickListener {
                 if (isEditMode) {
                     showDatePicker(false)
@@ -129,7 +132,7 @@ class DetailContractBottomSheet(
     private fun showDatePicker(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
 
-        // Parse current date if available
+        // Phân tích ngày hiện tại nếu có
         val currentDate = if (isStartDate) views.tvStartDate.text.toString() else views.tvEndDate.text.toString()
         if (currentDate.isNotEmpty()) {
             try {
@@ -141,24 +144,24 @@ class DetailContractBottomSheet(
                     calendar.set(year, month, day)
                 }
             } catch (e: Exception) {
-                // Use current date if parsing fails
+                // Sử dụng ngày hiện tại nếu phân tích thất bại
             }
         }
 
         DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
-                // Format the date as dd/MM/yyyy
+                // Định dạng ngày kiểu dd/MM/yyyy
                 val formattedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year)
 
-                // Set the selected date to the appropriate field
+                // Đặt ngày đã chọn vào trường thích hợp
                 if (isStartDate) {
                     views.tvStartDate.setText(formattedDate)
                 } else {
                     views.tvEndDate.setText(formattedDate)
                 }
 
-                // Recalculate duration whenever dates change
+                // Tính lại thời hạn khi ngày thay đổi
                 recalculateDuration()
             },
             calendar.get(Calendar.YEAR),
@@ -205,65 +208,65 @@ class DetailContractBottomSheet(
             // Đảm bảo thời hạn không âm
             val finalDuration = months.coerceAtLeast(0)
 
-            // Update duration text
+            // Cập nhật text thời hạn
             val durationText = "Thời gian: $finalDuration tháng"
             views.tvDuration.text = durationText
         } catch (e: Exception) {
-            // If calculation fails, don't update the duration
+            // Nếu tính toán thất bại, không cập nhật thời hạn
         }
     }
 
     private fun toggleEditMode(editMode: Boolean) {
         isEditMode = editMode
         views.apply {
-            // Only enable note field for editing
+            // Chỉ cho phép chỉnh sửa một số trường
             txtNote.isEnabled = editMode
             tvDeposit.isEnabled = editMode
 
             tvStartDate.isEnabled = editMode
             tvEndDate.isEnabled = editMode
 
-            // Disable status checkboxes
+            // Vô hiệu hóa các checkbox trạng thái
             cbEndContract.isEnabled = false
             cbInactive.isEnabled = false
 
-            // Update button text based on mode
+            // Cập nhật text nút dựa vào chế độ
             btnUpdate.text = if (editMode) "Lưu" else "Cập nhật"
         }
     }
 
     private fun saveContractChanges() {
         views.apply {
-            // Extract deposit value from text field
+            // Trích xuất giá trị tiền cọc từ trường văn bản
             val depositValue = tvDeposit.text.toString()
                 .replace("Tiền cọc: ", "")
                 .replace("đ", "")
                 .trim()
 
-            // Extract duration value from the text
+            // Trích xuất giá trị thời hạn từ text
             val durationText = tvDuration.text.toString()
             val durationValue = durationText.replace("Thời gian: ", "")
                 .replace(" tháng", "")
                 .trim()
                 .toIntOrNull() ?: contract.duration
 
-            // Create updated contract with changes
+            // Tạo hợp đồng cập nhật với các thay đổi
             val updatedContract = contract.copy(
                 note = txtNote.text.toString(),
                 deposit = depositValue,
                 startDate = tvStartDate.text.toString(),
                 endDate = tvEndDate.text.toString(),
                 duration = durationValue,
-                // Preserve termination details if contract is already terminated
+                // Giữ nguyên thông tin kết thúc hợp đồng nếu đã chấm dứt
                 terminationReason = contract.terminationReason,
                 refundAmount = contract.refundAmount,
                 deductionReason = contract.deductionReason
             )
 
-            // Notify listener about the update
+            // Thông báo cho listener về cập nhật
             onUpdateContract?.invoke(updatedContract)
 
-            // Return to view mode
+            // Quay lại chế độ xem
             toggleEditMode(false)
         }
     }

@@ -49,6 +49,7 @@ class ServiceListFragment @Inject constructor() : AppBaseFragment<FragmentServic
             override fun onClickItem(item: Service, action: AppBaseAdapter.ItemAction) {
                 when(action){
                     AppBaseAdapter.ItemAction.CLICK -> {
+                        //Chuyển đến ServiceFormFragment với dữ liệu dịch vụ được chuyển đổi thành JSON
                         navigateFragmentWithSlide(
                             R.id.serviceFormFragment,
                             args = Bundle().apply {
@@ -66,6 +67,7 @@ class ServiceListFragment @Inject constructor() : AppBaseFragment<FragmentServic
         })
         views.rcv.adapter = adapter
 
+        //Chuyển đến ServiceFormFragment không kèm tham số (chế độ thêm mới)
         views.btnAdd.setOnClickListener{
             navigateFragmentWithSlide(R.id.serviceFormFragment)
         }

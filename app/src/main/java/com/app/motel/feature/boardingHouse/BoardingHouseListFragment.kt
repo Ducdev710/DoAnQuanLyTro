@@ -82,7 +82,7 @@ class BoardingHouseListFragment @Inject constructor() : AppBaseFragment<Fragment
     }
 
     private fun listenStateViewmodel() {
-
+        //Cập nhật thông tin người dùng(chủ trọ) hiện tại
         profileViewModel.state.currentUser.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
@@ -93,6 +93,7 @@ class BoardingHouseListFragment @Inject constructor() : AppBaseFragment<Fragment
                 else -> {}
             }
         }
+        //Cập nhật khu trọ đang được chọn
         profileViewModel.state.currentBoardingHouse.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
@@ -101,6 +102,7 @@ class BoardingHouseListFragment @Inject constructor() : AppBaseFragment<Fragment
                 else -> {}
             }
         }
+        //Cập nhật danh sách khu trọ
         viewModel.liveData.boardingHouse.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
@@ -110,6 +112,7 @@ class BoardingHouseListFragment @Inject constructor() : AppBaseFragment<Fragment
                 else -> {}
             }
         }
+        //Xử lý kết quả của các hành động lưu/xóa khu trọ
         viewModel.liveData.saveBoardingHouse.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {

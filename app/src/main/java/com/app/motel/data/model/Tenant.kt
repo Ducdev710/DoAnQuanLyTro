@@ -25,46 +25,46 @@ data class Tenant(
     @Transient
     var room: Room? = null
     @Transient
-                var contract: Contract? = null
+    var contract: Contract? = null
 
-                val isRenting: Boolean get() = status == NguoiThueEntity.Status.ACTIVE.value
-                val isTemporarilyAbsent: Boolean get() = status == NguoiThueEntity.Status.TEMPORARY_ABSENT.value
+    val isRenting: Boolean get() = status == NguoiThueEntity.Status.ACTIVE.value
+    val isTemporarilyAbsent: Boolean get() = status == NguoiThueEntity.Status.TEMPORARY_ABSENT.value
 
-                fun toEntity(): NguoiThueEntity{
-                    return NguoiThueEntity(
-                        id = id,
-                        hoTen = fullName,
-                        cccd = idCard,
-                        queQuan = homeTown,
-                        ngaySinh = birthDay,
-                        soDienThoai = phoneNumber,
-                        trangThai = status,
-                        maPhong = roomId,
-                        maKhuTro = boardingHouseId,
-                        maChuNha = landlordId,
-                        tenDangNhap = username,
-                        matKhau = password,
-                        biKhoa = isLock,
-                        laChuHopDong = isContractHolder
-                    )
-                }
+    fun toEntity(): NguoiThueEntity{
+        return NguoiThueEntity(
+            id = id,
+            hoTen = fullName,
+            cccd = idCard,
+            queQuan = homeTown,
+            ngaySinh = birthDay,
+            soDienThoai = phoneNumber,
+            trangThai = status,
+            maPhong = roomId,
+            maKhuTro = boardingHouseId,
+            maChuNha = landlordId,
+            tenDangNhap = username,
+            matKhau = password,
+            biKhoa = isLock,
+            laChuHopDong = isContractHolder
+        )
+    }
 
-                fun toEntityCreate(): NguoiThueEntity{
-                    return NguoiThueEntity(
-                        id = IDManager.createID(),
-                        hoTen = fullName,
-                        cccd = idCard,
-                        queQuan = homeTown,
-                        ngaySinh = birthDay,
-                        soDienThoai = phoneNumber,
-                        trangThai = NguoiThueEntity.Status.INACTIVE.value,
-                        maPhong = roomId,
-                        maKhuTro = boardingHouseId,
-                        maChuNha = landlordId,
-                        tenDangNhap = username,
-                        matKhau = password,
-                        biKhoa = isLock,
-                        laChuHopDong = isContractHolder
-                    )
-                }
-            }
+    fun toEntityCreate(): NguoiThueEntity{
+        return NguoiThueEntity(
+            id = IDManager.createID(),
+            hoTen = fullName,
+            cccd = idCard,
+            queQuan = homeTown,
+            ngaySinh = birthDay,
+            soDienThoai = phoneNumber,
+            trangThai = NguoiThueEntity.Status.INACTIVE.value,
+            maPhong = roomId,
+            maKhuTro = boardingHouseId,
+            maChuNha = landlordId,
+            tenDangNhap = username,
+            matKhau = password,
+            biKhoa = isLock,
+            laChuHopDong = isContractHolder
+        )
+    }
+}

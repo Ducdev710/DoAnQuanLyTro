@@ -7,6 +7,19 @@ import androidx.core.view.isVisible
 import com.app.motel.core.AppBaseDialog
 import com.app.motel.databinding.DialogLoadingBinding
 
+/**
+ * Hiển thị dialog loading với các tùy chọn tùy chỉnh.
+ *
+ * Hàm tiện ích này tạo và hiển thị một dialog loading đơn giản với khả năng
+ * tùy chỉnh nội dung hiển thị và khả năng hủy. Dialog sử dụng layout
+ * dialog_loading.xml thông qua view binding.
+ *
+ * @param context Context để tạo dialog
+ * @param layoutInflater LayoutInflater để inflate view
+ * @param content Nội dung text hiển thị bên dưới biểu tượng loading (null để ẩn)
+ * @param isCancelable Cho phép người dùng hủy dialog bằng cách nhấn bên ngoài hoặc nút back
+ * @return Dialog đã được tạo và hiển thị, có thể sử dụng để đóng dialog sau này
+ */
 fun showLoadingDialog(context: Context, layoutInflater: android.view.LayoutInflater, content: String? = null, isCancelable: Boolean = false): Dialog {
     val dialog = AppBaseDialog.Builder(context, DialogLoadingBinding.inflate(layoutInflater))
         .isWidthMatchParent(false)

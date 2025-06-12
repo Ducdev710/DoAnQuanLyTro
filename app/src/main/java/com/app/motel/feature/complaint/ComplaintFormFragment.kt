@@ -43,6 +43,9 @@ class ComplaintFormFragment: AppBaseFragment<FragmentComplaintFormBinding>() {
         listenStateViewmodel()
     }
 
+    //Trích xuất đối tượng Complaint từ arguments (nếu có)
+    //Khởi tạo form với dữ liệu khiếu nại
+    //Thiết lập sự kiện nhấn nút Save để tạo khiếu nại mới
     private fun initUI() {
         val complaint: Complaint? = arguments?.getString(KEY_COMPLAINT)?.let {
             Gson().fromJson(it, Complaint::class.java)
@@ -54,6 +57,13 @@ class ComplaintFormFragment: AppBaseFragment<FragmentComplaintFormBinding>() {
     }
 
     lateinit var adapter: ComplaintAdapter
+
+    //Quan sát currentComplain để hiển thị dữ liệu khiếu nại
+    //Nếu currentComplain là null: hiển thị nút Save và cho phép chỉnh sửa (chế độ tạo mới)
+    //Nếu currentComplain không null: ẩn nút Save và vô hiệu hóa trường input (chế độ xem)
+    //Quan sát updateComplaint để xử lý kết quả tạo mới
+    //Thành công: hiển thị thông báo và quay lại màn hình trước
+    //Lỗi: hiển thị thông báo lỗi
     private fun listenStateViewmodel() {
         viewmodel.liveData.currentComplain.observe(viewLifecycleOwner){
             it?.title.apply {
@@ -80,6 +90,7 @@ class ComplaintFormFragment: AppBaseFragment<FragmentComplaintFormBinding>() {
         }
     }
 
+    //Xóa dữ liệu form khi fragment bị hủy
     override fun onDestroy() {
         super.onDestroy()
         viewmodel.clearForm()

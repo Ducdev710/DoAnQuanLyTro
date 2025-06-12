@@ -28,6 +28,8 @@ class RulesRepository @Inject constructor(
         return rules
     }
 
+    //Lấy thông tin liên hệ của chủ trọ dựa trên ID nhà trọ
+    //Trả về đối tượng LandlordInfo
     suspend fun getLandlordInfoByBoardingHouseId(boardingHouseId: String): LandlordInfo? {
         // Get the landlord ID for this boarding house
         val boardingHouse = boardingHouseDAO.getById(boardingHouseId) ?: return null
@@ -45,18 +47,20 @@ class RulesRepository @Inject constructor(
         )
     }
 
+    //Lấy thông tin nhà trọ cụ thể
     suspend fun getBoardingHouseById(boardingHouseId: String): BoardingHouse? {
         val boardingHouseEntity = boardingHouseDAO.getById(boardingHouseId) ?: return null
         return boardingHouseEntity.toModel()
     }
 
+    //Lấy thông tin nhà trọ mà người thuê đang ở
     suspend fun getBoardingHouseByTenantId(tenantId: String): BoardingHouse? {
         val boardingHouseEntities = boardingHouseDAO.getByTenantId(tenantId)
         if (boardingHouseEntities.isEmpty()) return null
         return boardingHouseEntities.firstOrNull()?.toModel()
     }
 
-
+    //Xác định chủ trọ quản lý nhà trọ mà người thuê đang ở
     suspend fun getLandlordIdForTenant(tenantId: String): String? {
         // Find boarding houses where this tenant lives
         val boardingHouses = boardingHouseDAO.getByTenantId(tenantId)
@@ -66,6 +70,8 @@ class RulesRepository @Inject constructor(
         return boardingHouses.firstOrNull()?.maChuNha
     }
 
+    //Lấy thông tin của chủ trọ hiện ở tài khoản chủ trọ
+    //Trả về đối tượng UserInfo
     suspend fun getUserById(userId: String): UserInfo? {
         val user = userDAO.getById(userId) ?: return null
 

@@ -20,7 +20,7 @@ class RoomBillAdapter (
 
     override fun bind(binding: ItemRoomContractBinding, item: Room, position: Int) {
         binding.tvQuantity.isVisible = false
-        binding.cbLiving.isVisible = false  // replace with cbEmpty to get theme that checkbox
+        binding.cbLiving.isVisible = false
 
         binding.root.setOnClickListener{
             onListener?.onClickItem(item)

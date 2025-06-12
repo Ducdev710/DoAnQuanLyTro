@@ -167,8 +167,8 @@ class HandleBillViewModel @Inject constructor(
     }
 
     /**
-     * Helper method to check if a user is allowed to pay a bill
-     * Verifies against contract ID if available, otherwise falls back to room ID
+     * Kiểm tra xem người dùng có quyền thanh toán hóa đơn hay không
+     * Nếu hóa đơn có contractId, kiểm tra theo contractId
      */
     private suspend fun isUserAllowedToPayBill(userId: String, bill: Bill): Boolean {
         // First check by contract ID if available
@@ -185,8 +185,8 @@ class HandleBillViewModel @Inject constructor(
     }
 
     /**
-     * Updates an existing bill with new values and meter readings
-     * Uses electricity and water prices from the BoardingHouse settings
+     * Cập nhật hóa đơn với các chỉ số điện nước mới
+     * Sử dụng chỉ số điện, nước theo cài đặt của nhà trọ hiện tại
      */
     fun updateBill(bill: Bill?) {
         viewModelScope.launch {

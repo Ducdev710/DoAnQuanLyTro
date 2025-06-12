@@ -65,6 +65,20 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * Component chính của Dagger cho ứng dụng.
+ *
+ * AppComponent định nghĩa các phương thức inject để cung cấp dependencies
+ * cho các thành phần khác nhau của ứng dụng (Activities, Fragments).
+ *
+ * Được đánh dấu là @Singleton để đảm bảo chỉ có một instance duy nhất
+ * tồn tại trong suốt vòng đời của ứng dụng.
+ *
+ * Sử dụng các module:
+ * - ViewModelModule: Cung cấp các ViewModel
+ * - FragmentModule: Cung cấp các Fragment
+ * - AppModule: Cung cấp các dependency cơ bản của ứng dụng
+ */
 @Component(modules = [
     ViewModelModule::class,
     FragmentModule::class,
@@ -73,8 +87,14 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
+    /**
+     * Inject dependencies vào Application
+     */
     fun inject(appApplication: AppApplication)
 
+    /**
+     * Inject dependencies vào các Activity
+     */
     fun inject(mainActivity: MainActivity)
     fun inject(authActivity: AuthActivity)
     fun inject(createContractActivity: CreateContractActivity)
@@ -90,6 +110,9 @@ interface AppComponent {
     fun inject(profileDetailActivity: ProfileDetailActivity)
     fun inject(complaintActivity: ComplaintActivity)
 
+    /**
+     * Inject dependencies vào các Fragment
+     */
     fun inject(homeFragment: HomeFragment)
     fun inject(newsFragment: NewsFragment)
     fun inject(notifyFragment: NotifyFragment)
@@ -132,9 +155,22 @@ interface AppComponent {
     fun inject(revenueStatisticsActivity: RevenueStatisticsActivity)
     //fun inject(otpVerificationFragment: OtpVerificationFragment)
 
+    /**
+     * Cung cấp FragmentFactory để tạo các Fragment
+     * với constructor injection
+     */
     fun fragmentFactory(): FragmentFactory
+
+    /**
+     * Cung cấp ViewModelFactory để tạo các ViewModel
+     * với constructor injection
+     */
     fun viewModelFactory(): ViewModelProvider.Factory
 
+    /**
+     * Factory interface để tạo AppComponent
+     * Sử dụng @BindsInstance để đưa Context vào đồ thị dependency
+     */
     @Component.Factory
     interface Factory{
         fun create(@BindsInstance context: Context): AppComponent

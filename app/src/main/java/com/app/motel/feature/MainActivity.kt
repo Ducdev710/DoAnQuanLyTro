@@ -50,27 +50,76 @@ class MainActivity : AppBaseActivity<ActivityMainBinding>() {
         setUpBottomNav()
         setupToolBar()
         handleObserverData()
+        observeNotifications()
     }
 
     override fun onResume() {
         super.onResume()
         init()
+        // Refresh notification count on resume
+        mViewModel.refreshNotificationCount()
+    }
+
+    private fun observeNotifications() {
+        // Only observe notification counts for admin users
+        if (mViewModel.userController.state.getCurrentUser?.isAdmin == true) {
+            mViewModel.notificationCount.observe(this) { count ->
+                updateNotificationBadge(count)
+                Log.d("MainActivity", "Admin: Updated notification badge with count: $count")
+            }
+        } else {
+            // For tenant users, remove any existing badges
+            views.navBottom.removeBadge(R.id.notifyFragment)
+            Log.d("MainActivity", "Tenant: Removed notification badges")
+        }
     }
 
     private fun setUpBottomNav() {
         val navController = this.findNavController(R.id.fragment_view)
         views.navBottom.setupWithNavController(navController)
 
+        // Clear all existing badges
+        views.navBottom.clearAllBadges()
+
         views.navBottom.menu.clear()
         views.navBottom.inflateMenu(
             if (mViewModel.userController.state.getCurrentUser?.isAdmin == true)
                 R.menu.menu_bottom_admin else R.menu.menu_bottom_user
         )
+
         this.findNavController(R.id.fragment_view).currentDestination?.id?.apply {
             views.navBottom.selectedItemId = this
         }
+
+        // Log all menu items to debug
+        for (i in 0 until views.navBottom.menu.size()) {
+            val item = views.navBottom.menu.getItem(i)
+            Log.d("MenuItems", "Item at position $i: ${item.title}, ID: ${item.itemId}")
+        }
+
         this.findNavController(R.id.fragment_view).addOnDestinationChangedListener { controller, destination, arguments ->
             views.navBottom.isVisible = destination.id != R.id.boardingHouseListFragment
+
+            // Hide badge when navigating to notification screen
+            if (destination.id == R.id.notifyFragment) {
+                views.navBottom.removeBadge(R.id.notifyFragment)
+                // Consider marking notifications as read when navigating to notification screen
+                // mViewModel.markAllNotificationsAsRead()
+            }
+        }
+    }
+
+    private fun updateNotificationBadge(count: Int) {
+        // Only update badges for admin users
+        if (mViewModel.userController.state.getCurrentUser?.isAdmin == true) {
+            if (count > 0) {
+                views.navBottom.addBadgeAt(R.id.notifyFragment, count)
+            } else {
+                views.navBottom.removeBadge(R.id.notifyFragment)
+            }
+        } else {
+            // For non-admin users, ensure badges are removed
+            views.navBottom.removeBadge(R.id.notifyFragment)
         }
     }
 
@@ -121,12 +170,17 @@ class MainActivity : AppBaseActivity<ActivityMainBinding>() {
                 startActivity(Intent(this, AuthActivity::class.java))
             }
             setUpBottomNav()
+            observeNotifications() // Re-setup notification observation when user changes
             invalidateOptionsMenu()
         }
 
         mViewModel.userController.state.currentBoardingHouse.observe(this){
             if(it.isSuccess()){
                 mViewModel.getBoardingById(it?.data?.id)
+                // Refresh notification count when boarding house changes
+                if (mViewModel.userController.state.getCurrentUser?.isAdmin == true) {
+                    mViewModel.refreshNotificationCount()
+                }
             }
             if(it.isError()){
                 mViewModel.userController.state.currentBoardingHouse.postValue(Resource.Initialize())
@@ -135,5 +189,4 @@ class MainActivity : AppBaseActivity<ActivityMainBinding>() {
             }
         }
     }
-
 }

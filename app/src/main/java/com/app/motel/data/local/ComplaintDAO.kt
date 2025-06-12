@@ -42,4 +42,37 @@ interface ComplaintDAO {
 
     @Query("UPDATE KhieuNai SET TrangThai = :state WHERE ID = :id")
     suspend fun updateStateComplaint(id: String, state: String)
+
+    @Query("SELECT * FROM KhieuNai WHERE TrangThai = :status")
+    suspend fun getComplaintsByStatus(status: String): List<KhieuNaiEntity>
+
+    @Query("SELECT COUNT(*) FROM KhieuNai WHERE TrangThai = 'Mới' AND (KieuKhieuNai = 0 OR KieuKhieuNai = 1 OR KieuKhieuNai = 999)")
+    suspend fun countNewNotifications(): Int
+
+    @Query("SELECT COUNT(*) FROM KhieuNai WHERE TrangThai = 'Mới' AND KieuKhieuNai = :type")
+    suspend fun countNewNotificationsByType(type: Int): Int
+
+    @Query("SELECT COUNT(*) FROM KhieuNai " +
+            "LEFT JOIN Phong ON KhieuNai.MaPhong = Phong.ID " +
+            "LEFT JOIN KhuTro ON Phong.MaKhuTro = KhuTro.ID " +
+            "WHERE KhieuNai.TrangThai = 'Mới' AND Phong.MaKhuTro = :boardingHouseId")
+    suspend fun countNewNotificationsForAdmin(boardingHouseId: String): Int
+
+    @Query("SELECT COUNT(*) FROM KhieuNai " +
+            "LEFT JOIN Phong ON KhieuNai.MaPhong = Phong.ID " +
+            "WHERE KhieuNai.KieuKhieuNai = 999 AND KhieuNai.TrangThai = 'Mới' " +
+            "AND Phong.MaKhuTro = :boardingHouseId")
+    suspend fun countNewApplicationNotifications(boardingHouseId: String): Int
+
+    @Query("UPDATE KhieuNai SET TrangThai = :newStatus " +
+            "WHERE KieuKhieuNai = 999 AND TrangThai = 'Mới' " +
+            "AND MaPhong IN (SELECT ID FROM Phong WHERE MaKhuTro = :boardingHouseId)")
+    suspend fun updateAllApplicationNotifications(boardingHouseId: String, newStatus: String): Int
+
+    @Query("SELECT COUNT(*) FROM KhieuNai " +
+            "LEFT JOIN Phong ON KhieuNai.MaPhong = Phong.ID " +
+            "LEFT JOIN KhuTro ON Phong.MaKhuTro = KhuTro.ID " +
+            "WHERE KhieuNai.TrangThai = 'Mới' AND Phong.MaKhuTro = :boardingHouseId " +
+            "AND KhieuNai.KieuKhieuNai != 999")
+    suspend fun countNewNotificationsForAdminExcludingApp(boardingHouseId: String): Int
 }

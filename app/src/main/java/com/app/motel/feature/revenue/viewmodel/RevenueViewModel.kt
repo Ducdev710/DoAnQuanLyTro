@@ -35,7 +35,7 @@ class RevenueViewModel @Inject constructor(
                     billRepository.getBillByTenantRentedRoom(currentUserId)
                 }
 
-                // Filter by the current month and year and paid status
+                // Lọc các hóa đơn đã thanh toán trong tháng, năm hiện tại
                 val filteredBills = bills.filter {
                     it.status == HoaDonEntity.STATUS_PAID &&
                             it.month == currentMonth &&
@@ -49,6 +49,8 @@ class RevenueViewModel @Inject constructor(
         }
     }
 
+    //Cập nhật tháng hiện tại và làm mới dữ liệu hóa đơn
+    //Sử dụng khi người dùng chọn tháng khác để xem
     fun getPaidBillsByMonth(month: Int) {
         currentMonth = month
         getBills()

@@ -27,6 +27,9 @@ class BoardingHouseAdapter(
          return ItemBoardingHouseBinding.inflate(inflater, parent, false)
     }
 
+    //Đánh dấu khu trọ đang được chọn bằng nền và icon khác biệt
+    //Hiển thị thông tin cơ bản: tên, địa chỉ, tổng số phòng, số phòng trống
+    //Thay đổi giao diện tùy thuộc vào trạng thái chọn/không chọn
     @SuppressLint("SetTextI18n")
     override fun bind(binding: ItemBoardingHouseBinding, item: BoardingHouse, position: Int) {
         if(currentBoardingHouse?.id == item.id) binding.root.setBackgroundResource(R.drawable.background_border_radius_border_1)

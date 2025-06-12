@@ -62,6 +62,13 @@ class RegisterFragment @Inject constructor() : AppBaseFragment<FragmentRegisterB
     }
 
     private var dialogLoading: Dialog? = null
+
+    //Phương thức handleStateViewModel() theo dõi LiveData từ ViewModel
+    //Xử lý các trạng thái khác nhau của tiến trình đăng ký:
+    //Loading: Hiển thị dialog loading
+    //Success: Chuyển đến MainActivity
+    //Error: Hiển thị thông báo lỗi
+    //Initialize: Reset UI
     private fun handleStateViewModel() {
         viewModel.liveData.apply {
             register.observe(viewLifecycleOwner){

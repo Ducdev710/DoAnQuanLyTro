@@ -33,6 +33,7 @@ class ProfileFragment @Inject constructor() : AppBaseFragment<FragmentProfileBin
         views.tvLogout.setOnClickListener {
             requireActivity().apply {
                 profileViewModel.logout()
+                //Đóng tất cả các Activity liên quan
                 finishAffinity()
                 startActivity(Intent(this, AuthActivity::class.java))
             }

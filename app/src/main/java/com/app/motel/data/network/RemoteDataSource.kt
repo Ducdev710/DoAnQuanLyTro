@@ -16,6 +16,10 @@ import java.util.concurrent.TimeUnit
 
 class RemoteDataSource {
 
+    /*Xây dựng instance API từ interface sử dụng Retrofit
+    Hỗ trợ generic cho mọi loại API interface (như ApiMock)
+    Tùy chỉnh headers và hành vi retry*/
+
     fun <API> buildApi(
         apiClass: Class<API>,
         context: Context,
@@ -39,7 +43,11 @@ class RemoteDataSource {
             .create(apiClass)
     }
 
-    // build okhttp
+    /*build okhttp
+    Thiết lập timeout (mặc định 10 giây)
+    Thêm interceptors cho logging và headers
+    Tùy chọn thêm retry interceptor*/
+
     private fun getHttpClientBuilder(
         context: Context,
         headers: Map<String, String>? = null,
@@ -59,7 +67,11 @@ class RemoteDataSource {
         }.build()
     }
 
-    // header
+    /*header
+    Tự động thêm header Authorization
+    Sử dụng token từ SharedPreferences
+    Hỗ trợ thêm headers tùy chỉnh*/
+
     private fun getInterceptorHeader(
         context: Context,
         headers: Map<String, String>? = null,
@@ -78,7 +90,10 @@ class RemoteDataSource {
         it.proceed(newRequest)
     }
 
-    // logging
+    /*logging
+    Ghi log chi tiết các request/response
+    Sử dụng HttpLoggingInterceptor ở mức BODY*/
+
     private fun getInterceptorLogging(
     ) : HttpLoggingInterceptor = HttpLoggingInterceptor { message ->
         Log.d("HTTP ---------->", message)
@@ -90,7 +105,11 @@ class RemoteDataSource {
         const val TIMEOUT_SECONDS: Long = 10
     }
 
-    // retry when timeout
+    /*retry when timeout
+    Tự động thử lại request khi thất bại (mặc định 3 lần)
+    Kiểm tra kết nối mạng trước khi thực hiện request
+    Trễ 1 giây giữa các lần thử*/
+
     class RetryInterceptor(
         private val context: Context,
         private val maxRetries: Int = 3,
@@ -127,3 +146,12 @@ class RemoteDataSource {
     }
 
 }
+
+/*RemoteDataSource là lớp trung tâm của tầng mạng trong ứng dụng, chịu trách nhiệm thiết lập
+và cấu hình các yêu cầu API.
+
+Tích hợp với các lớp khác
+Cung cấp API cho Repository (như HomeRepository)
+Sử dụng cùng các model (như Room) để phân tích JSON response
+Tương tác với NetworkUtil để kiểm tra kết nối
+*/

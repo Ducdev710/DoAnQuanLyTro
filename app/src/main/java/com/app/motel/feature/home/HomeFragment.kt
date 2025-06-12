@@ -39,6 +39,8 @@ class HomeFragment @Inject constructor() : AppBaseFragment<FragmentHomeBinding>(
         super.onViewCreated(view, savedInstanceState)
     }
 
+    //Theo dõi thay đổi thông tin người dùng
+    //Cấu hình UI dựa trên vai trò người dùng (admin hay không)
     private fun listenStateViewModel() {
         mViewModel.userController.state.currentUser.observe(viewLifecycleOwner){
             setup(it.data?.isAdmin == true)
@@ -59,6 +61,7 @@ class HomeFragment @Inject constructor() : AppBaseFragment<FragmentHomeBinding>(
             })
         }
 
+        // Tạo danh sách fragment khác nhau cho admin và người dùng thường
         val fragments: ArrayList<AppBaseFragment<out ViewBinding>> = if(isAdmin) arrayListOf(
             ManagementBoardingHouseFragment(),
             GeneralBoardingHouseFragment(),

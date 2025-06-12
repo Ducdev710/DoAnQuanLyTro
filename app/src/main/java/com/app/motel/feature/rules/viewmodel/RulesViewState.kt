@@ -9,6 +9,7 @@ import com.app.motel.data.model.Rules
 class RulesViewState: AppViewLiveData {
     val rules = MutableLiveData<Resource<List<Rules>>>()
 
+    //Kết quả thêm/cập nhật nội quy
     val addRules = MutableLiveData<Resource<Rules>>()
     val saveRules = MutableLiveData<Resource<Boolean>>()
     val utilityPrices = MutableLiveData<Resource<UtilityPrices>>()

@@ -29,6 +29,7 @@ class NotificationAdminAdapter(
             DateConverter.dateToLocalString2(it)
         }
 
+        // Xử lý màu sắc trạng thái
         binding.tvState.text = item.status
         binding.tvState.backgroundTintList = binding.root.context.getColorStateList(when{
             KhieuNaiEntity.Status.NEW.value == item.status
@@ -39,17 +40,27 @@ class NotificationAdminAdapter(
         })
 
         binding.root.setOnClickListener {
+            // Nếu là thông báo hệ thống và đang ở trạng thái "Mới", tự động đánh dấu đã đọc
+            if (item.type == KhieuNaiEntity.Type.APPLICATION.value &&
+                item.status == KhieuNaiEntity.Status.NEW.value) {
+                // Tạo bản sao của item với trạng thái đã cập nhật
+                val updatedItem = item.copy(status = KhieuNaiEntity.Status.RESOLVED.value)
+                // Gọi sự kiện để cập nhật vào database
+                listener.onClickItem(updatedItem, ItemAction.UPDATE_STATUS)
+            }
+
+            // Vẫn gọi sự kiện click thông thường
             listener.onClickItem(item)
         }
 
-        // Only set long click listener for complaints and rent room notifications
+        // Xử lý sự kiện long click cho các khiếu nại và yêu cầu thuê phòng
         if (item.type == KhieuNaiEntity.Type.COMPLAINT.value || item.type == KhieuNaiEntity.Type.RENT_ROOM.value) {
             binding.root.setOnLongClickListener {
                 listener.onClickItem(item, ItemAction.LONG_CLICK)
                 true
             }
         } else {
-            // Remove long click listener for system notifications
+            // Xóa sự kiện long click nếu là thông báo hệ thống
             binding.root.setOnLongClickListener(null)
         }
     }

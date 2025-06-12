@@ -55,6 +55,7 @@ class ContractRepository @Inject constructor(
         }?.toModel()
     }
 
+    //Lấy ID phòng của người thuê đang ở
     suspend fun getRoomIdForResident(userId: String): String? {
         // Get the room ID for a resident who may not be the primary contract holder
         val tenant = tenantDAO.getNguoiThueById(userId)
@@ -95,6 +96,7 @@ class ContractRepository @Inject constructor(
         }
     }
 
+    //Cập nhật trạng thái phòng
     suspend fun updateStateRoom(roomId: String, state: String): Resource<Boolean>{
         return try {
             roomDAO.updateStatus(roomId, state)

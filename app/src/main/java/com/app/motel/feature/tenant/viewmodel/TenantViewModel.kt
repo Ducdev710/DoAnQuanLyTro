@@ -40,10 +40,10 @@ class TenantViewModel @Inject constructor(
             try {
                 if (currentUser?.isAdmin == true) {
                     val tenants = if (currentBoardingHouse != null) {
-                        // Get tenants for the current boarding house only
+                        // Lấy người thuê theo khu trọ hiện tại
                         tenantRepository.getTenantsByBoardingHouseId(currentBoardingHouse.id)
                     } else {
-                        // If no boarding house is selected, show all tenants for this landlord
+                        // Lấy tất cả người thuê của chủ trọ này nếu không có khu trọ
                         tenantRepository.getTenantsByLandlordId(currentUser.id)
                     }
                     liveData.tenants.postValue(Resource.Success(tenants))
@@ -91,6 +91,7 @@ class TenantViewModel @Inject constructor(
         liveData.currentTenant.postValue(tenant)
     }
 
+    //Thêm, cập nhật người thuê
     fun handleTenant(
         tenant: Tenant?,
         fullName: String?,
@@ -140,10 +141,10 @@ class TenantViewModel @Inject constructor(
                 homeTown = homeTown,
                 username = username!!,
                 password = password!!,
-                landlordId = tenant.landlordId ?: currentUser?.id, // Fixed: added comma here
+                landlordId = tenant.landlordId ?: currentUser?.id,
                 boardingHouseId = currentBoardingHouse?.id
             ) else Tenant(
-                id = "", // UUID will be generated in repository
+                id = "", // UUID sẽ được tạo tự động trong repository
                 fullName = fullName!!,
                 status = state,
                 phoneNumber = phoneNumber,
@@ -153,9 +154,10 @@ class TenantViewModel @Inject constructor(
                 username = username!!,
                 password = password!!,
                 landlordId = currentUser?.id,
-                boardingHouseId = currentBoardingHouse?.id // Added boarding house ID for new tenants
+                boardingHouseId = currentBoardingHouse?.id // Thêm boarding house ID khi tạo mới người thuê
             )
 
+            //Lưu người thuê
             val result = if(isUpdate) tenantRepository.updateTenant(tenantUpdate)
             else tenantRepository.addTenant(tenantUpdate)
 
@@ -189,7 +191,7 @@ class TenantViewModel @Inject constructor(
             val result = tenantRepository.updateTenantLockStatus(tenant!!, isLock)
             liveData.updateTenant.postValue(result)
 
-            // Update the current tenant in the form if the operation was successful
+            // Cập nhật người thuê hiện tại trong form nếu thành công
             if (result.isSuccess()) {
                 liveData.currentTenant.postValue(tenant.copy(isLock = isLock))
             }
@@ -268,7 +270,7 @@ class TenantViewModel @Inject constructor(
                 idCard = idCard
             )
 
-            // If you need to pass bank info separately because it's not part of the copy method
+            // Xử lý đặc biệt cho admin (thêm thông tin ngân hàng)
             val result = if (currentUser.isAdmin) {
                 profileRepository.updateCurrentUser(userUpdate, bankName, accountNumber)
             } else {
@@ -298,7 +300,7 @@ class TenantViewModel @Inject constructor(
                     return@launch
                 }
 
-                // Check if tenant is a contract owner
+                // Kiểm tra xem người thuê có hợp đồng đang hoạt động hay không
                 val contracts = contractRepository.getContractByTenantId(tenantId)
                 val activeContracts = contracts.filter { it.isActive == HopDongEntity.ACTIVE }
 

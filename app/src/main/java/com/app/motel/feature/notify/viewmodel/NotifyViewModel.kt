@@ -21,7 +21,9 @@ class NotifyViewModel @Inject constructor(
 
     }
 
+    //Thiết lập tab hiển thị
     fun setCurrentType(position: Int){
+        //Chủ trọ
         if(liveData.isAdmin){
             when(position){
                 0 -> liveData.currentTabType.postValue(KhieuNaiEntity.Type.APPLICATION)
@@ -31,15 +33,15 @@ class NotifyViewModel @Inject constructor(
             }
             return
         }
-
+        //Người thuê
         when(position){
             0 -> liveData.currentTabGeneral.postValue(true)
             1 -> liveData.currentTabGeneral.postValue(false)
             else -> liveData.currentTabGeneral.postValue(true)
         }
-
     }
 
+    //Lấy danh sách khiếu nại của chủ nhà trọ
     fun getNotificationAdmin(){
         viewModelScope.launch {
             try {
@@ -51,6 +53,7 @@ class NotifyViewModel @Inject constructor(
         }
     }
 
+    //Lấy danh sách thông báo của người thuê
     fun getNotificationUser(){
         viewModelScope.launch {
             try {
@@ -63,11 +66,27 @@ class NotifyViewModel @Inject constructor(
         }
     }
 
+    //Lưu khiếu nại đang được xử lý
     fun setCurrentHandleComplaint(item: Complaint?) {
         liveData.currentHandleComplaint.postValue(item)
     }
 
     fun updateStateComplaint(complaint: Complaint, state: String){
+        // Nếu là thông báo ứng dụng (APPLICATION), cho phép cập nhật trạng thái
+        if (complaint.type == KhieuNaiEntity.Type.APPLICATION.value) {
+            viewModelScope.launch {
+                try {
+                    complaintRepository.updateStateComplaint(complaint.id, state)
+                    getNotificationAdmin()
+                } catch (e: Exception) {
+                    Log.e("NotifyViewModel", "Lỗi cập nhật trạng thái thông báo: ${e.message}")
+                    liveData.updateComplaint.postValue(Resource.Error(message = "Lỗi cập nhật trạng thái: ${e.message}"))
+                }
+            }
+            return
+        }
+
+        // Xử lý các loại khiếu nại khác như trước
         when{
             complaint.isSystemNotification -> {
                 liveData.updateComplaint.postValue(Resource.Error(message = "Không thể cập nhật trạng thái thông báo hệ thống"))
@@ -90,7 +109,7 @@ class NotifyViewModel @Inject constructor(
                 return
             }
             (complaint.status == KhieuNaiEntity.Status.RESOLVED.value
-             || complaint.status == KhieuNaiEntity.Status.REJECTED.value
+                    || complaint.status == KhieuNaiEntity.Status.REJECTED.value
                     ) && (state == KhieuNaiEntity.Status.NEW.value
                     || state == KhieuNaiEntity.Status.PENDING.value
                     || state == KhieuNaiEntity.Status.RESOLVED.value
@@ -105,4 +124,23 @@ class NotifyViewModel @Inject constructor(
         }
     }
 
+    // Thêm phương thức mới để cập nhật tất cả thông báo ứng dụng
+    fun updateAllApplicationNotifications() {
+        viewModelScope.launch {
+            try {
+                // Gọi repository để cập nhật tất cả thông báo APPLICATION từ "Mới" thành "Đã xử lý"
+                val count = complaintRepository.updateAllApplicationNotifications(
+                    userController.state.currentBoardingHouseId,
+                    KhieuNaiEntity.Status.RESOLVED.value
+                )
+                if (count > 0) {
+                    // Nếu có thông báo được cập nhật, refresh lại danh sách
+                    getNotificationAdmin()
+                    Log.d("NotifyViewModel", "Đã cập nhật $count thông báo ứng dụng")
+                }
+            } catch (e: Exception) {
+                Log.e("NotifyViewModel", "Lỗi cập nhật tất cả thông báo ứng dụng: ${e.message}")
+            }
+        }
+    }
 }

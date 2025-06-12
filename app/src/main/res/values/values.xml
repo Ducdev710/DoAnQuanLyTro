@@ -2,19 +2,19 @@
 <resources>
 
     <array name="tab_home">
-        <item>Quản lý</item>
-        <item>Tổng quan</item>
+        <item>QUẢN LÝ</item>
+        <item>TỔNG QUAN</item>
     </array>
 
     <array name="tab_handle_contract">
-        <item>Còn hạn</item>
-        <item>Sắp hết hạn</item>
-        <item>Hết hạn</item>
+        <item>CÒN HẠN</item>
+        <item>SẮP HẾT HẠN</item>
+        <item>HẾT HẠN</item>
     </array>
 
     <array name="tab_contract_lít">
-        <item>Còn hiệu lực</item>
-        <item>Hết hiệu lực</item>
+        <item>CÒN HIỆU LỰC</item>
+        <item>HẾT HIỆU LỰC</item>
     </array>
 
     <array name="tab_room">

@@ -24,7 +24,6 @@ import com.app.motel.data.entity.*
     QuyDinhEntity::class,
     KhieuNaiEntity::class,
     ThongBaoEntity::class,
-    // VerificationTokenEntity::class - removed
 ], version = 13, exportSchema = false)
 @TypeConverters(StringListRoomConverter::class, DateRoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -38,7 +37,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun rulesDAO(): RulesDAO
     abstract fun complaintDao(): ComplaintDAO
     abstract fun notificationDao(): NotificationDAO
-    // abstract fun verificationTokenDAO(): VerificationTokenDAO - removed
 
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null
@@ -324,3 +322,24 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 }
+
+/*
+1→2: Thêm thông tin ngân hàng cho NguoiDung
+2→3: Thêm trạng thái BiKhoa cho NguoiThue
+3→4: Thêm tham chiếu MaKhuTro và MaChuNha cho NguoiThue
+4→5: Thêm trạng thái LaChuHopDong cho NguoiThue
+5→6: Thêm tùy chọn áp dụng dịch vụ cho tất cả phòng
+6→7: Thêm thông tin kết thúc hợp đồng
+7→8: Thêm lưu trữ chỉ số điện nước cũ
+8→9: Thêm phụ phí cho hóa đơn
+9→10: Thêm ghi chú phòng
+10→11: Thêm ghi chú sửa chữa
+11→12: Thêm liên kết hóa đơn với hợp đồng
+12→13: Thêm ngày thanh toán hóa đơn
+
+Khởi tạo cơ sở dữ liệu
+Sử dụng Singleton pattern để đảm bảo chỉ có một instance
+Tạo database từ file asset có sẵn
+Bật foreign key constraints khi mở database
+Hỗ trợ fallback migration để tránh lỗi schema
+*/

@@ -52,9 +52,11 @@ class RoomListFragment @Inject constructor() : AppBaseFragment<FragmentListRoomB
             override fun onClickItem(item: Room, action: AppBaseAdapter.ItemAction) {
                 when(action){
                     AppBaseAdapter.ItemAction.CLICK -> {
+                        // Chuyển đến màn hình chi tiết phòng
                         navigateFragmentWithSlide(R.id.roomDetailFragment, args = Bundle().apply { putString(RoomDetailFragment.ITEM_KEY, Gson().toJson(item)) })
                     }
                     AppBaseAdapter.ItemAction.CUSTOM -> {
+                        // Hiển thị dialog xác nhận thuê phòng
                         requireActivity().showDialogConfirm(
                             title = "XÁC NHẬN THUÊ PHÒNG",
                             content = "Bạn có chắc muốn thuê phòng ${item.roomName}",
@@ -95,6 +97,7 @@ class RoomListFragment @Inject constructor() : AppBaseFragment<FragmentListRoomB
     }
 
     private fun listenStateViewModel() {
+        //Hiển thị/ẩn TabBar và nút thêm phòng dựa chỉ với chủ trọ
         viewModel.userController.state.currentUser.observe(viewLifecycleOwner) { userResource ->
             val currentUser = userResource.data
             views.tabBar.isVisible = currentUser?.isAdmin == true
@@ -107,13 +110,13 @@ class RoomListFragment @Inject constructor() : AppBaseFragment<FragmentListRoomB
                 val currentUser = viewModel.userController.state.currentUser.value?.data
                 val roomState = it.data
 
-                // If user is a tenant (not admin) and viewing empty rooms
+                // Người thuê xem phòng trống
                 if (currentUser != null && !currentUser.isAdmin && roomState == PhongEntity.Status.EMPTY) {
                     currentUser.child?.let { child ->
                         if (child is Tenant) {
                             val tenant = child
                             if (tenant.landlordId != null) {
-                                // Load empty rooms for this tenant
+                                // Tải phòng trống phù hợp cho người thuê
                                 viewModel.loadEmptyRoomsForTenant(tenant)
                                 return@observe
                             }
@@ -121,11 +124,14 @@ class RoomListFragment @Inject constructor() : AppBaseFragment<FragmentListRoomB
                     }
                 }
 
-                // For all other cases (admin users or tenant viewing their rented rooms)
+                // Các trường hợp khác (chủ trọ hoặc người thuê xem phòng đang thuê)
                 viewModel.getRoom()
             }
         }
 
+        //Cập nhật adapter với danh sách phòng đã lọc và tìm kiếm
+        //Hiển thị/ẩn nút thuê phòng dựa vào trạng thái và vai trò
+        //Hiển thị/ẩn thông báo trống khi không có phòng
         viewModel.liveData.rooms.observe(viewLifecycleOwner){
             if(it.isSuccess()){
                 val isShowRentButton = viewModel.liveData.currentRoomState.value?.data == PhongEntity.Status.EMPTY
@@ -138,17 +144,19 @@ class RoomListFragment @Inject constructor() : AppBaseFragment<FragmentListRoomB
                 views.tvEmpty.isVisible = rooms.isEmpty()
             }
         }
-
+        //Xử lý tìm kiếm
         viewModel.liveData.searchText.observe(viewLifecycleOwner){
             val rooms = viewModel.liveData.roomsWithCurrentStateSearch
             adapter.updateData(rooms)
             views.tvEmpty.isVisible = rooms.isEmpty()
         }
-
+        //Xử lý sự kiện thuê phòng
         viewModel.liveData.rentRoom.observe(viewLifecycleOwner){
             if(it.isSuccess()){
                 requireActivity().showToast("Yêu cầu thuê phòng thành công")
-                viewModel.getRoom()
+                // Không cần gọi getRoom() vì RoomViewModel đã tự cập nhật danh sách phòng
+                // từ khu trọ hiện tại trong phương thức rentRoom
+                // viewModel.getRoom()
             }else if(it.isError()){
                 requireActivity().showToast(it.message ?: "Có lỗi xảy ra")
             }

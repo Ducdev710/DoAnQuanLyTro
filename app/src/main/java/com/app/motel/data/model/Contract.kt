@@ -105,3 +105,16 @@ data class Contract(
         }
     }
 }
+
+/*
+Enum State
+Định nghĩa bên trong quản lý trạng thái hợp đồng:
+ACTIVE: Hợp đồng còn hiệu lực
+NEAR_END: Sắp hết hạn (còn ≤ 30 ngày)
+ENDED: Đã hết hạn
+UNKNOWN: Không xác định được trạng thái
+Logic xác định trạng thái
+Dựa trên thời gian hiện tại và ngày hết hạn
+Tự động tính số ngày còn lại
+Hỗ trợ chuyển đổi giữa giá trị hiển thị và enum
+*/

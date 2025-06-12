@@ -102,7 +102,7 @@ class GeneralBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fragm
     }
 
     private fun handleObserverData() {
-        // First load all necessary data
+        // Tải dữ liệu ban đầu cân thiết
         val boardingHouseId = viewModel.userController.state.currentBoardingHouseId
         viewModel.getBoardingById(boardingHouseId)
         viewModel.getBills()
@@ -165,6 +165,7 @@ class GeneralBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fragm
         }
     }
 
+    //Thiết lập biểu đồ tình trạng phòng
     @SuppressLint("SetTextI18n")
     private fun setupRoomStatusChart() {
         val chart = views.chartRoomStatus

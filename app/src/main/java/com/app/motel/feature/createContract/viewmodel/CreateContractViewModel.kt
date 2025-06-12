@@ -25,6 +25,7 @@ class CreateContractViewModel @Inject constructor(
     override fun handle(action: CreateContractViewAction) {
     }
 
+    //Khởi tạo form với ID phòng và ID người thuê
     fun initForm(roomId: String?, tenantId: String?){
         liveData.currentRoomId = roomId
         liveData.currentTenantId = tenantId
@@ -37,6 +38,10 @@ class CreateContractViewModel @Inject constructor(
         liveData.tenantNotRented.postValue(Resource.Initialize())
     }
 
+    //Lấy danh sách người thuê chưa có hợp đồng dựa trên 3 điều kiện:
+    //Thuộc về chủ trọ hiện tại
+    //Liên kết với nhà trọ hiện tại
+    //Chưa có hợp đồng
     fun getTenantNotRented() {
         viewModelScope.launch {
             try {
@@ -44,10 +49,6 @@ class CreateContractViewModel @Inject constructor(
                 val currentBoardingHouse = userController.state.getCurrentBoardingHouse
 
                 if (currentUser?.isAdmin == true) {
-                    // Get available tenants that:
-                    // 1. Belong to this landlord
-                    // 2. Are associated with the current boarding house
-                    // 3. Are not already contract holders
                     val availableTenants = tenantRepository.getAvailableTenantsForContract(
                         currentUser.id,
                         currentBoardingHouse?.id

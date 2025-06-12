@@ -19,6 +19,7 @@ class ServiceViewModel @Inject constructor(
     override fun handle(action: ServiceViewAction) {
     }
 
+    //Khởi tạo form với dịch vụ đã có (chế độ sửa) hoặc (chế độ tạo mới)
     fun initForm(item: Service?) {
         liveData.currentService.postValue(item)
     }
@@ -71,13 +72,13 @@ class ServiceViewModel @Inject constructor(
         viewModelScope.launch {
             val isCreate = liveData.currentService.value == null
 
-            // If creating a service for a specific room, set roomId and make sure isAppliesAllRoom is false
+            // Nếu tạo cho một phong cụ thể, đặt roomId và đảm bảo isAppliesAllRoom là false
             val effectiveRoomId = when {
-                // If provided with a roomId, use it (room-specific service)
+                // Nếu có roomId được cung cấp: sử dụng nó (dịch vụ cho phòng cụ thể)
                 roomId != null -> roomId
-                // Otherwise if not applying to all rooms, use existing roomId
+                // Nếu không áp dụng cho tất cả phòng: giữ roomId hiện tại
                 !isAppliesAllRoom -> liveData.currentService.value?.roomId
-                // Else apply to all rooms (no roomId)
+                // Nếu áp dụng cho tất cả phòng: roomId = null
                 else -> null
             }
 

@@ -33,9 +33,11 @@ class RefreshContractBottomSheet(
         ViewModelProvider(requireActivity(), viewModelFactory).get(HandleContractViewModel::class.java)
     }
 
+    //Mở rộng bottom sheet để hiển thị toàn màn hình
     override val isExpanded: Boolean
         get() = true
 
+    //Không sử dụng bo góc trên cho bottom sheet
     override val isBorderRadiusTop: Boolean
         get() = false
 
@@ -51,6 +53,10 @@ class RefreshContractBottomSheet(
         views.btnCancel.setOnClickListener{
             dismiss()
         }
+        //Gọi hàm refreshContract với các tham số:
+        //Hợp đồng hiện tại
+        //Thời hạn mới (số tháng)
+        //Ngày kết thúc mới
         views.btnSave.setOnClickListener{
             viewModel.refreshContract(
                 contract,
@@ -59,6 +65,7 @@ class RefreshContractBottomSheet(
             )
         }
 
+        //Tính toán ngày kết thúc mới dựa trên thời hạn mới
         views.txtTimeNewContract.doOnTextChanged { text, start, before, count ->
             val duration = views.txtTimeNewContract.text.toString().toIntOrNull() ?: 0
             val endDate = DateConverter.localStringToDate(contract.endDate) ?: DateConverter.getCurrentDateTime()

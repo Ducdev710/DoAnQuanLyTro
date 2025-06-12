@@ -59,6 +59,9 @@ class ComplaintActivity: AppBaseActivity<ActivityComplaintBinding>() {
         }
     }
 
+    //Kiểm tra fragment hiện tại
+    //Nếu đang ở fragment danh sách (fragment gốc): kết thúc activity với animation
+    //Nếu đang ở fragment khác: quay lại fragment trước đó với animation slide
     private fun handleBackWithAnimation() {
         val navController = findNavController(R.id.fragment_view)
 

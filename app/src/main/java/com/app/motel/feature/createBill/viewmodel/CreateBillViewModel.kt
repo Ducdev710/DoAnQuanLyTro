@@ -34,12 +34,14 @@ class CreateBillViewModel @Inject constructor(
     override fun handle(action: CreateBillViewAction) {
     }
 
+    //Khởi tạo form tạo hóa đơn
     fun initForm(item: Room?) {
         liveData.currentRoom.postValue(Resource.Success(item))
         getPreviousBill(item?.id)
         getServiceRoom(item?.id, item?.areaId)
     }
 
+    //Đặt lại trạng thái của các LiveData về Initialize
     fun clearStateCreate(){
         liveData.currentRoom.postValue(Resource.Initialize())
         liveData.previousBill.postValue(Resource.Initialize())
@@ -47,6 +49,7 @@ class CreateBillViewModel @Inject constructor(
         liveData.createBill.postValue(Resource.Initialize())
     }
 
+    // Lấy dịch vụ theo phòng
     private fun getServiceRoom(roomId: String?, boardingHouseId: String?){
         if (roomId == null || boardingHouseId == null){
             liveData.currentServiceRoom.postValue(Resource.Error(message = "Không tìm thấy phòng thuê"))
@@ -58,6 +61,7 @@ class CreateBillViewModel @Inject constructor(
         }
     }
 
+    // Lấy hóa đơn trước đó của phòng
     private fun getPreviousBill(roomId: String?){
         if (roomId == null){
             liveData.previousBill.postValue(Resource.Error(message = "Không tìm thấy phòng thuê"))
@@ -73,7 +77,8 @@ class CreateBillViewModel @Inject constructor(
         }
     }
 
-    fun getService(){
+    // Lấy danh sách phòng theo boarding house
+    fun getRoom(){
         liveData.rooms.postValue(Resource.Loading())
         viewModelScope.launch {
             try {
@@ -145,6 +150,7 @@ class CreateBillViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
+            //Kiểm tra xem phòng đã có hóa đơn trong tháng hiện tại chưa
             val checkBillCurrentMonth = billRepository.checkBillCreateDate(room?.id ?: "", createDate!!.toCalendar())
             if(checkBillCurrentMonth.isError()){
                 liveData.createBill.postValue(checkBillCurrentMonth)

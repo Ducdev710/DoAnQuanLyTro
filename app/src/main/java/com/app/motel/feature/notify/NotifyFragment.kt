@@ -45,29 +45,47 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
 
     val adapterNotificationAdmin = NotificationAdminAdapter(object : AppBaseAdapter.AppListener<Complaint>(){
         override fun onClickItem(item: Complaint, action: AppBaseAdapter.ItemAction) {
-            if(action == AppBaseAdapter.ItemAction.LONG_CLICK){
-                requireActivity().showDialogConfirm(
-                    title = "Cập nhật trạng thái",
-                    content = "${item.content}",
-                    buttonCancel = "Từ chối",
-                    buttonConfirm = "Hoàn thành",
-                    cancel = {
-                        viewModel.updateStateComplaint(item, KhieuNaiEntity.Status.REJECTED.value)
-                    },
-                    confirm = {
+            when (action) {
+                AppBaseAdapter.ItemAction.LONG_CLICK -> {
+                    // Hiển thị dialog xử lý khiếu nại
+                    requireActivity().showDialogConfirm(
+                        title = "Cập nhật trạng thái",
+                        content = "${item.content}",
+                        buttonCancel = "Từ chối",
+                        buttonConfirm = "Hoàn thành",
+                        cancel = {
+                            viewModel.updateStateComplaint(item, KhieuNaiEntity.Status.REJECTED.value)
+                        },
+                        confirm = {
+                            viewModel.updateStateComplaint(item, KhieuNaiEntity.Status.RESOLVED.value)
+                        }
+                    )
+                    return
+                }
+                AppBaseAdapter.ItemAction.UPDATE_STATUS -> {
+                    // Cập nhật trạng thái cho thông báo kiểu APPLICATION
+                    if (item.type == KhieuNaiEntity.Type.APPLICATION.value) {
                         viewModel.updateStateComplaint(item, KhieuNaiEntity.Status.RESOLVED.value)
                     }
-                )
-                return
-            }
-            when(item.type){
-                KhieuNaiEntity.Type.RENT_ROOM.value -> {
-                    viewModel.setCurrentHandleComplaint(item)
-                    requireActivity().startActivityWithSlide(Intent(requireActivity(), CreateContractActivity::class.java).apply {
-                        putExtra(CreateContractActivity.KEY_ROOM_ID, item.roomId)
-                        putExtra(CreateContractActivity.KEY_TENANT_ID, item.submittedBy)
-                    },
-                        launcher)
+                    return
+                }
+                else -> {
+                    // Xử lý yêu cầu thuê phòng
+                    when(item.type){
+                        KhieuNaiEntity.Type.RENT_ROOM.value -> {
+                            viewModel.setCurrentHandleComplaint(item)
+                            requireActivity().startActivityWithSlide(Intent(requireActivity(), CreateContractActivity::class.java).apply {
+                                putExtra(CreateContractActivity.KEY_ROOM_ID, item.roomId)
+                                putExtra(CreateContractActivity.KEY_TENANT_ID, item.submittedBy)
+                            }, launcher)
+                        }
+                        KhieuNaiEntity.Type.APPLICATION.value -> {
+                            // Nếu là thông báo APPLICATION và đang ở trạng thái "Mới", tự động đánh dấu đã đọc
+                            if (item.status == KhieuNaiEntity.Status.NEW.value) {
+                                viewModel.updateStateComplaint(item, KhieuNaiEntity.Status.RESOLVED.value)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -81,18 +99,19 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
         }
     })
 
+    //Cập nhật trạng thái khiếu nại sau khi tạo hợp đồng
     val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
         val currentHandleComplaint = viewModel.liveData.currentHandleComplaint.value
         currentHandleComplaint?.apply{
             val status = if (result.resultCode == Activity.RESULT_OK) KhieuNaiEntity.Status.RESOLVED.value
-                else KhieuNaiEntity.Status.PENDING.value
+            else KhieuNaiEntity.Status.PENDING.value
             viewModel.updateStateComplaint(this, status)
         }
 
         viewModel.setCurrentHandleComplaint(null)
     }
 
+    //Xác định vai trò và thiết lập UI phù hợp
     private fun initUI(isAdmin: Boolean) {
         viewModel.liveData.isAdmin = isAdmin
         if (isAdmin){
@@ -113,6 +132,12 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
                     else -> 0
                 })
             }
+
+            // Đánh dấu đã đọc tất cả thông báo ứng dụng khi chọn tab APPLICATION
+            if (viewModel.liveData.currentTabType.value == KhieuNaiEntity.Type.APPLICATION) {
+                markAllApplicationNotificationsAsRead()
+            }
+
             return
         }
 
@@ -131,7 +156,19 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
                 else -> 0
             })
         }
+    }
 
+    // Phương thức mới để đánh dấu đã đọc tất cả thông báo ứng dụng
+    private fun markAllApplicationNotificationsAsRead() {
+        val complaints = viewModel.liveData.getNotifyAdmin
+        val appNotifications = complaints.filter {
+            it.type == KhieuNaiEntity.Type.APPLICATION.value &&
+                    it.status == KhieuNaiEntity.Status.NEW.value
+        }
+
+        if (appNotifications.isNotEmpty()) {
+            viewModel.updateAllApplicationNotifications()
+        }
     }
 
     private fun listenStateViewModel() {
@@ -140,22 +177,33 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
             initUI(isAdmin)
         }
 
-        // data admin
+        // Dữ liệu chủ nhà trọ
         viewModel.liveData.complaints.observe(viewLifecycleOwner){
             if(!viewModel.liveData.isAdmin) return@observe
             val complaints = viewModel.liveData.getNotifyAdmin
             adapterNotificationAdmin.updateData(complaints)
             views.tvEmpty.isVisible = complaints.isEmpty()
+
+            // Kiểm tra và đánh dấu đã đọc tất cả thông báo ứng dụng nếu đang ở tab APPLICATION
+            if (viewModel.liveData.currentTabType.value == KhieuNaiEntity.Type.APPLICATION) {
+                markAllApplicationNotificationsAsRead()
+            }
         }
+
         viewModel.liveData.currentTabType.observe(viewLifecycleOwner){
             if(!viewModel.liveData.isAdmin) return@observe
             Log.e("NotifyFragment", "complaints: ${viewModel.liveData.complaints.value}")
             val complaints = viewModel.liveData.getNotifyAdmin
             adapterNotificationAdmin.updateData(complaints)
             views.tvEmpty.isVisible = complaints.isEmpty()
+
+            // Nếu chuyển sang tab APPLICATION, tự động đánh dấu đã đọc tất cả thông báo ứng dụng
+            if (it == KhieuNaiEntity.Type.APPLICATION) {
+                markAllApplicationNotificationsAsRead()
+            }
         }
 
-        // data user
+        // Dữ liệu người thuê
         viewModel.liveData.notifications.observe(viewLifecycleOwner){
             if(viewModel.liveData.isAdmin) return@observe
             val notifications = viewModel.liveData.getNotifyUser
@@ -169,5 +217,4 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
             views.tvEmpty.isVisible = notifications.isEmpty()
         }
     }
-
 }

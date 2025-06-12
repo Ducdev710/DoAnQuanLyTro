@@ -13,9 +13,14 @@ class ViewPagerAdapter(
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    //Trả về số lượng fragment trong adapter
+    //Được gọi bởi ViewPager2 để xác định có bao nhiêu trang
     override fun getItemCount(): Int {
         return views.size
     }
+
+    //Trả về fragment tại vị trí được chỉ định
+    //Được gọi bởi ViewPager2 khi cần tạo hoặc lấy fragment cho một trang cụ thể
     override fun createFragment(position: Int): Fragment {
         return views[position]
     }

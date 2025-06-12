@@ -54,14 +54,16 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
     private fun setupClickListeners() {
         views.btnEnd.setOnClickListener {
             if (isEditMode) {
-                // Cancel edit mode
+                // Hủy chế độ chỉnh sửa
                 isEditMode = false
                 displayViewMode()
                 views.btnEdit.isVisible = viewModel.userController.state.isAdmin &&
                         viewModel.liveData.currentBill.value?.status == HoaDonEntity.STATUS_UNPAID
             } else if (isPaying) {
+                // Thực hiện thanh toán
                 viewModel.payingBill(viewModel.liveData.currentBill.value)
             } else {
+                // Đóng bottom sheet
                 dismiss()
             }
         }
@@ -80,12 +82,12 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
         try {
             val currentBill = viewModel.liveData.currentBill.value?.copy() ?: return
 
-            // Get updated values from edit fields
+            // Lấy dữ liệu từ các trường nhập liệu
             val roomPrice = views.edtPriceRoom.text.toString().toIntOrNull() ?: 0
             val serviceFee = views.edtPriceService.text.toString().toIntOrNull() ?: 0
             val additionalFee = views.edtAdditionalFee.text.toString().toIntOrNull() ?: 0
 
-            // Get both new and old readings from edit fields
+            // Lấy chỉ số điện nước cũ và mới
             val previousElectricityIndex = views.edtElectricityOld.text.toString().toIntOrNull() ?: 0
             val previousWaterIndex = views.edtWaterOld.text.toString().toIntOrNull() ?: 0
 
@@ -95,7 +97,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             val discount = views.edtPriceDiscount.text.toString().toIntOrNull() ?: 0
             val note = views.edtNote.text.toString()
 
-            // Validate new readings
+            // Kiểm tra hợp lệ
             if (electricityIndex < previousElectricityIndex) {
                 requireActivity().showToast("Chỉ số điện mới phải lớn hơn hoặc bằng chỉ số cũ")
                 return
@@ -106,11 +108,11 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
                 return
             }
 
-            // Calculate consumption based on the difference between new readings and old readings
+            // Tính lượng tiêu thụ
             val electricityUsed = electricityIndex - previousElectricityIndex
             val waterUsed = waterIndex - previousWaterIndex
 
-            // Update bill with new values
+            // Cập nhật hóa đơn
             val updatedBill = currentBill.copy(
                 roomPrice = roomPrice.toDouble(),
                 serviceFee = serviceFee.toString(),
@@ -125,7 +127,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
                 note = note
             )
 
-            // Let the ViewModel handle the update and total calculation
+            // Gửi cập nhật đến ViewModel
             viewModel.updateBill(updatedBill)
         } catch (e: Exception) {
             requireActivity().showToast("Lỗi: ${e.message}")
@@ -135,54 +137,54 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
     private fun displayEditMode() {
         val bill = viewModel.liveData.currentBill.value
 
-        // Show edit fields, hide text views
+        // Hiển thị các trường nhập liệu, ẩn các TextView
         views.apply {
-            // Room price
+            // Tiền phòng
             tvPriceRoom.isVisible = false
             edtPriceRoom.isVisible = true
             edtPriceRoom.setText(bill?.roomPrice?.toInt()?.toString() ?: "0")
 
-            // Service fee
+            // Phí dịch vụ
             tvPriceService.isVisible = false
             edtPriceService.isVisible = true
             edtPriceService.setText(bill?.serviceFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "") ?: "0")
 
-            // Additional fee
+            // Phi thêm
             tvAdditionalFee.isVisible = false
             edtAdditionalFee.isVisible = true
             edtAdditionalFee.setText(bill?.additionalFee?.replace(" VND", "")?.replace(",", "")?.replace(" ", "") ?: "0")
 
-            // Electricity readings - OLD (now editable)
+            // Chỉ số điện - OLD(có thể chỉnh sửa)
             tvElectricityOld.isVisible = false
             edtElectricityOld.isVisible = true
             edtElectricityOld.setText((bill?.previousElectricityIndex ?: 0).toString())
 
-            // Electricity readings - NEW
+            // Chỉ số điện - NEW (hiển thị và có thể chỉnh sửa)
             tvElectricityNew.isVisible = false
             edtElectricityNew.isVisible = true
             edtElectricityNew.setText(bill?.electricityIndex?.toString() ?: "0")
 
-            // Water readings - OLD (now editable)
+            // Chỉ số nuoc - OLD (có thể chỉnh sửa)
             tvWaterOld.isVisible = false
             edtWaterOld.isVisible = true
             edtWaterOld.setText((bill?.previousWaterIndex ?: 0).toString())
 
-            // Water readings - NEW
+            // Chỉ số nước - NEW (hiển thị và có thể chỉnh sửa)
             tvWaterNew.isVisible = false
             edtWaterNew.isVisible = true
             edtWaterNew.setText(bill?.waterIndex?.toString() ?: "0")
 
-            // Discount
+            // Tiền miên giảm
             tvPriceDiscount.isVisible = false
             edtPriceDiscount.isVisible = true
             edtPriceDiscount.setText(bill?.discount?.replace(" VND", "")?.replace(",", "")?.replace(" ", "") ?: "0")
 
-            // Note
+            // Ghi chú
             tvNote.isVisible = false
             edtNote.isVisible = true
             edtNote.setText(bill?.note ?: "")
 
-            // Update buttons
+            // Cập nhật trạng thái các nút
             btnEnd.text = "Hủy"
             btnEdit.isVisible = false
             btnSave.isVisible = true
@@ -191,7 +193,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
 
     private fun displayViewMode() {
         views.apply {
-            // Show text views, hide edit fields
+            // Hiển thị các TextView, ẩn các trường nhập liệu
             tvPriceRoom.isVisible = true
             edtPriceRoom.isVisible = false
 
@@ -201,14 +203,14 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             tvAdditionalFee.isVisible = true
             edtAdditionalFee.isVisible = false
 
-            // Electricity readings - both OLD and NEW
+            // Chỉ số điện - hiển thị OLD và NEW
             tvElectricityOld.isVisible = true
             edtElectricityOld.isVisible = false
 
             tvElectricityNew.isVisible = true
             edtElectricityNew.isVisible = false
 
-            // Water readings - both OLD and NEW
+            // Chis số nước - hiển thị OLD và NEW
             tvWaterOld.isVisible = true
             edtWaterOld.isVisible = false
 
@@ -221,7 +223,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
             tvNote.isVisible = true
             edtNote.isVisible = false
 
-            // Update buttons
+            // Cập nhật trạng thái các nút
             btnEnd.text = if (isPaying) "Thanh toán" else "Đóng"
             btnEdit.isVisible = viewModel.userController.state.isAdmin &&
                     viewModel.liveData.currentBill.value?.status == HoaDonEntity.STATUS_UNPAID
@@ -236,7 +238,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
                 tvCreateDate.text = bill?.createdDate
                 tvNameRoom.text = "Phòng: ${bill?.room?.roomName ?: ""}"
 
-                // Only show tenant name for admin users
+                // Hiển thị tên người thuê chỉ khi người xem là admin
                 tvTenantName.isVisible = viewModel.userController.state.isAdmin
                 if (viewModel.userController.state.isAdmin) {
                     tvTenantName.text = "Tên khách: ${bill?.tenant?.fullName ?: ""}"
@@ -244,19 +246,19 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
 
                 tvBillDate.text = "Hóa đơn tháng ${bill?.month ?: ""}/${bill?.year ?: ""}"
 
-                // Show payment date if available (bill is paid)
+                // Hiển thị ngày thanh toán nếu có(hóa đơn đã thanh toán)
                 tvPaymentDate.apply {
                     isVisible = !bill?.paymentDate.isNullOrBlank()
                     text = bill?.paymentDate ?: ""
                 }
                 layoutPaymentDate.isVisible = !bill?.paymentDate.isNullOrBlank()
 
-                // Format monetary values consistently
+                // Định dạng số tiền
                 tvPriceRoom.text = "${bill?.roomPrice?.toInt()?.toStringMoney()} VND"
                 tvPriceService.text = "${bill?.serviceFee?.toStringMoney()} VND"
                 tvAdditionalFee.text = "${bill?.additionalFee?.toStringMoney()} VND"
 
-                // Display meter readings
+                // Hiển thị chỉ số điện nước
                 tvElectricityOld.text = (bill?.previousElectricityIndex ?: 0).toString()
                 tvElectricityNew.text = (bill?.electricityIndex ?: 0).toString()
                 tvElectricityIndex.text = "${bill?.electricityUsed ?: 0} số"
@@ -267,7 +269,7 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
 
                 tvPriceDiscount.text = "${bill?.discount?.toStringMoney()} VND"
 
-                // Parse total amount from bill or calculate if missing
+                // Tính toán và hiển thị tổng số tiền
                 val totalAmount = if (!bill?.totalAmount.isNullOrBlank()) {
                     try {
                         bill?.totalAmount
@@ -286,16 +288,16 @@ class HandleDetailBillBottomSheet(private val bill: Bill): AppBaseBottomSheet<Di
 
                 cbPayed.isChecked = bill?.status == HoaDonEntity.STATUS_PAID
 
-                // Display note if available
+                // Hiên thị ghi chú nếu có
                 layoutNote.isVisible = !bill?.note.isNullOrBlank() || isEditMode
                 tvNote.text = bill?.note ?: ""
 
-                // Show edit button only for admin and unpaid bills
+                // Cập nhật trạng thái nút chỉnh sửa (chỉ cho admin và hóa đơn chưa thanh toán)
                 isPaying = !viewModel.userController.state.isAdmin && bill?.status == HoaDonEntity.STATUS_UNPAID
                 btnEdit.isVisible = viewModel.userController.state.isAdmin &&
                         bill?.status == HoaDonEntity.STATUS_UNPAID && !isEditMode
 
-                // Update button text
+                // Cập nhật text nút
                 if (!isEditMode) {
                     btnEnd.text = if (isPaying) "Thanh toán" else "Đóng"
                 }

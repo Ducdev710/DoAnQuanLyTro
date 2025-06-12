@@ -51,6 +51,8 @@ class TenantListAddRoomFragment : AppBaseFragment<FragmentTenantListAddRoomBindi
         init()
         listenStateViewModel()
     }
+    //Tải danh sách tất cả người thuê từ ViewModel
+    //Khi click vào người thuê: Gọi updateTenantRent để gán người thuê vào phòng hiện tại
     private fun init() {
         viewModel.getTenants()
 
@@ -64,20 +66,21 @@ class TenantListAddRoomFragment : AppBaseFragment<FragmentTenantListAddRoomBindi
 
     private fun listenStateViewModel() {
         viewModel.liveData.tenants.observe(viewLifecycleOwner){
+            //Lọc danh sách chỉ giữ lại người thuê chưa có phòng
             if(it.isSuccess()){
                 val tenants = (viewModel.liveData.tenants.value?.data ?: arrayListOf()).filter{ tenant ->
                     tenant.status == NguoiThueEntity.Status.INACTIVE.value
                 }
-
+                //Cập nhật adapter với danh sách đã lọc
                 adapter.updateData(tenants)
                 views.tvEmpty.isVisible = tenants.isEmpty()
             }
         }
         viewModel.liveData.updateTenant.observe(viewLifecycleOwner){
             if(it.isSuccess()){
-                viewModel.getTenants()
+                viewModel.getTenants() //Tải lại danh sách người thuê
                 requireContext().showToast(it.message ?: "Thành công")
-                popFragmentWithSlide()
+                popFragmentWithSlide() //Quay lại fragment trước đó
             }else if(it.isError()){
                 requireContext().showToast(it.message ?: "Có lỗi xảy ra")
             }

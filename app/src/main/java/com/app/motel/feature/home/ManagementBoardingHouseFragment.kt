@@ -45,6 +45,9 @@ class ManagementBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fr
         listenStateViewModel()
     }
 
+    //Quan sát thay đổi thông tin người dùng qua LiveData
+    //Cấu hình UI dựa trên vai trò người dùng (admin hoặc người thuê)
+    //Ẩn cả hai giao diện nếu không có thông tin người dùng
     private fun listenStateViewModel() {
         mViewModel.userController.state.currentUser.observe(viewLifecycleOwner){
             if (it != null) {
@@ -61,6 +64,7 @@ class ManagementBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fr
         }
     }
 
+    //Thiết lập giao diện quản lý cho chủ nhà
     private fun setupAdminUI() {
         views.lyAdmin.root.visibility = View.VISIBLE
         views.lyUser.root.visibility = View.GONE
@@ -120,6 +124,7 @@ class ManagementBoardingHouseFragment @Inject constructor() : AppBaseFragment<Fr
         }
     }
 
+    //Thiết lập giao diện người dùng cho người thuê
     private fun setupUserUI() {
         views.lyAdmin.root.visibility = View.GONE
         views.lyUser.root.visibility = View.VISIBLE

@@ -31,6 +31,7 @@ class NewsViewModel @Inject constructor(
         }
     }
 
+    //Danh sách phòng được sử dụng trong dropdown khi thêm tin tức mới
     fun getRooms(){
         viewModelScope.launch {
             try {

@@ -57,6 +57,8 @@ class HandleBillListFragment : AppBaseFragment<FragmentHandleBillListBinding>() 
             }
         })
         views.rcv.adapter = adapter
+
+        //Thiết lập tab chọn trạng thái hóa đơn
         views.tabBar.setOnTabSelectedListener(object: CustomTabBar.OnTabSelectedListener{
             override fun onTabSelected(position: Int) {
                 when(position){
@@ -72,6 +74,8 @@ class HandleBillListFragment : AppBaseFragment<FragmentHandleBillListBinding>() 
                 else -> 0
             })
         }
+
+        //Điểu khiển lịch: trước/sau tháng, chọn tháng
         views.btnPreviousMonth.setOnClickListener {
             val calendar = viewModel.liveData.currentDate.value!!
             calendar.add(Calendar.MONTH, -1)
@@ -91,12 +95,14 @@ class HandleBillListFragment : AppBaseFragment<FragmentHandleBillListBinding>() 
 
     @SuppressLint("SetTextI18n")
     private fun listenStateViewModel() {
+        //Kiểm tra quyền chủ nhà/người thuê để hiển thị các thành phần giao diện
         viewModel.userController.state.currentUser.observe(viewLifecycleOwner){
             (it.data?.isAdmin == true).apply{
                 views.tabBar.isVisible = this
                 views.lyFilter.isVisible = this
             }
         }
+        //Câp nhật danh sách hóa đơn khi dữ liệu hóa đơn thay đổi
         viewModel.liveData.bills.observe(viewLifecycleOwner){
             if(it.isSuccess()){
                 val tenants = viewModel.liveData.getListBillByFilter(viewModel.userController.state.isAdmin)
@@ -105,12 +111,14 @@ class HandleBillListFragment : AppBaseFragment<FragmentHandleBillListBinding>() 
                 views.tvEmpty.isVisible = tenants.isEmpty()
             }
         }
+        // Cập nhật danh sách khi trạng thái lọc thay đổi
         viewModel.liveData.filterState.observe(viewLifecycleOwner){
             val tenants = viewModel.liveData.getListBillByFilter(viewModel.userController.state.isAdmin)
 
             adapter.updateData(tenants)
             views.tvEmpty.isVisible = tenants.isEmpty()
         }
+        // Cập nhật danh sách và hiển thị thời gian khi ngày lọc thay đổi
         viewModel.liveData.currentDate.observe(viewLifecycleOwner){
             val tenants = viewModel.liveData.getListBillByFilter(viewModel.userController.state.isAdmin)
             adapter.updateData(tenants)

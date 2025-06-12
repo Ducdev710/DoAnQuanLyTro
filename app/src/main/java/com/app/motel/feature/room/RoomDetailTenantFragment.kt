@@ -55,11 +55,13 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
         views.btnCreateContract.isVisible = enableForm
 
         views.btnCreateContract.setOnClickListener{
+            // Điều hướng đến màn hình tạo hợp đồng
             if(!enableForm) return@setOnClickListener
             navigateFragmentWithSlide(R.id.roomCreateContractFormFragment, args = Bundle().apply { putString(
                 CreateContractFormFragment.ITEM_KEY, Gson().toJson(viewModel.liveData.currentRoom.value?.data)) })
         }
         views.btnAddTenant.setOnClickListener{
+            // Điều hướng đến màn hình thêm người thuê
             if(!enableForm) return@setOnClickListener
             navigateFragmentWithSlide(R.id.tenantListAddRoomFragment, args = Bundle().apply { putString(
                 TenantListAddRoomFragment.ITEM_KEY, Gson().toJson(viewModel.liveData.currentRoom.value?.data)) })
@@ -127,7 +129,7 @@ class RoomDetailTenantFragment @Inject constructor() : AppBaseFragment<FragmentR
                 views.lyTenant.isVisible = it.data?.contract != null
                 adapter.updateData(it.data?.tenants ?: arrayListOf())
 
-                // Only show Add Tenant button if user is admin AND there's space available
+                // Chỉ hiển thị nút Thêm người thuê nếu còn chỗ trống và người dùng là admin
                 val hasSpace = it.data?.maxOccupants == null ||
                         it.data.maxOccupants > (it.data.tenants?.size ?: 0)
 

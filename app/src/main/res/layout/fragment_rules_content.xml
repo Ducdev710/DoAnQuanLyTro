@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Các quy định dưới đây nhằm đảm bảo môi trường sống tốt nhất cho tất cả người thuê. Bui lòng đọc kỹ và tuần thủ."
+                    android:text="Các quy định dưới đây nhằm đảm bảo môi trường sống tốt nhất cho tất cả người thuê. Vui lòng đọc kỹ và tuần thủ."
                     android:layout_marginTop="@dimen/PADDING_SIZE_EXTRA_SMALL"
                     android:textSize="@dimen/TEXT_SIZE_DEFAULT"
                     android:textColor="@color/grey"

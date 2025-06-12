@@ -53,6 +53,7 @@ class CreateContractActivity() : AppBaseActivity<ActivityCreateContractBinding>(
             supportActionBar?.setDisplayShowTitleEnabled(isHomeFragment)
         }
 
+        // Khởi tạo form với roomId và tenantId từ intent
         val roomId: String? = intent.getStringExtra(KEY_ROOM_ID)
         val tenantId: String? = intent.getStringExtra(KEY_TENANT_ID)
         viewModel.initForm(roomId, tenantId)
@@ -74,6 +75,8 @@ class CreateContractActivity() : AppBaseActivity<ActivityCreateContractBinding>(
         }
     }
 
+    //Nếu đang ở fragment danh sách (fragment gốc), kết thúc Activity với hiệu ứng trượt
+    //Nếu đang ở fragment khác, quay lại fragment trước đó với hiệu ứng trượt
     private fun handleBackWithAnimation() {
         val navController = findNavController(R.id.fragment_view)
 

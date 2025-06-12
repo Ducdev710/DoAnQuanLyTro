@@ -60,6 +60,7 @@ class RulesContentFragment @Inject constructor() : AppBaseFragment<FragmentRules
         }
     }
 
+    //Lấy thông tin của chủ nhà
     private fun loadLandlordInfo() {
         viewLifecycleOwner.lifecycleScope.launch {
             // Get landlord info from your ViewModel or other data source
@@ -75,6 +76,7 @@ class RulesContentFragment @Inject constructor() : AppBaseFragment<FragmentRules
         }
     }
 
+    // Lấy giá tiền điện nước
     private fun observeUtilityPrices() {
         // For tenant accounts, explicitly fetch boarding house data
         if (!viewModel.userController.state.isAdmin) {

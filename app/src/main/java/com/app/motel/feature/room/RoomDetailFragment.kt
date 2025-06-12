@@ -47,6 +47,7 @@ class RoomDetailFragment @Inject constructor() : AppBaseFragment<FragmentRoomDet
     }
 
     private fun init() {
+        //Sử dụng Gson để deserialize chuỗi JSON thành đối tượng Room
         val item = Gson().fromJson(arguments?.getString(ITEM_KEY), Room::class.java)
         mViewModel.initRoomDetail(item)
         views.tabBar.setOnTabSelectedListener(object: CustomTabBar.OnTabSelectedListener{
@@ -62,6 +63,10 @@ class RoomDetailFragment @Inject constructor() : AppBaseFragment<FragmentRoomDet
         )
 
         views.viewPager.adapter = adapter
+
+        //Thiết lập callback để đồng bộ giữa TabBar và ViewPager:
+        //Khi chọn tab: ViewPager chuyển trang tương ứng
+        //Khi vuốt ViewPager: TabBar cập nhật tab được chọn
         views.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             @SuppressLint("SetTextI18n")
             override fun onPageSelected(position: Int) {

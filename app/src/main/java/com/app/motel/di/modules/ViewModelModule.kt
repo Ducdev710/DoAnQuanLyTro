@@ -24,6 +24,13 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlin.reflect.KClass
 
+/**
+ * Module Dagger cho việc cung cấp các ViewModel.
+ *
+ * Sử dụng Dagger Multibinding để tạo một map các ViewModel,
+ * cho phép Dagger tạo các ViewModel với constructor injection và quản lý
+ * chúng thông qua ViewModelProvider.Factory.
+ */
 @Module
 interface ViewModelModule {
 
@@ -107,6 +114,14 @@ interface ViewModelModule {
 
 }
 
+/**
+ * Annotation key cho việc multibinding ViewModel.
+ *
+ * Sử dụng để định danh các entry trong map
+ * ViewModel multibinding, sử dụng KClass của ViewModel làm key.
+ *
+ * @property value Class của ViewModel dùng làm key trong map
+ */
 @MustBeDocumented
 @Target(
     AnnotationTarget.FUNCTION,

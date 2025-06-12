@@ -37,6 +37,8 @@ class MainRulesFragment @Inject constructor() : AppBaseFragment<FragmentMainRule
         listenStateViewmodel()
     }
 
+    //Admin (enable = true): Hiển thị 2 tab - RulesContentFragment (xem) và RuleFormFragment (quản lý)
+    //Người thuê (enable = false): Chỉ hiển thị 1 tab - RulesContentFragment (xem)
     private fun initUI(enable: Boolean) {
         val fragments: ArrayList<AppBaseFragment<out ViewBinding>>  = if(enable) arrayListOf(
             RulesContentFragment(),
@@ -51,6 +53,8 @@ class MainRulesFragment @Inject constructor() : AppBaseFragment<FragmentMainRule
             lifecycle
         )
 
+        //Khi swipe ViewPager: cập nhật tab được chọn
+        //Khi chọn Tab: chuyển trang ViewPager
         views.viewPager.adapter = adapter
         views.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             @SuppressLint("SetTextI18n")
@@ -69,6 +73,8 @@ class MainRulesFragment @Inject constructor() : AppBaseFragment<FragmentMainRule
         })
     }
 
+    //Quan sát currentUser LiveData từ UserController
+    //Thiết lập UI dựa trên thuộc tính isAdmin của người dùng
     private fun listenStateViewmodel(){
         viewModel.userController.state.currentUser.observe(viewLifecycleOwner){
             initUI(it.data?.isAdmin == true)

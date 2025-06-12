@@ -50,9 +50,11 @@ class HandleContractViewModel @Inject constructor(
             try {
                 val contracts = liveData.isAdmin.value.let {
                     if(it == true){
+                        // Admin: Lấy hợp đồng theo nhà trọ hiện tại
                         val boardingHouseId = userController.state.currentBoardingHouseId
                         repository.getContractByBoardingHouseId(boardingHouseId)
                     } else{
+                        // Người thuê: Lấy hợp đồng của họ
                         val tenantId = userController.state.currentUserId
                         repository.getContractByTenantId(tenantId)
                     }
@@ -210,7 +212,7 @@ class HandleContractViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            // Check for unpaid bills for this room
+            // Kiểm tra hóa đơn chưa thanh toán
             val roomId = contract.roomId
             if (roomId != null) {
                 try {
@@ -234,7 +236,7 @@ class HandleContractViewModel @Inject constructor(
                 endDate = dateEndStr,
                 isActive = HopDongEntity.INACTIVE,
                 deposit = "${contract.deposit} (Đã trả)",
-                // Add termination details
+                // Thêm các thông tin kết thúc hợp đồng
                 terminationReason = terminationReason,
                 refundAmount = refundAmount,
                 deductionReason = deductionReason
@@ -242,16 +244,16 @@ class HandleContractViewModel @Inject constructor(
 
             val contractUpdated = repository.updateContract(updatedContract)
             if(contractUpdated.isSuccess()) {
-                // Update room status to empty
+                // Cập nhật trạng thái phòng thành trống
                 repository.updateStateRoom(contractUpdated.data?.roomId ?: "", PhongEntity.Status.EMPTY.value)
 
-                // Remove tenants from room
+                // Xóa người thuê khỏi phòng
                 tenantRepository.removeTenantFromRoom(contractUpdated.data?.roomId ?: "")
 
-                // Reset the contract holder status for the tenant
+                // Đặt lại trạng thái người đại diện hợp đồng
                 contract.customerId?.let { tenantId ->
                     try {
-                        // Update the tenant's isContractHolder status to false (0)
+                        // Câp nhật trạng thái người đại diện hợp đồng về false
                         tenantRepository.updateTenantContractHolderStatus(tenantId, false)
                         Log.d("HandleContractViewModel", "Reset contract holder status for tenant ID: $tenantId")
                     } catch (e: Exception) {

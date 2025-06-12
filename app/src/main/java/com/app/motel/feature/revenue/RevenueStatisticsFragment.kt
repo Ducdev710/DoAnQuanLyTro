@@ -52,7 +52,7 @@ class RevenueStatisticsFragment @Inject constructor() : AppBaseFragment<Fragment
     }
 
     private fun init() {
-        // Setup adapter
+        // Thiết lập adapter với listener xử lý click
         billAdapter = BillAdapter(object : AppBaseAdapter.AppListener<Bill>() {
             override fun onClickItem(item: Bill, action: AppBaseAdapter.ItemAction) {
                 HandleDetailBillBottomSheet(item).show(parentFragmentManager, HandleDetailBillBottomSheet::class.java.simpleName)
@@ -61,10 +61,10 @@ class RevenueStatisticsFragment @Inject constructor() : AppBaseFragment<Fragment
         views.rcv.adapter = billAdapter
         views.rcv.layoutManager = LinearLayoutManager(requireContext())
 
-        // Load initial data for current month
+        // Tải dữ liệu ban đầu cho tháng hiện tại
         viewModel.getPaidBillsByMonth(viewModel.currentMonth)
 
-        // Set up navigation buttons
+        // Thiết lập nút chuyển tháng trước
         views.btnPreviousMonth.setOnClickListener {
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.MONTH, viewModel.currentMonth - 2) // -2 because months are 0-based and we want previous month
@@ -77,7 +77,7 @@ class RevenueStatisticsFragment @Inject constructor() : AppBaseFragment<Fragment
             viewModel.currentYear = calendar.get(Calendar.YEAR)
             updateMonth()
         }
-
+        // Thiết lập nút chuyển tháng tiếp theo
         views.btnForwardMonth.setOnClickListener {
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.MONTH, viewModel.currentMonth) // Current month is already 1-based
@@ -95,10 +95,12 @@ class RevenueStatisticsFragment @Inject constructor() : AppBaseFragment<Fragment
             showDialogDatePicker()
         }
 
-        // Initial UI update
+        // Cập nhật tháng hiện tại
         updateMonth()
     }
 
+    //Cập nhật tiêu đề tháng/năm
+    //Tải lại dữ liệu hóa đơn cho tháng đã chọn
     private fun updateMonth() {
         views.tvMonth.text = "Tháng ${viewModel.currentMonth}/${viewModel.currentYear}"
         viewModel.getPaidBillsByMonth(viewModel.currentMonth)
@@ -111,17 +113,17 @@ class RevenueStatisticsFragment @Inject constructor() : AppBaseFragment<Fragment
                 val bills = resource.data ?: emptyList()
                 billAdapter.updateData(bills)
 
-                // Calculate total revenue
+                // Tính tổng doanh thu
                 var totalRevenue = 0.0
                 bills.forEach { bill ->
                     val amount = bill.totalAmount?.replace(",", "")?.toDoubleOrNull() ?: 0.0
                     totalRevenue += amount
                 }
 
-                // Update UI with total revenue
+                // Cập nhật tổng doanh thu vào TextView
                 views.tvTotalRevenueValue.text = String.format("%,.0f", totalRevenue)
 
-                // Show/hide empty state
+                // Hiển thị/ẩn trạng thái trống
                 views.tvEmpty.isVisible = bills.isEmpty()
                 views.rcv.isVisible = bills.isNotEmpty()
             }

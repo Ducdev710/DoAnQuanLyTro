@@ -57,14 +57,14 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
         setEnableEdittext(views.txtNote, enableForm)
         setEnableEdittext(views.txtCountService, false)
 
-        // Only show repair notes section to admins
+        // Chỉ hiển thị ghi chú sửa chữa nếu người dùng là chủ nhà
         if (isAdmin) {
             views.repairNotesContainer.visibility = View.VISIBLE
             setEnableEdittext(views.txtRepairNote, enableForm)
         } else {
             views.repairNotesContainer.visibility = View.GONE
         }
-
+        // Hiển thị/ẩn các nút chức năng
         views.btnChangeService.isVisible = enableForm
         views.btnUpdate.isVisible = enableForm
         views.btnDelete.isVisible = enableForm
@@ -102,6 +102,9 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
         }
     }
 
+    //Tạo adapter cho RecyclerView hiển thị danh sách dịch vụ
+    //Xử lý sự kiện click để chỉnh sửa dịch vụ
+    //Truyền thông tin dịch vụ và ID phòng qua Bundle
     private var adapterService: DetailRoomServiceAdapter = DetailRoomServiceAdapter(
         object : AppBaseAdapter.AppListener<Service>() {
             override fun onClickItem(item: Service, action: AppBaseAdapter.ItemAction) {
@@ -148,7 +151,7 @@ class RoomDetailInformationFragment @Inject constructor() : AppBaseFragment<Frag
                     views.txtPriceRoom.setText(currentRoom?.rentalPrice)
                     views.txtNote.setText(currentRoom?.note)
 
-                    // Only set repair notes for admin accounts
+                    // Chỉ hiển thị và cho phép chỉnh sửa ghi chú sửa chữa nếu người dùng là chủ nhà
                     if (isAdmin) {
                         views.txtRepairNote.setText(currentRoom?.repairNote)
                     }

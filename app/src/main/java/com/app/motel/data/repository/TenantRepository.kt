@@ -17,6 +17,7 @@ class TenantRepository @Inject constructor(
     private val roomDAO: RoomDAO,
     private val contractDAO: ContractDAO,
 ) {
+    //Bổ sung thông tin phòng và hợp đồng cho người thuê
     private suspend fun fetchTenantData(tenant: Tenant): Tenant {
         if(tenant.roomId != null ) {
             tenant.room = roomDAO.getPhongById(tenant.roomId)?.toModel()
@@ -41,13 +42,14 @@ class TenantRepository @Inject constructor(
         }
     }
 
-    // Add this new function to get tenants by boarding house ID
+    // Lấy người thuê theo ID nhà trọ
     suspend fun getTenantsByBoardingHouseId(boardingHouseId: String): List<Tenant> {
         return tenantDAO.getTenantsByBoardingHouseId(boardingHouseId).map {
             fetchTenantData(it.toModel())
         }
     }
 
+    //Lấy danh sách phòng trống
     suspend fun getAvailableRoomsForTenant(landlordId: String): Resource<List<Room>> {
         return try {
             val roomEntities = roomDAO.getAvailableRoomsByLandlordId(landlordId)
@@ -58,6 +60,7 @@ class TenantRepository @Inject constructor(
         }
     }
 
+    //Lấy danh sách người thuê khả dụng cho hợp đồng
     suspend fun getAvailableTenantsForContract(landlordId: String, boardingHouseId: String?): List<Tenant> {
         // Get tenants that belong to this landlord, this boarding house, and are not locked
         val tenantEntities = if (boardingHouseId != null) {
@@ -103,6 +106,7 @@ class TenantRepository @Inject constructor(
         }
     }
 
+    //Cập nhật trạng thái khóa và trạng thái thuê
     suspend fun updateTenantLockStatus(tenant: Tenant, lockStatus: Boolean): Resource<Tenant> {
         return withContext(Dispatchers.IO) {
             try {
@@ -142,6 +146,8 @@ class TenantRepository @Inject constructor(
         }
     }
 
+    //Chuyển người thuê vào phòng hoặc ra khỏi phòng
+    //Cập nhật trạng thái người thuê theo phòng
     suspend fun updateTenantRentToRoom(tenantId: String, roomId: String?): Resource<Tenant> {
         return withContext(Dispatchers.IO) {
             try {
@@ -170,6 +176,8 @@ class TenantRepository @Inject constructor(
             }
         }
     }
+
+    // Xóa người thuê khỏi một phòng cụ thể
     suspend fun removeTenantFromRoom(roomId: String): Resource<List<Tenant>?>{
         return try {
             tenantDAO.updateRentByRoomId(roomId)
@@ -189,7 +197,7 @@ class TenantRepository @Inject constructor(
             }
         }
     }
-    // Update your getTenantsByFilter method in TenantRepository.kt
+    // Lấy danh sách người thuê theo bộ lọc
     suspend fun getTenantsByFilter(filterType: TenantFilterType): List<Tenant> {
         return when (filterType) {
             TenantFilterType.ALL -> tenantDAO.getTenants()
@@ -203,10 +211,8 @@ class TenantRepository @Inject constructor(
     }
 
     suspend fun getTenantsByFilterAndLandlord(filterType: TenantFilterType, landlordId: String): List<Tenant> {
-        // First get all tenants for this landlord
         val landlordTenants = tenantDAO.getTenantsByLandlordId(landlordId)
 
-        // Then apply the filter
         val filteredTenants = when (filterType) {
             TenantFilterType.ALL -> landlordTenants
             TenantFilterType.ACTIVE -> landlordTenants.filter {
@@ -220,6 +226,7 @@ class TenantRepository @Inject constructor(
         return filteredTenants.map { fetchTenantData(it.toModel()) }
     }
 
+    // Cập nhật trạng thái người thuê là chủ hợp đồng khi kết thúc hợp đồng
     suspend fun updateTenantContractHolderStatus(tenantId: String, isContractHolder: Boolean) {
         val value = if (isContractHolder) 1 else 0
         tenantDAO.updateContractHolderStatus(tenantId, value)

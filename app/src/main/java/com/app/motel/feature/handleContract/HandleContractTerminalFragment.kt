@@ -50,6 +50,7 @@ class HandleContractTerminalFragment @Inject constructor() : AppBaseFragment<Fra
 
     var contract: Contract? = null
     private fun init() {
+        //Chuyển đổi chuỗi JSON từ arguments thành đối tượng Contract
         contract = Gson().fromJson(arguments?.getString(CONTRACT_KEY), Contract::class.java)
 
         views.apply {
@@ -60,6 +61,7 @@ class HandleContractTerminalFragment @Inject constructor() : AppBaseFragment<Fra
             tvEndDate.text = contract?.endDate
             tvDeposit.text = "${contract?.deposit.toStringMoney()} VND"
 
+            //Hiển thị/ẩn phần bồi thường dựa trên checkbox "Có hư hại"
             lyMoneyCompensation.isVisible = cbHasDamaged.isChecked
             cbHasDamaged.setOnCheckedChangeListener { _, isChecked ->
                 lyMoneyCompensation.isVisible = isChecked
@@ -76,12 +78,12 @@ class HandleContractTerminalFragment @Inject constructor() : AppBaseFragment<Fra
                 popFragmentWithSlide()
             }
             btnSave.setOnClickListener{
-                // Get termination details before ending the contract
+                // Lấy thông tin hủy hợp đồng từ các trường nhập liệu
                 val terminationReason = txtReson.text.toString()
                 val refundAmount = tvMoneyResult.text.toString()
                 val deductionReason = txtResonDeduction.text.toString()
 
-                // Create updated contract with termination details
+                // Tạo hợp đồng cập nhật với thông tin chi tiết chấm dứt
                 val updatedContract = contract!!.copy(
                     status = Contract.State.ENDED.ordinal, // Convert enum to int
                     isActive = HopDongEntity.INACTIVE,
@@ -90,7 +92,7 @@ class HandleContractTerminalFragment @Inject constructor() : AppBaseFragment<Fra
                     deductionReason = deductionReason
                 )
 
-                // End the contract with the updated information
+                // Kết thúc hợp đồng với thông tin được cập nhật
                 viewModel.endContract(
                     contract!!,
                     txtDateEnd.text.toString(),
@@ -104,6 +106,7 @@ class HandleContractTerminalFragment @Inject constructor() : AppBaseFragment<Fra
         }
     }
 
+    //Tính toán số tiền hoàn trả = tiền cọc - khấu trừ - bồi thường
     @SuppressLint("SetTextI18n")
     private fun calculateMoneyReturn() {
         val deduction = views.txtDeduction.text.toString().toMoney()

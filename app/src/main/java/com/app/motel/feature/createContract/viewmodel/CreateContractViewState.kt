@@ -12,7 +12,11 @@ class CreateContractViewState: AppViewLiveData {
 
     var currentRoomId: String? = null
     var currentTenantId: String? = null
+
+    //MutableLiveData theo dõi trạng thái tạo hợp đồng
     val createContract = MutableLiveData<Resource<Contract>>()
+
+    //MutableLiveData chứa danh sách tất cả các phòng trong nhà trọ
     val rooms = MutableLiveData<Resource<List<Room>>>()
     val tenantNotRented = MutableLiveData<Resource<List<Tenant>>>()
 

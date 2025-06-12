@@ -51,62 +51,14 @@ class BillRepository @Inject constructor(
         try {
             // Use the new contract ID-based method instead
             return getBillsByTenantId(tenantId)
-
-            /* Legacy implementation - keeping for reference
-            val contractEntities = contractDAO.getByTenantId(tenantId)
-
-            // If no contracts found, we won't have any bills
-            if (contractEntities.isEmpty()) {
-                Log.e("getBillByTenantRentedRoom", "No contracts found for tenant $tenantId")
-                return listOf()
-            }
-
-            val bills: ArrayList<Bill> = arrayListOf()
-
-            contractEntities.forEach { contractEntity ->
-                // Debug log to check contract details
-                Log.d("Contract", "Processing contract: Room=${contractEntity.maPhong}, " +
-                        "Start=${contractEntity.ngayBatDau}, End=${contractEntity.ngayKetThuc}")
-
-                var leftDate = DateConverter.localStringToDate(contractEntity.ngayBatDau)?.toCalendar()
-                val rightDate = DateConverter.localStringToDate(contractEntity.ngayKetThuc)?.toCalendar()
-                val currentDate = Calendar.getInstance()
-
-                if(leftDate != null && rightDate != null) {
-                    // Use MAX of current date and rightDate to ensure we get all bills
-                    val endComparison = if (rightDate.after(currentDate)) rightDate else currentDate
-
-                    while (leftDate!!.before(endComparison)) {
-                        val month = leftDate.get(Calendar.MONTH)
-                        val year = leftDate.get(Calendar.YEAR)
-
-                        Log.d("BillCheck", "Looking for bill: Room=${contractEntity.maPhong}, Month=$month, Year=$year")
-
-                        val bill = billDAO.getByRoomAndMonth(
-                            contractEntity.maPhong ?: "",
-                            month + 1,
-                            year,
-                        )
-                        if(bill != null) {
-                            bills.add(bill.toModel().apply {
-                                this.room = contractEntity.maPhong?.let { roomDAO.getPhongById(it)?.toModel() }
-                            })
-                        }
-
-                        leftDate = DateConverter.calculateMonth(leftDate.time, 1)
-                    }
-                }
-            }
-
-            Log.d("getBillByTenantRentedRoom", "Found ${bills.size} bills for tenant $tenantId")
-            return bills.reversed()
-            */
         } catch (e: Exception) {
             Log.e("getBillByTenantRentedRoom", "Error getting bills: ${e.message}", e)
             return listOf()
         }
     }
 
+    //Kiểm tra liệu hóa đơn cho tháng cụ thể đã tồn tại chưa
+    //Tìm kiếm trong phạm vi 36 tháng (3 năm)
     suspend fun checkBillCreateDate(roomId: String, createdDate: Calendar): Resource<Bill> {
         return try {
             for (currentMonthSearchIndex in 0 .. SEARCH_MONTH_MAX_LENGTH) {
@@ -130,6 +82,7 @@ class BillRepository @Inject constructor(
         }
     }
 
+    //Tìm hóa đơn gần nhất trong quá khứ cho một phòng
     suspend fun getPreviousBill(roomId: String): Resource<Bill> {
         return try {
             for (currentMonthSearchIndex in 0 .. SEARCH_MONTH_MAX_LENGTH) {

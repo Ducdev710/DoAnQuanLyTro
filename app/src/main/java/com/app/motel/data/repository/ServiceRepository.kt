@@ -95,6 +95,9 @@ class ServiceRepository@Inject constructor(
         }
     }
 
+    //Thêm/xóa dịch vụ khỏi tất cả phòng trong nhà trọ
+    //Bỏ qua dịch vụ riêng của phòng cụ thể
+    //Quản lý chuỗi dịch vụ trong phòng (định dạng CSV)
     suspend fun updateRoomService(
         service: Service,
         boardingHouseId: String,
@@ -135,6 +138,8 @@ class ServiceRepository@Inject constructor(
         }
     }
 
+    //Kết hợp dịch vụ riêng của phòng và dịch vụ chung của nhà trọ
+    //Loại bỏ trùng lặp bằng distinctBy { it.id }
     suspend fun getServiceByRoom(boardingHouse: String, roomId: String): Resource<List<Service>> {
         return try {
             // Get both room-specific services and global services

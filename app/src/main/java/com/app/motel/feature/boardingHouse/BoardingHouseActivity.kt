@@ -33,9 +33,12 @@ class BoardingHouseActivity : AppBaseActivity<ActivityBoardingHouseBinding>() {
     }
 
     fun init(){
+        //Đọc thông tin khu trọ từ intent nếu có (sử dụng Gson để deserialize)
         val boardingHouse: BoardingHouse? = Gson().fromJson(intent.getStringExtra(KEY_BOARDING_HOUSE), BoardingHouse::class.java)
         viewModel.initForm(boardingHouse)
 
+        //Khởi tạo form với dữ liệu khu trọ nếu đang ở chế độ chỉnh sửa
+        //Thiết lập navigation với điểm bắt đầu tùy thuộc vào mode (tạo mới hoặc cập nhật)
         if(boardingHouse != null){
             val navController = findNavController(R.id.fragment_view)
             val navInflater = navController.navInflater

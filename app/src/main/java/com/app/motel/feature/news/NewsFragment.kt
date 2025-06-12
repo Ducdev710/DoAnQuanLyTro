@@ -42,6 +42,9 @@ class NewsFragment : AppBaseFragment<FragmentNewsBinding>() {
     }
     lateinit var adapter: NewsAdapter
 
+    //Tải dữ liệu tin tức và danh sách phòng
+    //Thiết lập adapter cho RecyclerView
+    //Cấu hình sự kiện click cho nút thêm tin tức
     private fun init() {
         viewModel.getNews()
         viewModel.getRooms()
@@ -62,6 +65,9 @@ class NewsFragment : AppBaseFragment<FragmentNewsBinding>() {
         }
     }
 
+    //Cập nhật UI khi dữ liệu thay đổi
+    //Hiển thị thông báo trống khi không có tin tức
+    //Hiển thị tên nhà trọ
     private fun listenStateViewModel() {
         viewModel.liveData.news.observe(viewLifecycleOwner){
             adapter.updateData(it)
@@ -126,6 +132,7 @@ class NewsFragment : AppBaseFragment<FragmentNewsBinding>() {
         val roomNames = roomList.map { it.roomName } as ArrayList<String>
         roomNames.add(0, "Tất cả các phòng")
 
+        // Click bên ngoài để đóng dropdown
         dialog.window?.decorView?.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 if (dialog.binding.dropDown.isShowing) {
@@ -135,6 +142,7 @@ class NewsFragment : AppBaseFragment<FragmentNewsBinding>() {
             }
             false
         }
+        // Thiết lập dropdown và xử lý sự kiện chọn
         dialog.binding.dropDown.setItems(roomNames)
         dialog.binding.dropDown.setOnSpinnerItemSelectedListener<String> { _, _, newIndex, _ ->
             if (newIndex == 0) {

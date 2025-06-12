@@ -10,6 +10,12 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlin.reflect.KClass
 
+/**
+ * Module Dagger cho việc cung cấp các Fragment.
+ *
+ * Sử dụng Dagger Multibinding để tạo một map các Fragment,
+ * cho phép Dagger tạo các Fragment với constructor injection.
+ */
 @Module
 interface FragmentModule {
 
