@@ -41,7 +41,7 @@ class NotifyViewModel @Inject constructor(
         }
     }
 
-    //Lấy danh sách khiếu nại của chủ nhà trọ
+    //Lấy danh sách khiếu nại cho chủ nhà trọ
     fun getNotificationAdmin(){
         viewModelScope.launch {
             try {
@@ -142,5 +142,55 @@ class NotifyViewModel @Inject constructor(
                 Log.e("NotifyViewModel", "Lỗi cập nhật tất cả thông báo ứng dụng: ${e.message}")
             }
         }
+    }
+
+    // Đánh dấu đã đọc một thông báo cụ thể
+    fun markNotificationAsRead(notificationId: String) {
+        viewModelScope.launch {
+            try {
+                val success = notificationRepository.markNotificationAsRead(notificationId)
+                if (success) {
+                    Log.d("NotifyViewModel", "Đã đánh dấu thông báo $notificationId là đã đọc")
+                    // Refresh lại danh sách thông báo
+                    getNotificationUser()
+                } else {
+                    Log.e("NotifyViewModel", "Không thể đánh dấu thông báo $notificationId là đã đọc")
+                }
+            } catch (e: Exception) {
+                Log.e("NotifyViewModel", "Lỗi đánh dấu thông báo đã đọc: ${e.message}", e)
+            }
+        }
+    }
+
+    // Đánh dấu tất cả thông báo của người thuê là đã đọc
+    fun markAllNotificationsAsRead() {
+        viewModelScope.launch {
+            try {
+                val tenantId = userController.state.currentUserId
+                val count = notificationRepository.markAllNotificationsAsReadForTenant(tenantId)
+                if (count > 0) {
+                    Log.d("NotifyViewModel", "Đã đánh dấu $count thông báo là đã đọc cho người thuê $tenantId")
+                    // Refresh lại danh sách thông báo
+                    getNotificationUser()
+                }
+            } catch (e: Exception) {
+                Log.e("NotifyViewModel", "Lỗi đánh dấu tất cả thông báo đã đọc: ${e.message}", e)
+            }
+        }
+    }
+
+    // Đếm số thông báo chưa đọc cho người thuê
+    fun countUnreadNotificationsForTenant(): Int {
+        var count = 0
+        viewModelScope.launch {
+            try {
+                val tenantId = userController.state.currentUserId
+                count = notificationRepository.countUnreadNotificationsForTenant(tenantId)
+                Log.d("NotifyViewModel", "Số thông báo chưa đọc cho người thuê $tenantId: $count")
+            } catch (e: Exception) {
+                Log.e("NotifyViewModel", "Lỗi đếm thông báo chưa đọc: ${e.message}", e)
+            }
+        }
+        return count
     }
 }

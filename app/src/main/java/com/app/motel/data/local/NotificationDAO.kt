@@ -31,22 +31,50 @@ interface NotificationDAO {
     @Query("SELECT * FROM ThongBao LEFT JOIN KhuTro ON ThongBao.MaKhuTro = KhuTro.ID WHERE KhuTro.ID = :boardingHouseId ORDER BY NgayTao DESC")
     suspend fun getAdminNotification(boardingHouseId: String): List<ThongBaoEntity>
 
-
-//    @Query("SELECT * FROM ThongBao " +
-//            "WHERE ThongBao.MaPhong IS NULL " +
-//            "   OR ThongBao.MaPhong IN ( SELECT MaPhong FROM HopDong " +
-//            "       WHERE HieuLuc = ${HopDongEntity.ACTIVE} AND MaKhach = :tenantId )")
-    @Query("SELECT * FROM ThongBao " +
+    @Query("SELECT ThongBao.* FROM ThongBao " +
             "LEFT JOIN Phong ON (ThongBao.MaPhong = Phong.ID OR ThongBao.MaPhong IS NULL) AND ThongBao.MaKhuTro = Phong.MaKhuTro " +
             "LEFT JOIN NguoiThue ON Phong.ID = NguoiThue.MaPhong " +
-            " JOIN HopDong ON Phong.ID = HopDong.MaPhong AND HopDong.HieuLuc = ${HopDongEntity.ACTIVE} " +
-            "WHERE NguoiThue.ID = :tenantId")
+            "JOIN HopDong ON Phong.ID = HopDong.MaPhong AND HopDong.HieuLuc = ${HopDongEntity.ACTIVE} " +
+            "WHERE NguoiThue.ID = :tenantId " +
+            "ORDER BY ThongBao.NgayTao DESC")
     suspend fun getUserNotification(tenantId: String): List<ThongBaoEntity>
-
 
     @Query("UPDATE ThongBao SET DaDoc = 1 WHERE ID = :id")
     suspend fun markAsRead(id: String)
 
     @Query("DELETE FROM ThongBao WHERE MaKhuTro = :id")
     suspend fun deleteByBoardingHouseId(id: String)
+
+    // Đếm số thông báo chưa đọc cho người thuê (bao gồm thông báo chung và riêng)
+    @Query("SELECT COUNT(*) FROM ThongBao " +
+            "LEFT JOIN Phong ON (ThongBao.MaPhong = Phong.ID OR ThongBao.MaPhong IS NULL) AND ThongBao.MaKhuTro = Phong.MaKhuTro " +
+            "LEFT JOIN NguoiThue ON Phong.ID = NguoiThue.MaPhong " +
+            "JOIN HopDong ON Phong.ID = HopDong.MaPhong AND HopDong.HieuLuc = ${HopDongEntity.ACTIVE} " +
+            "WHERE NguoiThue.ID = :tenantId AND ThongBao.DaDoc = 0")
+    suspend fun countUnreadNotificationsForTenant(tenantId: String): Int
+
+    // Đánh dấu tất cả thông báo là đã đọc cho người thuê
+    @Query("UPDATE ThongBao SET DaDoc = 1 " +
+            "WHERE ID IN (SELECT ThongBao.ID FROM ThongBao " +
+            "LEFT JOIN Phong ON (ThongBao.MaPhong = Phong.ID OR ThongBao.MaPhong IS NULL) AND ThongBao.MaKhuTro = Phong.MaKhuTro " +
+            "LEFT JOIN NguoiThue ON Phong.ID = NguoiThue.MaPhong " +
+            "JOIN HopDong ON Phong.ID = HopDong.MaPhong AND HopDong.HieuLuc = ${HopDongEntity.ACTIVE} " +
+            "WHERE NguoiThue.ID = :tenantId AND ThongBao.DaDoc = 0)")
+    suspend fun markAllNotificationsAsReadForTenant(tenantId: String): Int
+
+    // Đếm số thông báo chung chưa đọc cho người thuê
+    @Query("SELECT COUNT(*) FROM ThongBao " +
+            "LEFT JOIN Phong ON ThongBao.MaPhong IS NULL AND ThongBao.MaKhuTro = Phong.MaKhuTro " +
+            "LEFT JOIN NguoiThue ON Phong.ID = NguoiThue.MaPhong " +
+            "JOIN HopDong ON Phong.ID = HopDong.MaPhong AND HopDong.HieuLuc = ${HopDongEntity.ACTIVE} " +
+            "WHERE NguoiThue.ID = :tenantId AND ThongBao.DaDoc = 0 AND ThongBao.MaPhong IS NULL")
+    suspend fun countUnreadGeneralNotificationsForTenant(tenantId: String): Int
+
+    // Đếm số thông báo riêng chưa đọc cho người thuê
+    @Query("SELECT COUNT(*) FROM ThongBao " +
+            "LEFT JOIN Phong ON ThongBao.MaPhong = Phong.ID " +
+            "LEFT JOIN NguoiThue ON Phong.ID = NguoiThue.MaPhong " +
+            "JOIN HopDong ON Phong.ID = HopDong.MaPhong AND HopDong.HieuLuc = ${HopDongEntity.ACTIVE} " +
+            "WHERE NguoiThue.ID = :tenantId AND ThongBao.DaDoc = 0 AND ThongBao.MaPhong IS NOT NULL")
+    suspend fun countUnreadRoomNotificationsForTenant(tenantId: String): Int
 }

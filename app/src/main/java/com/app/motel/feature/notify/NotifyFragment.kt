@@ -20,6 +20,7 @@ import com.app.motel.data.model.Complaint
 import com.app.motel.data.model.Notification
 import com.app.motel.databinding.FragmentNotifyBinding
 import com.app.motel.feature.createContract.CreateContractActivity
+import com.app.motel.feature.home.viewmodel.HomeViewModel
 import com.app.motel.feature.notify.viewmodel.NotifyViewModel
 import com.app.motel.ui.custom.CustomTabBar
 import javax.inject.Inject
@@ -41,6 +42,14 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
 
         super.onViewCreated(view, savedInstanceState)
         listenStateViewModel()
+
+        // Đánh dấu thông báo là đã đọc khi người thuê xem màn hình thông báo
+        if (!viewModel.liveData.isAdmin) {
+            val homeViewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+                .get(HomeViewModel::class.java)
+            homeViewModel.markAllNotificationsAsRead()
+            Log.d("NotifyFragment", "Đánh dấu tất cả thông báo đã đọc cho người thuê")
+        }
     }
 
     val adapterNotificationAdmin = NotificationAdminAdapter(object : AppBaseAdapter.AppListener<Complaint>(){
@@ -93,9 +102,10 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
 
     val adapterNotificationUser = NotificationUserAdapter(object : AppBaseAdapter.AppListener<Notification>(){
         override fun onClickItem(item: Notification, action: AppBaseAdapter.ItemAction) {
-//            if(action == AppBaseAdapter.ItemAction.LONG_CLICK){
-//
-//            }
+            // Đánh dấu thông báo cụ thể đã đọc khi người thuê click vào
+            if (!viewModel.liveData.isAdmin && item.isRead != 1) {
+                viewModel.markNotificationAsRead(item.id)
+            }
         }
     })
 
@@ -175,6 +185,13 @@ class NotifyFragment @Inject constructor() : AppBaseFragment<FragmentNotifyBindi
         viewModel.userController.state.currentUser.observe(viewLifecycleOwner){
             val isAdmin = it.data?.isAdmin == true
             initUI(isAdmin)
+
+            // Đánh dấu thông báo là đã đọc khi người thuê xem màn hình thông báo
+            if (!isAdmin) {
+                val homeViewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+                    .get(HomeViewModel::class.java)
+                homeViewModel.markAllNotificationsAsRead()
+            }
         }
 
         // Dữ liệu chủ nhà trọ

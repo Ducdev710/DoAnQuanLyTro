@@ -18,6 +18,7 @@ class HomeViewModel @Inject constructor(
     private val contractRepository: ContractRepository,
     private val billRepository: BillRepository,
     private val complaintRepository: ComplaintRepository,
+    private val notificationRepository: NotificationRepository,
     val userController: UserController,
 ) : AppBaseViewModel<HomeViewLiveData, HomeViewAction, HomeViewEvent>(HomeViewLiveData()) {
 
@@ -35,19 +36,18 @@ class HomeViewModel @Inject constructor(
     fun refreshNotificationCount() {
         viewModelScope.launch {
             try {
-                // Only show notifications for admin users
                 val user = userController.state.getCurrentUser
-                if (user?.isAdmin == true) {
-                    // For admin, get notifications specific to their boarding house
+                val count = if (user?.isAdmin == true) {
+                    // For admin, get complaint notifications
                     val boardingHouseId = userController.state.currentBoardingHouseId
-                    val count = complaintRepository.getNewNotificationsForAdmin(boardingHouseId)
-                    _notificationCount.postValue(count)
-                    Log.d("HomeViewModel", "Admin notifications count: $count for boarding house: $boardingHouseId")
+                    complaintRepository.getNewNotificationsForAdmin(boardingHouseId)
                 } else {
-                    // For tenant users, don't show notification badges
-                    _notificationCount.postValue(0)
-                    Log.d("HomeViewModel", "User is not admin, no notification badges")
+                    // For tenant, get unread notifications
+                    val tenantId = userController.state.currentUserId
+                    notificationRepository.countUnreadNotificationsForTenant(tenantId)
                 }
+                _notificationCount.postValue(count)
+                Log.d("HomeViewModel", "${if (user?.isAdmin == true) "Admin" else "Tenant"} notifications count: $count")
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error getting notification count: ${e.message}", e)
                 _notificationCount.postValue(0)
@@ -115,9 +115,15 @@ class HomeViewModel @Inject constructor(
     fun markAllNotificationsAsRead() {
         viewModelScope.launch {
             try {
-                // Here you would add code to mark all notifications as read
-                // Then refresh the count
-                refreshNotificationCount()
+                val user = userController.state.getCurrentUser
+                if (user?.isAdmin != true) {
+                    // Only mark notifications as read for tenant users
+                    val tenantId = userController.state.currentUserId
+                    val count = notificationRepository.markAllNotificationsAsReadForTenant(tenantId)
+                    Log.d("HomeViewModel", "Marked $count notifications as read for tenant $tenantId")
+                    // Refresh notification count after marking as read
+                    refreshNotificationCount()
+                }
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error marking notifications as read: ${e.message}", e)
             }
