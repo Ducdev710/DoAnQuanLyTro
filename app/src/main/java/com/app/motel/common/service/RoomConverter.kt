@@ -36,7 +36,3 @@ class DateRoomConverters {
     }
 }
 
-//Hai lớp này đều là Type Converters cho Room Database, giúp Room xử lý các kiểu dữ liệu phức tạp mà
-//SQLite không hỗ trợ trực tiếp. Để sử dụng các converter này, cần đăng ký chúng trong
-//annotation @Database của Room hoặc trong annotation @TypeConverters ở cấp độ entity, DAO hoặc database.
-
