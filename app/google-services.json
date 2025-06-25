@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882185240398",
+    "project_id": "motalmanagement-9fbe0",
+    "storage_bucket": "motalmanagement-9fbe0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882185240398:android:383d01e572f6b8f8d6a81f",
+        "android_client_info": {
+          "package_name": "com.app.motel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgEuzkMx2UBw2Sn0Vy77ReS9dA_MFEC1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
